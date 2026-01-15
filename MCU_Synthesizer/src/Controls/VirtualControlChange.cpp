@@ -202,7 +202,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }    
 
-    case 59: {
+    case CCoctave: {
       switch (value) {
         case 0:
           octave = 24;
@@ -515,7 +515,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 81: {
+    case CCLFOwaveSelect: {
       LFOwaveSelect = value;
       break;
     }

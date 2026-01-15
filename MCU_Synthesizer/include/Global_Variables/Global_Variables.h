@@ -254,6 +254,9 @@ extern float DroneB_finalCutoff6;
 extern float DroneB_finalCutoff70;
 extern float DroneB_finalCutoff71;
 
+// Keyboard
+extern int octaveValue;
+
 extern const float DIV127;
 
 #endif // GLOBAL_VARIABLES_H

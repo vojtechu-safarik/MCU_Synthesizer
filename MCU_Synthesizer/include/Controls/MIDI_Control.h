@@ -7,6 +7,9 @@
 #define CCshape_1 53
 #define CCshape_2 54
 #define CCshape_3 55
+
+#define CCoctave 59
+#define CCLFOwaveSelect 81
 // ===================
 
 void VirtualControlChange(byte channel, byte control, byte value);

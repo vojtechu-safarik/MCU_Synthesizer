@@ -1,3 +1,7 @@
+
+// =======================
+// ====== LIBRARIES ======
+
 #include <Arduino.h>
 
 #include "Audio.h"
@@ -12,6 +16,14 @@
 #include "imxrt.h"
 
 #include "ResponsiveAnalogRead.h"
+
+// === KEYPAD lib ===
+#include "Key.h"
+#include "Keypad.h"
+// ==================
+
+// ====== end LIBRARIES ======
+// ===========================
 
 // ==============================
 // ====== Project INCLUDES ======
@@ -56,13 +68,18 @@
 #include "Configuration\Setup.h"
 // ==================
 
-// === CONTROLS ===
+// === DISPLAY ===
 #include "Display\Display.h"
 // ==================
 
 // === CONTROLS ===
 #include "Controls\MIDI_Control.h"
 #include "Controls\Inputs.h"
+// ==================
+
+// === KEYBOARD ===
+#include "Keyboard\HardwareKeyboard.h"
+#include "Keyboard\LEDoctave.h"
 // ==================
 
 // ====== end Project INCLUDES ======
@@ -87,6 +104,8 @@ void setup() {
   Display_setup();
 
   Inputs_setup();
+
+  LEDoctave_begin();
 
 // ============================================
 }
@@ -151,5 +170,9 @@ void loop() {
   checkMux();
 
   Display_loop();
+
+  // SMAZAT
+  Keyboard_update();
+  LEDoctave_update();
 }
 
