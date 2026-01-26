@@ -257,6 +257,9 @@ extern float DroneB_finalCutoff71;
 // Keyboard
 extern int octaveValue;
 
+// Sequencer
+extern float SeqGatePot;
+
 extern const float DIV127;
 
 #endif // GLOBAL_VARIABLES_H

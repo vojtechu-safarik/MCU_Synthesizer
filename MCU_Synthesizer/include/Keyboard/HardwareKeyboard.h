@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+void Keyboard_init();
+
 // update – zavoláš v loop()
 void Keyboard_update();
 
