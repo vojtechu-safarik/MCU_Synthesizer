@@ -25,7 +25,7 @@ void checkSwitch() {
 
   // LFOtypeSelect
   if (digitalRead(SWLFOtype_1) && !digitalRead(SWLFOtype_3)) {
-  LFOtypeSelect = 0;   // levá poloha
+    LFOtypeSelect = 0;   // levá poloha
   }
   else if (!digitalRead(SWLFOtype_1) && digitalRead(SWLFOtype_3)) {
     LFOtypeSelect = 2;   // pravá poloha
@@ -34,19 +34,40 @@ void checkSwitch() {
     LFOtypeSelect = 1;   // střed / žádná krajní (fallback)
   }
   
-  /*
-  static unsigned long lastPrintTime = 0;
-  unsigned long nowCPUtest = millis();
-  if (nowCPUtest - lastPrintTime >= 1000) {
-    lastPrintTime = nowCPUtest;
-    Serial.print("Current Shape Index 1: ");
-    Serial.println(currentShapeIndex_1);
-    Serial.print("Current Shape Index 2: ");
-    Serial.println(currentShapeIndex_2);
-    Serial.print("Current Shape Index 3: ");
-    Serial.println(currentShapeIndex_3);
-    Serial.print("Current LFO type: ");
-    Serial.println(LFOtypeSelect);
+// ================================
+// ====== SEQUENCER Switches ======
+
+  // SeqMode: 0 = Off, 1 = Arp, 2 = Latch
+  if (digitalRead(SWSeqMode_1) && !digitalRead(SWSeqMode_3)) {
+    CurrentSeqMode = 2;   // levá poloha // PAK MÁ BÝT NASTAVENO NA 0, SMAZAT, návrh teď jen
   }
-  */
+  else if (!digitalRead(SWSeqMode_1) && digitalRead(SWSeqMode_3)) {
+    CurrentSeqMode = 2;   // pravá poloha // PAK MÁ BÝT NASTAVENO NA 2, SMAZAT, návrh teď jen
+  }
+  else {
+    CurrentSeqMode = 2;   // střed / žádná krajní (fallback) // PAK MÁ BÝT NASTAVENO NA 1, SMAZAT, návrh teď jen
+  }
+
+  // SeqOrder: 0 = Up, 1 = Down, 2 = Queue
+  if (digitalRead(SWSeqOrder_1) && !digitalRead(SWSeqOrder_3)) {
+    CurrentSeqOrder = 0;   // levá poloha // PAK MÁ BÝT NASTAVENO NA 0, SMAZAT, návrh teď jen
+  }
+  else if (!digitalRead(SWSeqOrder_1) && digitalRead(SWSeqOrder_3)) {
+    CurrentSeqOrder = 0;   // pravá poloha // PAK MÁ BÝT NASTAVENO NA 2, SMAZAT, návrh teď jen
+  }
+  else {
+    CurrentSeqOrder = 0;   // střed / žádná krajní (fallback) // PAK MÁ BÝT NASTAVENO NA 1, SMAZAT, návrh teď jen
+  }
+
+  // SeqOctaves: 0 = 1 oct, 1 = 2 oct, 2 = 3 oct
+  if (digitalRead(SWSeqOctave_1) && !digitalRead(SWSeqOctave_3)) {
+    CurrentSeqOctave = 0;   // levá poloha // PAK MÁ BÝT NASTAVENO NA 0, SMAZAT, návrh teď jen
+  }
+  else if (!digitalRead(SWSeqOctave_1) && digitalRead(SWSeqOctave_3)) {
+    CurrentSeqOctave = 0;   // pravá poloha // PAK MÁ BÝT NASTAVENO NA 2, SMAZAT, návrh teď jen
+  }
+  else {
+    CurrentSeqOctave = 0;   // střed / žádná krajní (fallback) // PAK MÁ BÝT NASTAVENO NA 1, SMAZAT, návrh teď jen
+  }
+
 }

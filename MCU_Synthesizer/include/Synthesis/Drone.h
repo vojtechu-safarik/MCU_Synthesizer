@@ -27,6 +27,9 @@ struct DroneSnapshot {
     float savedVolume1;
     float savedVolume2;
     float savedVolume3;
+    float savedTune1;
+    float savedTune2;
+    float savedTune3;
     float savedNoiseVolume;
     int   savedSubOctave;
     
@@ -126,7 +129,7 @@ extern int  releasingDroneB_index;
 void DroneEnvelopesInit();                              // Initialize drone envelopes
 void DroneInit();                                       // Initialize drone engine
 
-void DroneSaveValues(int slot);                                     // Save drone parameter values
+void DroneSaveValues(int slot);                         // Save drone parameter values
 
 void DroneKeyOn(byte note);                             // Trigger drone note-on
 void DroneKeyOff(byte note);                            // Trigger drone note-off
@@ -137,6 +140,6 @@ void DroneLFO_update();                                 // Update drone LFOs
 void DroneEnvelopes_update();                           // Update drone envelopes per frame
 
 void playSnapshot(int snapIndex, bool useGroupA);       // Recall and play snapshot
-void stopGroup(bool useGroupA);                          // Stop all voices in group
+void stopGroup(bool useGroupA);                         // Stop all voices in group
 
 #endif // DRONE_H

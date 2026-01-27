@@ -41,6 +41,9 @@ void checkMux() {
         case MUXshape_3:
             VirtualControlChange(0, CCshape_3, muxRead);
             break;
+        case MUXSeqGatePot:
+            VirtualControlChange(0, CCseqGatePot, muxRead);
+            break;    
       }
     }  
 

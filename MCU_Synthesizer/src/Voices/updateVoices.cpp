@@ -8,7 +8,6 @@
 #include "Synthesis\LFO.h"
 #include "Synthesis\KBD_Tracking.h"
 #include "Synthesis\Filter_Envelope.h"
-#include "Synthesis\ShapeDetuneRecomputeFix.h"
 #include "Synthesis\Portamento.h"
 // ==================
 
@@ -20,7 +19,6 @@
 void updateVoices() {
   updateEnvelopesPerVoice();
   PortamentoUpdate();
-  ShapeDetuneRecomputeFix();
   if (SynthMode == 0) {
     // UNISONO
     if ((unisonTriad == 0) || (voiceReleasing_1 == true)) { // Default Triad

@@ -254,11 +254,15 @@ extern float DroneB_finalCutoff6;
 extern float DroneB_finalCutoff70;
 extern float DroneB_finalCutoff71;
 
+// Sequencer Variables
+extern byte CurrentSeqMode;
+extern byte CurrentSeqOrder; 
+extern byte CurrentSeqOctave; 
+extern float SeqGatePot;
+extern uint8_t SeqRateSelect;
+
 // Keyboard
 extern int octaveValue;
-
-// Sequencer
-extern float SeqGatePot;
 
 extern const float DIV127;
 

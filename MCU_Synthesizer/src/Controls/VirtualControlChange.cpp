@@ -189,7 +189,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       Tune_3 = powf(2.0f, Tune_3 / 12.0f);
 
       if (SynthMode == 0) {
-        LFOTune_5 = LFOTune_2;
+        LFOTune_6 = LFOTune_3;
         Tune_6 = Tune_3;
       } else if (SynthMode == 1) {
         LFOTune_4 = LFOTune_3;
@@ -586,12 +586,23 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 92: {
+    case CCseqGatePot: {
+      // Pink volume 0 .. 127 -> 0 .. 1 -> 0 .. 99 -> 1 .. 100
+      SeqGatePot = (value * DIV127 * 99) + 1;
+      break;
+    }
+
+    case 93: {
+      SeqRateSelect = value;
+      break;
+    }
+
+    case 94: {
       DRONEmodeSelect = value;
       break;
     }   
 
-    case 93: {
+    case 95: {
       DRONEkeyNr1 = value;
 
       if (value == 1) { // tlačítko stisknuto
@@ -610,7 +621,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
     
-    case 94: {
+    case 96: {
       DRONEkeyNr2 = value;
 
       if (value == 1) {
@@ -627,7 +638,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
     
-    case 95: {
+    case 97: {
       DRONEkeyNr3 = value;
 
       if (value == 1) {
@@ -644,7 +655,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 96: {
+    case 98: {
       DRONEkeyNr4 = value;
 
       if (value == 1) {
@@ -661,7 +672,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 97: {
+    case 99: {
       DRONEkeyNr5 = value;
 
       if (value == 1) {
@@ -678,7 +689,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 98: {
+    case 100: {
       DRONEkeyNr6 = value;
 
       if (value == 1) {
@@ -695,7 +706,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 99: {
+    case 101: {
       DRONEkeyNr7 = value;
 
       if (value == 1) {
@@ -712,7 +723,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 100: {
+    case 102: {
       DRONEkeyNr8 = value;
 
       if (value == 1) {

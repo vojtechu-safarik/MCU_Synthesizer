@@ -11,7 +11,7 @@
 #define MUX_S1      15
 #define MUX_S2      16
 #define MUX_S3      17
-#define MUX_control 3   // how many mux channels are being used
+#define MUX_control 4   // how many mux channels are being used
 #define MUX_PIN     A16 // common analog input pin for MUX (SIG)
 // ===================
 
@@ -19,12 +19,22 @@
 #define MUXshape_1  0
 #define MUXshape_2  1
 #define MUXshape_3  2
+#define MUXSeqGatePot  3
 // ===================
 
 // Switches pin numbers
 #define SWsynthMode 3
 #define SWLFOtype_1 4
 #define SWLFOtype_3 5
+
+#define SWSeqMode_1 6
+#define SWSeqMode_3 7
+
+#define SWSeqOrder_1 8
+#define SWSeqOrder_3 18
+
+#define SWSeqOctave_1 19
+#define SWSeqOctave_3 20
 // ===================
 
 // Encoder KY-040 pin numbers

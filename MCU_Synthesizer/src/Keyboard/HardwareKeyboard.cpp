@@ -2,31 +2,41 @@
 
 // === KEYPAD lib ===
 #include "Keypad.h"
+// ==================
 
 // === GLOBAL VARIABLES ===
 #include "Global_Variables/Global_Variables.h"
+// ==================
 
 // === CONTROLS ===
 #include "Controls/MIDI_Control.h"
+// ==================
 
 // === KEYBOARD ===
 #include "Keyboard/HardwareKeyboard.h"
+// ==================
 
-/* ================== CONFIGURATION ================== */
+/* === CONFIGURATION === */
 
-/* ================== REMOVE THESE, CONTROL PHYSICALLY ================== */
-// SeqMode: 0 = Off, 1 = Arp (Hold), 2 = Latch
-byte CurrentSeqMode = 2; 
+/* 
+SeqMode: 
+    0 = Off
+    1 = Arp
+    2 = Latch
+SeqOrder: 
+    0 = Up
+    1 = Down
+    2 = Queue
+SeqOctaves: 
+    0 = 1 oct
+    1 = 2 oct
+    2 = 3 oct
+SeqGatePot: 
+    1 .. 100 
+    ( how big portion of the step is the note in an active state )
+*/
 
-// SeqOrder: 0 = Up, 1 = Down, 2 = Queue
-byte CurrentSeqOrder = 2; 
-
-// SeqOctaves: 0 = 1 oct, 1 = 2 oct, 2 = 3 oct
-byte CurrentSeqOctave = 0; 
-
-// SeqGatePot: 0 = off, 100 = full step time -- needs a constrain to be between 1 and 100
-float SeqGatePot = 20;
-/* ================================================== */
+/* ===================== */
 
 static const byte ROWS = 3;
 static const byte COLS = 3;
@@ -71,11 +81,11 @@ unsigned long shiftPressTime = 0;
 
 static Keypad keypad = Keypad(makeKeymap(keymap), rowPins, colPins, ROWS, COLS);
 
-static byte activeKeyStack[12]; // Zvětšeno pro více not v Latch/Range
+static byte activeKeyStack[32]; // Zvětšeno pro více not v Latch/Range
 static byte activeKeyCount = 0;
 static int playingNotes[9];     // Sledování not v Direct Play pro okamžitou transpozici
 
-static int sequenceBuffer[32];
+static int sequenceBuffer[256];
 static byte sequenceLength = 0;
 
 static unsigned long internal_lastStepTime = 0;
@@ -185,6 +195,14 @@ void internal_sequencerUpdate() {
 
     int bpm = (GlobalBPM < 1) ? 120 : GlobalBPM;
     unsigned long stepMs = 60000UL / bpm; 
+
+    if (SeqRateSelect == 0) {
+        stepMs = stepMs * 2;
+    } else if (SeqRateSelect == 2) {
+        stepMs = stepMs / 2;
+    } else if (SeqRateSelect == 3) {
+        stepMs = stepMs / 4;
+    }
 
     if ((now - internal_lastStepTime) < stepMs) return;
     internal_lastStepTime = now;

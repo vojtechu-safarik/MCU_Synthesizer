@@ -1075,17 +1075,17 @@ void LFOupdate() {
               LFOfreqCutoffMod_7 = 1.0f;
             }
             
-            // defaults (if voice isnt active, set  Tune 0.5)
+            // defaults
             float semitones_1 = 0.0f, semitones_2 = 0.0f, semitones_3 = 0.0f, semitones_4 = 0.0f, semitones_5 = 0.0f, semitones_6 = 0.0f;
 
             if (voiceActive_1 || LFOactive_1 || voiceReleasing_1) {
-                semitones_1 = LFOTune_1 * LFOdepth * (lfoOut_1 * 2.0f - 1.0f);
-                Tune_1 = powf(2.0f, semitones_1 / 12.0f);
+                semitones_1  = LFOTune_1 * LFOdepth * (lfoOut_1 * 2.0f - 1.0f);
+                Tune_1 = powf(2.0f, semitones_1  / 12.0f);
             }
 
             if (voiceActive_2 || LFOactive_2 || voiceReleasing_2) {
-                semitones_2 = LFOTune_2 * LFOdepth * (lfoOut_2 * 2.0f - 1.0f);
-                Tune_2 = powf(2.0f, semitones_2 / 12.0f);
+                semitones_2  = LFOTune_2 * LFOdepth * (lfoOut_2 * 2.0f - 1.0f);
+                Tune_2 = powf(2.0f, semitones_2  / 12.0f);
             }
 
             if (voiceActive_3 || LFOactive_3 || voiceReleasing_3) {
@@ -1106,7 +1106,7 @@ void LFOupdate() {
             if (voiceActive_6 || LFOactive_6 || voiceReleasing_6) {
                 semitones_6 = LFOTune_6 * LFOdepth * (lfoOut_6 * 2.0f - 1.0f);
                 Tune_6 = powf(2.0f, semitones_6 / 12.0f);
-            }          
+            }
             break;
         }
         default:

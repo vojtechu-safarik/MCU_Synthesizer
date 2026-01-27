@@ -51,7 +51,6 @@
 #include "Synthesis\updateMorphWaveform.h"
 #include "Synthesis\LFO.h"
 #include "Synthesis\Portamento.h"
-#include "Synthesis\ShapeDetuneRecomputeFix.h"
 #include "Synthesis\BPMLock.h"
 #include "Synthesis\KBD_Tracking.h"
 // ==================
@@ -156,7 +155,11 @@ void loop() {
         lfoUpdateTimer = 0;
     }
   updateEnvelopesPerVoice();
-  updateVoices();  
+  updateVoices(); 
+  
+  if ((CurrentSeqMode != 0) && (LFOtypeSelect == 2)) {
+    LFOupdate();
+  }
 
   // Zpracovat pending save požadavky ze vstupu (PD/MIDI)
   for (uint8_t s = 0; s < 8; ++s) {

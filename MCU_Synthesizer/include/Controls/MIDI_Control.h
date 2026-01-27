@@ -10,6 +10,8 @@
 
 #define CCoctave 59
 #define CCLFOwaveSelect 81
+
+#define CCseqGatePot 92
 // ===================
 
 void VirtualControlChange(byte channel, byte control, byte value);

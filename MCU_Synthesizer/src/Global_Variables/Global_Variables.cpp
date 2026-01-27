@@ -297,4 +297,11 @@ float DroneB_finalCutoff6 = 10000.0f;
 float DroneB_finalCutoff70 = 10000.0f;
 float DroneB_finalCutoff71 = 10000.0f;
 
+// Global Variables of Sequencer
+byte CurrentSeqMode = 0;
+byte CurrentSeqOrder = 0; 
+byte CurrentSeqOctave = 0; 
+float SeqGatePot = 50.0f;
+uint8_t SeqRateSelect = 1;
+
 const float DIV127 = (1.0 / 127.0);  // normalises the MIDI range (127 values correspond to 0-1)

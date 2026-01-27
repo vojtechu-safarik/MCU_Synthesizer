@@ -53,6 +53,11 @@ void DroneSaveValues(int snapshotIndex) {
     snap.savedWaveFamilyIndex[2] = (uint8_t)currentWaveFamily_3;
     snap.savedShapeIndex[2]     = currentShapeIndex_3;
 
+    // Save Tune settings
+    snap.savedTune1 = Tune_1;
+    snap.savedTune2 = Tune_2;
+    snap.savedTune3 = Tune_3;
+
     // save the Volume values to snapshot (so that they dont depend on global value)
     snap.savedVolume1 = defaultVolume_1;
     snap.savedVolume2 = defaultVolume_2;
@@ -690,7 +695,10 @@ void DroneLFO_update() {
 
         (void)LFOdelay_ms; // suppress "unused" warning during compilation
 
-        float detuneMultiplier = 1.0f;
+        float LFOtune_1 = 1.0f;
+        float LFOtune_2 = 1.0f;
+        float LFOtune_3 = 1.0f;
+        float LFOtune_4 = 1.0f;
         float cutoffMod = 1.0f;
 
         float safeRate_us = max(1.0f, (float)LFOrate_us);
@@ -786,13 +794,21 @@ void DroneLFO_update() {
             blend = constrain(blend, 0.0f, 1.0f);
         }
         else if (LFOtypeSelect == 2) {
-            // DETUNE / FREQ modulation: compute single multiplier for group
-            float semitoneRange = 0.5f; // ±0.5 semitone default
-            float semitones = semitoneRange * LFOdepth * (lfoOut - 0.5f) * 2.0f;
-            float detMul = powf(2.0f, semitones / 12.0f);
-            if (!isfinite(detMul) || detMul <= 0.0001f) detMul = 1.0f;
-            detuneMultiplier = constrain(detMul, 0.5f, 2.0f);
-        }
+            // DETUNE / modulation: compute multipliers
+            float semitones_1 = LFOTune_1 * LFOdepth * (lfoOut * 2.0f - 1.0f);
+            LFOtune_1 = powf(2.0f, semitones_1 / 12.0f);
+
+            float semitones_2 = LFOTune_2 * LFOdepth * (lfoOut * 2.0f - 1.0f);
+            LFOtune_2 = powf(2.0f, semitones_2 / 12.0f);
+
+            float semitones_3 = LFOTune_3 * LFOdepth * (lfoOut * 2.0f - 1.0f);
+            LFOtune_3 = powf(2.0f, semitones_3 / 12.0f);
+
+            if (SynthMode == 0) {
+                LFOtune_4 = LFOtune_1;
+            } else if (SynthMode == 1) {
+                LFOtune_4 = LFOtune_3;
+            }
 
         // apply to active snapshot group
         int activeIndex = isA ? activeDroneA : activeDroneB;
@@ -836,23 +852,22 @@ void DroneLFO_update() {
             // --- LFO TYPE HANDLING: detune / cutoff / shape / fallback ---
             // ALWAYS ensure cutoff gets updated by envelope (baseCutByEnv)
             if (LFOtypeSelect == 2) {
-                // DETUNE / FREQ modulation: compute single multiplier for group and apply to oscillator freq
-                float newFreq = baseFreq * detuneMultiplier;
+                // DETUNE modulation: compute multipliers apply to oscillator freq
                 if (isA) {
                     switch (i) {
-                        case 0: waveformDroneA_1.frequency(newFreq); break;
-                        case 1: waveformDroneA_2.frequency(newFreq); break;
-                        case 2: waveformDroneA_3.frequency(newFreq); break;
-                        case 3: waveformDroneA_4.frequency(newFreq); break;
-                        case 4: waveformDroneA_5.frequency(newFreq); break;
+                        case 0: waveformDroneA_1.frequency(baseFreq * LFOtune_1); break;
+                        case 1: waveformDroneA_2.frequency(baseFreq * LFOtune_2); break;
+                        case 2: waveformDroneA_3.frequency(baseFreq * LFOtune_3); break;
+                        case 3: waveformDroneA_4.frequency(baseFreq * LFOtune_4); break;
+                        case 4: waveformDroneA_5.frequency(baseFreq * LFOtune_1); break;
                     }
                 } else {
                     switch (i) {
-                        case 0: waveformDroneB_1.frequency(newFreq); break;
-                        case 1: waveformDroneB_2.frequency(newFreq); break;
-                        case 2: waveformDroneB_3.frequency(newFreq); break;
-                        case 3: waveformDroneB_4.frequency(newFreq); break;
-                        case 4: waveformDroneB_5.frequency(newFreq); break;
+                        case 0: waveformDroneB_1.frequency(baseFreq * LFOtune_1); break;
+                        case 1: waveformDroneB_2.frequency(baseFreq * LFOtune_2); break;
+                        case 2: waveformDroneB_3.frequency(baseFreq * LFOtune_3); break;
+                        case 3: waveformDroneB_4.frequency(baseFreq * LFOtune_4); break;
+                        case 4: waveformDroneB_5.frequency(baseFreq * LFOtune_1); break;
                     }
                 }
                 // also keep cutoff updated by envelope even when detuning
@@ -985,7 +1000,7 @@ void DroneLFO_update() {
                         }
                     }
                 }
-            }
+            }    
             else {
                 // fallback: no special LFO type — ensure cutoff honors envelope
                 float finalCut_noLFO = baseCutByEnv;
@@ -1005,7 +1020,8 @@ void DroneLFO_update() {
                         case 3: SV_ladderDroneB_4.frequency(finalCut_noLFO); break;
                         case 4: SV_ladderDroneB_5.frequency(finalCut_noLFO); break;
                     }
-                }        
+                }   
+            }         
             } // end shape branch
         }
     };
