@@ -170,6 +170,8 @@ void loop() {
     }
   }
 
+  DroneSequencer_update();
+
   checkMux();
 
   Display_loop();

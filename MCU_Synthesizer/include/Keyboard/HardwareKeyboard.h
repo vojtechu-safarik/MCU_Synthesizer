@@ -3,10 +3,15 @@
 
 #include <Arduino.h>
 
+extern int sequenceBuffer[256];
+extern byte sequenceLength;;
+
 void Keyboard_init();
 
 // update – zavoláš v loop()
 void Keyboard_update();
+
+void rebuildSequence();
 
 // musí existovat jinde v projektu (už máš)
 void myNoteOn(byte channel, byte note, byte velocity);

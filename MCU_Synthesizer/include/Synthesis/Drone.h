@@ -47,9 +47,22 @@ struct DroneSnapshot {
     // SAVED shape parameters to reconstruct morphing exactly
     uint8_t savedWaveFamilyIndex[DRONE_WAVE_VOICES];
     int     savedShapeIndex[DRONE_WAVE_VOICES];
+
+    // Snapshot params for Sequencer
+    // IZOLOVANÉ PARAMETRY PRO TENTO SLOT
+    int   snapBPM;          
+    byte  snapOctave;       
+    byte  snapSeqRateSel;   
+    float snapSeqGate;      // 1-100
+
+    // VLASTNÍ BUFFER PRO KAŽDÝ SLOT
+    bool seqEnabled = false;    
+    int  seqStepCount = 0;      
+    int  seqNotes[256];      // Každý slot má svých 256 not
+    
 };
 
-// Structure for storing a drone snapshot (settings)
+// Structure for storing runtime voice state
 struct VoiceSnapshot {
     bool active;
     byte note;               // MIDI note number for this voice (0 = unused)
@@ -101,8 +114,6 @@ extern bool  DroneA_LFOstop, DroneB_LFOstop;
 
 // output
 extern float DroneA_lfoOut, DroneB_lfoOut;
-extern float DroneA_detuneMult[5];
-extern float DroneB_detuneMult[5];
 
 // mode / UI state
 extern uint8_t DRONEmodeSelect;
@@ -125,6 +136,9 @@ extern bool droneGroupB_releasing;
 extern int  releasingDroneA_index;
 extern int  releasingDroneB_index;
 
+extern uint8_t SeqRate;     // Rychlost (např. z potenciometru)
+extern float SeqGatePot;  // Délka gate (0.1 - 1.0)
+
 // API
 void DroneEnvelopesInit();                              // Initialize drone envelopes
 void DroneInit();                                       // Initialize drone engine
@@ -138,6 +152,8 @@ void DroneStopSlot(uint8_t slot);                       // Stop drone slot playb
 
 void DroneLFO_update();                                 // Update drone LFOs
 void DroneEnvelopes_update();                           // Update drone envelopes per frame
+
+void DroneSequencer_update();
 
 void playSnapshot(int snapIndex, bool useGroupA);       // Recall and play snapshot
 void stopGroup(bool useGroupA);                         // Stop all voices in group

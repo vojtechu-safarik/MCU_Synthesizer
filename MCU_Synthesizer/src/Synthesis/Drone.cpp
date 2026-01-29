@@ -77,9 +77,6 @@ bool DroneB_LFOstop = false;
 float DroneA_lfoOut = 0.0f;
 float DroneB_lfoOut = 0.0f;
 
-float DroneA_detuneMult[5];
-float DroneB_detuneMult[5];
-
 // MODE / UI
 uint8_t DRONEmodeSelect = 0;
 uint8_t droneGroupActive = 0;

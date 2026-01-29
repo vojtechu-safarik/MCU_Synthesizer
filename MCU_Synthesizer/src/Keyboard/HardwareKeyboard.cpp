@@ -34,6 +34,11 @@ SeqOctaves:
 SeqGatePot: 
     1 .. 100 
     ( how big portion of the step is the note in an active state )
+SeqRateSelect:
+    0 = 1/2 step length (BPM)
+    1 = 1/4 step length (BPM)
+    2 = 1/8 step length (BPM)
+    3 = 1/16 step length (BPM)
 */
 
 /* ===================== */
@@ -85,8 +90,8 @@ static byte activeKeyStack[32]; // Zvětšeno pro více not v Latch/Range
 static byte activeKeyCount = 0;
 static int playingNotes[9];     // Sledování not v Direct Play pro okamžitou transpozici
 
-static int sequenceBuffer[256];
-static byte sequenceLength = 0;
+int sequenceBuffer[256];
+byte sequenceLength = 0;
 
 static unsigned long internal_lastStepTime = 0;
 static int internal_currentlyPlayingNote = -1;
