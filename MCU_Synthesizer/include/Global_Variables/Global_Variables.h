@@ -152,12 +152,6 @@ extern bool unisonTriadToggle;
 extern float triadBaseFreq[2];
 
 extern int GlobalBPM;
-extern byte EGlockSelect;
-extern byte LFOlockSelect;
-extern byte EGlockRateSelect;
-extern byte LFOlockRateSelect;
-
-extern const float LOCK_FACTORS_BY_INDEX[6];
 
 extern float KBDtrackingMod_1;
 extern float KBDtrackingMod_2;

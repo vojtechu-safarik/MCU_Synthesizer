@@ -178,10 +178,6 @@ float triadBaseFreq[2] = {0, 0};   // default frequency for triad 0 and 1
 
 // Global Variables of LOCK mode
 int GlobalBPM = 120;
-byte EGlockSelect = 0;
-byte LFOlockSelect = 0;
-byte EGlockRateSelect = 0;
-byte LFOlockRateSelect = 0;
 
 // LOCK mapping: index 0..5 (0=2/1, 5=1/8)
 const float LOCK_FACTORS_BY_INDEX[6] = {

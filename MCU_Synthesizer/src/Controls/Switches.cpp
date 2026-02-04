@@ -39,13 +39,13 @@ void checkSwitch() {
 
   // SeqMode: 0 = Off, 1 = Arp, 2 = Latch
   if (digitalRead(SWSeqMode_1) && !digitalRead(SWSeqMode_3)) {
-    CurrentSeqMode = 1;   // levá poloha // PAK MÁ BÝT NASTAVENO NA 0, SMAZAT, návrh teď jen
+    CurrentSeqMode = 0;   // levá poloha // PAK MÁ BÝT NASTAVENO NA 0, SMAZAT, návrh teď jen
   }
   else if (!digitalRead(SWSeqMode_1) && digitalRead(SWSeqMode_3)) {
-    CurrentSeqMode = 1;   // pravá poloha // PAK MÁ BÝT NASTAVENO NA 2, SMAZAT, návrh teď jen
+    CurrentSeqMode = 0;   // pravá poloha // PAK MÁ BÝT NASTAVENO NA 2, SMAZAT, návrh teď jen
   }
   else {
-    CurrentSeqMode = 1;   // střed / žádná krajní (fallback) // PAK MÁ BÝT NASTAVENO NA 1, SMAZAT, návrh teď jen
+    CurrentSeqMode = 0;   // střed / žádná krajní (fallback) // PAK MÁ BÝT NASTAVENO NA 1, SMAZAT, návrh teď jen
   }
 
   // SeqOrder: 0 = Up, 1 = Down, 2 = Queue

@@ -259,61 +259,31 @@ void VirtualControlChange(byte channel, byte control, byte value) {
 
     case 63: { // Amplitude Attack
       float val = value * DIV127; // 0..1
-      if (EGlockSelect == 0) {
-        float attack = 3000.0f * val;
-        envelope_Amplitude_1.attack(attack);
-        envelope_Amplitude_2.attack(attack);
-        envelope_Amplitude_3.attack(attack);
-        envelopeSub_Amplitude.attack(attack);
-        envelopeClone_Amplitude_1.attack(attack);
-        envelopeClone_Amplitude_2.attack(attack);
-        envelopeClone_Amplitude_3.attack(attack);
-        envelopeNoise_1.attack(attack);
-        DroneCarry_Amplitude_Attack_Value = attack;
-      } else {
-        int idx = (int)EGlockRateSelect;
-        float subMs = subdivisionMsFromLockIndex(idx, GlobalBPM);
-        float attack = subMs * val; // 0 .. subMs
-        envelope_Amplitude_1.attack(attack);
-        envelope_Amplitude_2.attack(attack);
-        envelope_Amplitude_3.attack(attack);
-        envelopeSub_Amplitude.attack(attack);
-        envelopeClone_Amplitude_1.attack(attack);
-        envelopeClone_Amplitude_2.attack(attack);
-        envelopeClone_Amplitude_3.attack(attack);
-        envelopeNoise_1.attack(attack);
-        DroneCarry_Amplitude_Attack_Value = attack;
-      }
+      float attack = 3000.0f * val;
+      envelope_Amplitude_1.attack(attack);
+      envelope_Amplitude_2.attack(attack);
+      envelope_Amplitude_3.attack(attack);
+      envelopeSub_Amplitude.attack(attack);
+      envelopeClone_Amplitude_1.attack(attack);
+      envelopeClone_Amplitude_2.attack(attack);
+      envelopeClone_Amplitude_3.attack(attack);
+      envelopeNoise_1.attack(attack);
+      DroneCarry_Amplitude_Attack_Value = attack;
       break;
     }
 
     case 64: { // Amplitude Decay
       float val = value * DIV127;
-      if (EGlockSelect == 0) {
-        float decay = 3000.0f * val;
-        envelope_Amplitude_1.decay(decay);
-        envelope_Amplitude_2.decay(decay);
-        envelope_Amplitude_3.decay(decay);
-        envelopeSub_Amplitude.decay(decay);
-        envelopeClone_Amplitude_1.decay(decay);
-        envelopeClone_Amplitude_2.decay(decay);
-        envelopeClone_Amplitude_3.decay(decay);
-        envelopeNoise_1.decay(decay);
-        DroneCarry_Amplitude_Decay_Value = decay;
-      } else {
-        int idx = (int)EGlockRateSelect;
-        float subMs = subdivisionMsFromLockIndex(idx, GlobalBPM);
-        float decay = subMs * val;
-        envelope_Amplitude_1.decay(decay);
-        envelope_Amplitude_2.decay(decay);
-        envelope_Amplitude_3.decay(decay);
-        envelopeSub_Amplitude.decay(decay);
-        envelopeClone_Amplitude_1.decay(decay);
-        envelopeClone_Amplitude_2.decay(decay);
-        envelopeClone_Amplitude_3.decay(decay);
-        envelopeNoise_1.decay(decay);
-        DroneCarry_Amplitude_Decay_Value = decay;
-      }
+      float decay = 3000.0f * val;
+      envelope_Amplitude_1.decay(decay);
+      envelope_Amplitude_2.decay(decay);
+      envelope_Amplitude_3.decay(decay);
+      envelopeSub_Amplitude.decay(decay);
+      envelopeClone_Amplitude_1.decay(decay);
+      envelopeClone_Amplitude_2.decay(decay);
+      envelopeClone_Amplitude_3.decay(decay);
+      envelopeNoise_1.decay(decay);
+      DroneCarry_Amplitude_Decay_Value = decay;
       break;
     }
 
@@ -333,31 +303,16 @@ void VirtualControlChange(byte channel, byte control, byte value) {
 
     case 66: { // Amplitude Release
       float val = value * DIV127;
-      if (EGlockSelect == 0) {
-        float release = 3000.0f * val;
-        envelope_Amplitude_1.release(release);
-        envelope_Amplitude_2.release(release);
-        envelope_Amplitude_3.release(release);
-        envelopeSub_Amplitude.release(release);
-        envelopeClone_Amplitude_1.release(release);
-        envelopeClone_Amplitude_2.release(release);
-        envelopeClone_Amplitude_3.release(release);
-        envelopeNoise_1.release(release);
-        DroneCarry_Amplitude_Release_Value = release;
-      } else {
-        int idx = (int)EGlockRateSelect;
-        float subMs = subdivisionMsFromLockIndex(idx, GlobalBPM);
-        float release = subMs * val;
-        envelope_Amplitude_1.release(release);
-        envelope_Amplitude_2.release(release);
-        envelope_Amplitude_3.release(release);
-        envelopeSub_Amplitude.release(release);
-        envelopeClone_Amplitude_1.release(release);
-        envelopeClone_Amplitude_2.release(release);
-        envelopeClone_Amplitude_3.release(release);
-        envelopeNoise_1.release(release);
-        DroneCarry_Amplitude_Release_Value = release;
-      }
+      float release = 3000.0f * val;
+      envelope_Amplitude_1.release(release);
+      envelope_Amplitude_2.release(release);
+      envelope_Amplitude_3.release(release);
+      envelopeSub_Amplitude.release(release);
+      envelopeClone_Amplitude_1.release(release);
+      envelopeClone_Amplitude_2.release(release);
+      envelopeClone_Amplitude_3.release(release);
+      envelopeNoise_1.release(release);
+      DroneCarry_Amplitude_Release_Value = release;
       break;
     }
 
@@ -405,33 +360,17 @@ void VirtualControlChange(byte channel, byte control, byte value) {
 
     case 71: { // Filter Attack
       float val = value * DIV127;
-      if (EGlockSelect == 0) {
-        float attack = 3000.0f * val;
-        Filter_Attack_Value = attack;
-        DroneCarry_Filter_Attack_Value = attack;
-      } else {
-        int idx = (int)EGlockRateSelect;
-        float subMs = subdivisionMsFromLockIndex(idx, GlobalBPM);
-        float attack = subMs * val;
-        Filter_Attack_Value = attack;
-        DroneCarry_Filter_Attack_Value = attack;
-      }
+      float attack = 3000.0f * val;
+      Filter_Attack_Value = attack;
+      DroneCarry_Filter_Attack_Value = attack;
       break;
     }
 
     case 72: { // Filter Decay
       float val = value * DIV127;
-      if (EGlockSelect == 0) {
-        float decay = 3000.0f * val;
-        Filter_Decay_Value = decay;
-        DroneCarry_Filter_Decay_Value = decay;
-      } else {
-        int idx = (int)EGlockRateSelect;
-        float subMs = subdivisionMsFromLockIndex(idx, GlobalBPM);
-        float decay = subMs * val;
-        Filter_Decay_Value = decay;
-        DroneCarry_Filter_Decay_Value = decay;
-      }
+      float decay = 3000.0f * val;
+      Filter_Decay_Value = decay;
+      DroneCarry_Filter_Decay_Value = decay;
       break;
     }
 
@@ -444,17 +383,9 @@ void VirtualControlChange(byte channel, byte control, byte value) {
 
     case 74: { // Filter Release
       float val = value * DIV127;
-      if (EGlockSelect == 0) {
-        float release = 3000.0f * val;
-        Filter_Release_Value = release;
-        DroneCarry_Filter_Release_Value = release;
-      } else {
-        int idx = (int)EGlockRateSelect;
-        float subMs = subdivisionMsFromLockIndex(idx, GlobalBPM);
-        float release = subMs * val;
-        Filter_Release_Value = release;
-        DroneCarry_Filter_Release_Value = release;
-      }
+      float release = 3000.0f * val;
+      Filter_Release_Value = release;
+      DroneCarry_Filter_Release_Value = release;
       break;
     }
 
@@ -465,20 +396,13 @@ void VirtualControlChange(byte channel, byte control, byte value) {
     }
 
     case 76: {
-      if (LFOlockSelect == 0) {
-        float rate = value * DIV127;  // value is MIDI value 0–127
-        float minFreq = 0.1f;         // 0.1 Hz (lowest speed)
-        float maxFreq = 25.0f;        // 25 Hz (fastest speed)
-        // Logaritmic mapping — smooth transitions
-        float freq = minFreq * powf(maxFreq / minFreq, rate);
-        // Convert frequency to time of one period in microseconds
-        LFOrate = 1000000.0f / freq;  // µs
-      } else {
-        int idx = (int)LFOlockRateSelect;
-        float subMs = subdivisionMsFromLockIndex(idx, GlobalBPM);
-        if (subMs < 1.0f) subMs = 1.0f;
-        LFOrate = subMs * 1000.0f; // µs
-      }  
+      float rate = value * DIV127;  // value is MIDI value 0–127
+      float minFreq = 0.1f;         // 0.1 Hz (lowest speed)
+      float maxFreq = 25.0f;        // 25 Hz (fastest speed)
+      // Logaritmic mapping — smooth transitions
+      float freq = minFreq * powf(maxFreq / minFreq, rate);
+      // Convert frequency to time of one period in microseconds
+      LFOrate = 1000000.0f / freq;  // µs
       break;
     }
 
@@ -489,14 +413,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
 
     case 78: {
       float val = value * DIV127;
-      if (LFOlockSelect == 0) {
-        LFOdelay = 3000.0f * val; // ms, default
-      } else {
-        int idx = (int)LFOlockRateSelect;
-        float subMs = subdivisionMsFromLockIndex(idx, GlobalBPM);
-        const float delayMultiplier = 4.0f; // up to 4× subdiv as max delay
-        LFOdelay = subMs * (val * delayMultiplier); // ms
-      }
+      LFOdelay = 3000.0f * val; // ms, default
       break;
     }
 
@@ -521,26 +438,6 @@ void VirtualControlChange(byte channel, byte control, byte value) {
     }
 
     case 82: {
-      EGlockSelect = value;
-      break;
-    }
-
-    case 83: {
-      LFOlockSelect = value;
-      break;
-    }
-
-    case 84: {
-      EGlockRateSelect = value;
-      break;
-    }
-
-    case 85: {
-      LFOlockRateSelect = value;
-      break;
-    }
-
-    case 86: {
       PORTswitch = value;
       if (PORTswitch == 1) {
         SynthMode = 0;
@@ -549,24 +446,24 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 87: {
+    case 83: {
       PORTmodeSelect = value;
       break;
     }
 
-    case 88: {
+    case 84: {
       PORTlockRate = value;
       break;
     }
 
-    case 89: {
+    case 85: {
       // MASTER volume 0 .. 127 -> 0 .. 1
       MASTERVolume = value * DIV127;
       amp_MASTER.gain(MASTERVolume);
       break;
     }
 
-    case 90: {
+    case 86: {
       // enables unisonTriad toggle in UNISON SynthMode
       switch (value) {
         case 0:
@@ -579,7 +476,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 91: {
+    case 87: {
       // Pink volume 0 .. 127 -> 0 .. 1 -> 0 .. 0.75
       pinkVolume = value * DIV127 * 0.35f;
       pink_1.amplitude(pinkVolume);
@@ -592,17 +489,17 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 93: {
+    case 89: {
       SeqRateSelect = value;
       break;
     }
 
-    case 94: {
+    case 90: {
       DRONEmodeSelect = value;
       break;
     }   
 
-    case 95: {
+    case 91: {
       DRONEkeyNr1 = value;
 
       if (value == 1) { // tlačítko stisknuto
@@ -621,7 +518,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
     
-    case 96: {
+    case 92: {
       DRONEkeyNr2 = value;
 
       if (value == 1) {
@@ -638,7 +535,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
     
-    case 97: {
+    case 93: {
       DRONEkeyNr3 = value;
 
       if (value == 1) {
@@ -655,7 +552,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 98: {
+    case 94: {
       DRONEkeyNr4 = value;
 
       if (value == 1) {
@@ -672,7 +569,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 99: {
+    case 95: {
       DRONEkeyNr5 = value;
 
       if (value == 1) {
@@ -689,7 +586,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 100: {
+    case 96: {
       DRONEkeyNr6 = value;
 
       if (value == 1) {
@@ -706,7 +603,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 101: {
+    case 97: {
       DRONEkeyNr7 = value;
 
       if (value == 1) {
@@ -723,7 +620,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 102: {
+    case 98: {
       DRONEkeyNr8 = value;
 
       if (value == 1) {
