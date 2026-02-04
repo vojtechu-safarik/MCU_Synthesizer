@@ -301,7 +301,7 @@ void checkForChangesAndSetDirty() {
   }
 
   // header params (if changed) — set headerDirty
-  if (SynthMode != prevSynthMode || GlobalBPM != prevGlobalBPM) {
+  if ((SynthMode != prevSynthMode) || (GlobalBPM != prevGlobalBPM)) {
     prevSynthMode = SynthMode;
     prevGlobalBPM = GlobalBPM;
     headerDirty = true;

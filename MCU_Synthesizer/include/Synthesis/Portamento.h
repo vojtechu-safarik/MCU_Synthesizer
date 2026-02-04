@@ -7,7 +7,7 @@
 
 inline float PortamentoSubdivisionMsFromLockIndex(int idx, int bpm) {
   if (idx < 0) idx = 0;
-  if (idx > 6) idx = 6;
+  if (idx > 4) idx = 4;
   float q = quarterMsFromBPM(bpm);
   return q * PORTAMENTO_LOCK_FACTORS_BY_INDEX[idx];
 }

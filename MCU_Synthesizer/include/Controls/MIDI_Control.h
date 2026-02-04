@@ -9,6 +9,12 @@
 #define CCshape_3 55
 
 #define CCoctave 59
+
+#define CC_LPF_Cutoff 67
+#define CC_KBD_Track 68
+#define CC_LPF_Res 69
+#define CC_EG_Int 75
+
 #define CCLFOwaveSelect 81
 
 #define CCseqGatePot 88

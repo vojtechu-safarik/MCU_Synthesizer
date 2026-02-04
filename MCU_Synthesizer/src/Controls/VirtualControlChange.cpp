@@ -316,7 +316,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 67: { 
+    case CC_LPF_Cutoff: { 
       // ladder cutoff --> map 0 .. 127 to freq 20 .. 10 000 Hz 
       LPFcutoffFreq = 10000.0 * (value * DIV127); 
       updateKBDtrackingMods();
@@ -324,13 +324,13 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break; 
     }
 
-    case 68: {
+    case CC_KBD_Track: {
       KBDtracking = value * DIV127; // 0 .. 1 
       updateKBDtrackingMods();
       break;
     } 
 
-    case 69: {
+    case CC_LPF_Res: {
       // ladder resonance 0 .. 127 --> 0.0 .. 1.8
       LPFresonanceVal = 1.8 * (value * DIV127);
       ladder_1.resonance(LPFresonanceVal);   // usable resonance range is 0-1.8
@@ -389,7 +389,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 75: {
+    case CC_EG_Int: {
       Filter_Intensity_Coeff = ((value * DIV127 * 2) - 1);          // -1 .. 1
       DroneCarry_Filter_Intensity_Coeff = ((value * DIV127 * 2) - 1);
       break;

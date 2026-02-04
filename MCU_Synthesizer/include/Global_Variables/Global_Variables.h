@@ -214,7 +214,7 @@ extern float portTimeControl;
 extern float portRateSemitonesPerSubdivision;
 extern unsigned long lastPortamentoMicros;
 
-extern const float PORTAMENTO_LOCK_FACTORS_BY_INDEX[7];
+extern const float PORTAMENTO_LOCK_FACTORS_BY_INDEX[5];
 
 // ==== DRONE ====
 // Drone constants

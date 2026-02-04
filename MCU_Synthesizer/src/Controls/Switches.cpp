@@ -6,24 +6,9 @@
 #include "Configuration\Pins_Config.h"
 // ==================
 
-// === DISPLAY FUNCTIONS ===
-#include "Display\Display.h"
-// ==================
-
 void checkSwitch() {
-
-  // SynthMode
-  if (digitalRead(SWsynthMode)) {
-    SynthMode = 1;
-  } else {
-    SynthMode = 0;
-  }
-  
-  if (prevSynthMode != SynthMode) {
-    headerDirty = true;
-  }
-
   // LFOtypeSelect
+  /*
   if (digitalRead(SWLFOtype_1) && !digitalRead(SWLFOtype_3)) {
     LFOtypeSelect = 0;   // levá poloha
   }
@@ -33,6 +18,7 @@ void checkSwitch() {
   else {
     LFOtypeSelect = 1;   // střed / žádná krajní (fallback)
   }
+  */
   
 // ================================
 // ====== SEQUENCER Switches ======

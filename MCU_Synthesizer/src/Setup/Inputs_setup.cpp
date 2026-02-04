@@ -16,11 +16,6 @@ void Inputs_setup() {
   pinMode(MUX_S2, OUTPUT);
   pinMode(MUX_S3, OUTPUT);
 
-  // === setup PŘEPÍNAČE
-  pinMode(SWsynthMode, INPUT_PULLUP);
-  pinMode(SWLFOtype_1, INPUT_PULLUP);
-  pinMode(SWLFOtype_3, INPUT_PULLUP);
-
   // === setup ENKODÉRU
   pinMode(ENC_CLK, INPUT);   // Set encoder pins as inputs
   pinMode(ENC_DT, INPUT);

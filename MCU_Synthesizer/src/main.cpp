@@ -81,6 +81,10 @@
 #include "Keyboard\LEDoctave.h"
 // ==================
 
+// === IO Expander API ===
+#include "Drivers/IO_Expander.h"
+// ==================
+
 // ====== end Project INCLUDES ======
 // ==================================
 
@@ -104,7 +108,10 @@ void setup() {
 
   Inputs_setup();
 
+  IOExpander_begin();
   LEDoctave_begin();
+
+
 
 // ============================================
 }
@@ -178,5 +185,7 @@ void loop() {
 
   // SMAZAT
   Keyboard_update();
-  LEDoctave_update();
+  
+  LEDoctave_update();   // počítá logiku a nastavuje flagy přes IOExpander_setLed()
+  IOExpander_update();  // provede skutečné I2C zápisy (batch)
 }

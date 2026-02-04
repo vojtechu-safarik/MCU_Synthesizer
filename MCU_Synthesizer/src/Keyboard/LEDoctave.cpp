@@ -4,13 +4,19 @@
 #include "Global_Variables/Global_Variables.h"
 // ========================
 
-// === LED CONFIGURATION ===
+// === KEYBOARD ===
+#include "Keyboard/LEDoctave.h"
+// ==================
 
-// LED pins (left → right)
-static constexpr byte LED_OCT_1 = 33;
-static constexpr byte LED_OCT_2 = 34;
-static constexpr byte LED_OCT_3 = 35;
-static constexpr byte LED_OCT_4 = 36;
+// === DRIVERS ===
+#include "Drivers/IO_Expander.h"
+// ==================
+
+// LED mapping on PCF pins
+static constexpr byte LED_OCT_1 = 0;
+static constexpr byte LED_OCT_2 = 1;
+static constexpr byte LED_OCT_3 = 2;
+static constexpr byte LED_OCT_4 = 3;
 
 // Total number of octave states (0–4)
 static constexpr byte OCTAVE_MIN = 0;
@@ -26,17 +32,10 @@ static constexpr byte OCTAVE_CENTER = 2;
  * Call once in setup()
  */
 void LEDoctave_begin() {
-  pinMode(LED_OCT_1, OUTPUT);
-  pinMode(LED_OCT_2, OUTPUT);
-  pinMode(LED_OCT_3, OUTPUT);
-  pinMode(LED_OCT_4, OUTPUT);
-
-  // Ensure all LEDs are off at startup
-  digitalWrite(LED_OCT_1, LOW);
-  digitalWrite(LED_OCT_2, LOW);
-  digitalWrite(LED_OCT_3, LOW);
-  digitalWrite(LED_OCT_4, LOW);
+  // Nothing hardware-specific here.
+  // Ensure IO Expander is initialized separately by calling IOExpander_begin() in setup().
 }
+
 
 /**
  * @brief Update octave LEDs according to octaveValue
@@ -49,23 +48,23 @@ void LEDoctave_update() {
   if (octave < OCTAVE_MIN) octave = OCTAVE_MIN;
   if (octave > OCTAVE_MAX) octave = OCTAVE_MAX;
 
-  // Reset all LEDs
-  digitalWrite(LED_OCT_1, LOW);
-  digitalWrite(LED_OCT_2, LOW);
-  digitalWrite(LED_OCT_3, LOW);
-  digitalWrite(LED_OCT_4, LOW);
+  // Reset all octave LEDs to OFF first (false = OFF for sink wiring)
+  IOExpander_setLed(LED_OCT_1, false);
+  IOExpander_setLed(LED_OCT_2, false);
+  IOExpander_setLed(LED_OCT_3, false);
+  IOExpander_setLed(LED_OCT_4, false);
 
   // Lower octaves (below center)
   if (octave < OCTAVE_CENTER) {
 
     // octave 1 → LED 2
-    if (octave <= 1) {
-      digitalWrite(LED_OCT_2, HIGH);
+    if (octave == 1) {
+      IOExpander_setLed(LED_OCT_2, true);
     }
 
     // octave 0 → LED 1 + LED 2
     if (octave == 0) {
-      digitalWrite(LED_OCT_1, HIGH);
+      IOExpander_setLed(LED_OCT_1, true);
     }
   }
 
@@ -73,15 +72,18 @@ void LEDoctave_update() {
   if (octave > OCTAVE_CENTER) {
 
     // octave 3 → LED 3
-    if (octave >= 3) {
-      digitalWrite(LED_OCT_3, HIGH);
+    if (octave == 3) {
+      IOExpander_setLed(LED_OCT_3, true);
     }
 
     // octave 4 → LED 3 + LED 4
     if (octave == 4) {
-      digitalWrite(LED_OCT_4, HIGH);
+      IOExpander_setLed(LED_OCT_4, true);
     }
   }
 
   // octave == 2 → no LEDs on (center / neutral)
+
+  // NOTE: do not call IOExpander_update() here — call IOExpander_update() from main loop()
+  // to batch writes and avoid duplicated I2C traffic.
 }

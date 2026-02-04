@@ -254,10 +254,8 @@ float portRateSemitonesPerSubdivision = 12.0f;   // default: 12 semitones per su
 // internal timer
 unsigned long lastPortamentoMicros = 0;
 
-// PORTAMENTO LOCK mapping: index 0 ... 6
-const float PORTAMENTO_LOCK_FACTORS_BY_INDEX[7] = {
- 16.0f,        // 0 -> 4/1
-  8.0f,        // 0 -> 2/1
+// PORTAMENTO LOCK mapping: index 0 ... 4
+const float PORTAMENTO_LOCK_FACTORS_BY_INDEX[5] = {
   4.0f,        // 1 -> 1/1
   2.0f,        // 2 -> 1/2
   1.0f,        // 3 -> 1/4
