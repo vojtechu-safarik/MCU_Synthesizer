@@ -11,7 +11,7 @@
 #define MUX_S1          4
 #define MUX_S2          5
 #define MUX_S3          6
-#define MUX_1_control   7   // how many mux channels are being used
+#define MUX_1_control   10  // how many mux channels are being used
 #define MUX_1_PIN       A15 // common analog input pin for MUX (SIG)
 // ===================
 
@@ -23,6 +23,9 @@
 #define MUX_SynthMode   4
 #define MUX_LFOtype_1   5
 #define MUX_LFOtype_3   6
+#define MUX_SeqMode_1   7
+#define MUX_SeqMode_3   8
+#define MUX_PORTswitch  9
 // ===================
 
 // === MULTIPLEXER #2 ===

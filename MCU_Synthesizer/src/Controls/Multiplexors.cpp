@@ -21,6 +21,8 @@ void checkMux() {
   // Three-way toggle switches (MUX only reads one channel at once)
   static bool LFOtype_1 = false;
   static bool LFOtype_3 = false;
+  static bool SeqMode_1 = false;
+  static bool SeqMode_3 = false;
 
   // spouštěj každých 1000 µs (1 ms)
   if (currentMicros - lastTime >= 1000) {
@@ -67,6 +69,19 @@ void checkMux() {
           case MUX_LFOtype_3:
               LFOtype_3 = (MUX_1_read < 64);
               break;    
+          case MUX_SeqMode_1:
+              SeqMode_1 = (MUX_1_read < 64);
+              break;
+          case MUX_SeqMode_3:
+              SeqMode_3 = (MUX_1_read < 64);
+              break;    
+          case MUX_PORTswitch:
+              // PORTAMENTO only for SynthMode 0 (UNISON)
+              if (SynthMode == 0) {
+                // pull-up: active LOW
+                PORTswitch = (MUX_1_read < 64) ? 1 : 0;
+              }
+              break;       
         }
 
         if (LFOtype_1 && !LFOtype_3) {
@@ -75,7 +90,16 @@ void checkMux() {
             LFOtypeSelect = 2;   // pravá poloha
         } else {
             LFOtypeSelect = 1;   // střed / žádná krajní (fallback)
-        }        
+        }   
+        
+        // SeqMode: 0 = Off, 1 = Arp, 2 = Latch
+        if (SeqMode_1 && !SeqMode_3) {
+            CurrentSeqMode = 0;   // levá poloha
+        } else if (!SeqMode_1 && SeqMode_3) {
+            CurrentSeqMode = 2;   // pravá poloha
+        } else {
+            CurrentSeqMode = 1;   // střed / žádná krajní (fallback)
+        }
       }  
     }
 
