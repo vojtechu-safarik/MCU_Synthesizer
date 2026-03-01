@@ -39,7 +39,7 @@
 // ========= MIDI control =========
 void VirtualControlChange(byte channel, byte control, byte value) {
   switch (control) {
-    case 47: {
+    case CCwave_1: {
       if (value < NUM_WAVEFAMILIES) {
         // get old number of morph steps
         const WaveFamily& prevWF = waveFamilies[currentWaveFamily_1];
@@ -56,7 +56,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 48: {
+    case CCwave_2: {
       if (value < NUM_WAVEFAMILIES) {
         const WaveFamily& prevWF = waveFamilies[currentWaveFamily_2];
         int prevMaxIndex = (prevWF.numWaves - 1) * prevWF.morphSteps;
@@ -71,7 +71,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 49: {
+    case CCwave_3: {
       if (value < NUM_WAVEFAMILIES) {
         const WaveFamily& prevWF = waveFamilies[currentWaveFamily_3];
         int prevMaxIndex = (prevWF.numWaves - 1) * prevWF.morphSteps;
@@ -86,7 +86,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 50: {
+    case CCvolume_1: {
       // volume 0 .. 127 -> 0 .. 1 -> 0 .. 0.75
       defaultVolume_1 = value * DIV127 * 0.75f;
 
@@ -103,7 +103,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 51: {
+    case CCvolume_2: {
       defaultVolume_2 = value * DIV127 * 0.75f;
 
       if (SynthMode == 0) {
@@ -117,7 +117,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 52: {
+    case CCvolume_3: {
       defaultVolume_3 = value * DIV127 * 0.75f;
 
       if (SynthMode == 0) {
@@ -159,7 +159,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 56: {
+    case CCtune_1: {
       Tune_1 = ((value * DIV127) * 24) - 12; // -12 .. 12 
       LFOTune_1 = Tune_1;
       Tune_1 = powf(2.0f, Tune_1 / 12.0f);
@@ -171,7 +171,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 57: {
+    case CCtune_2: {
       Tune_2 = ((value * DIV127) * 24) - 12; // -12 .. 12 
       LFOTune_2 = Tune_2;
       Tune_2 = powf(2.0f, Tune_2 / 12.0f);
@@ -183,7 +183,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 58: {
+    case CCtune_3: {
       Tune_3 = ((value * DIV127) * 24) - 12; // -12 .. 12 
       LFOTune_3 = Tune_3;
       Tune_3 = powf(2.0f, Tune_3 / 12.0f);
@@ -223,7 +223,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 60: {
+    case CCsubOctave: {
       switch (value) {
         case 0:
           mixer_1.gain(3, 0);
@@ -257,7 +257,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     } 
 
-    case 63: { // Amplitude Attack
+    case CC_Amplitude_Attack: { // Amplitude Attack
       float val = value * DIV127; // 0..1
       float attack = 3000.0f * val;
       envelope_Amplitude_1.attack(attack);
@@ -272,7 +272,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 64: { // Amplitude Decay
+    case CC_Amplitude_Decay: { // Amplitude Decay
       float val = value * DIV127;
       float decay = 3000.0f * val;
       envelope_Amplitude_1.decay(decay);
@@ -287,7 +287,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 65: { // Amplitude Sustain
+    case CC_Amplitude_Sustain: { // Amplitude Sustain
       float sustain = value * DIV127;
       envelope_Amplitude_1.sustain(sustain);
       envelope_Amplitude_2.sustain(sustain);
@@ -301,7 +301,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 66: { // Amplitude Release
+    case CC_Amplitude_Release: { // Amplitude Release
       float val = value * DIV127;
       float release = 3000.0f * val;
       envelope_Amplitude_1.release(release);
@@ -344,7 +344,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 70: {
+    case CC_HPF_Cutoff: {
       // HPF cutoff
       HPFcutoffFreq = 20.0f * powf((10000.0f/20.0f), value * DIV127);     // logaritmic range 20 Hz - 10 kHz
       filterHP_1.frequency(HPFcutoffFreq);
@@ -358,7 +358,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 71: { // Filter Attack
+    case CC_Filter_Attack: { // Filter Attack
       float val = value * DIV127;
       float attack = 3000.0f * val;
       Filter_Attack_Value = attack;
@@ -366,7 +366,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 72: { // Filter Decay
+    case CC_Filter_Decay: { // Filter Decay
       float val = value * DIV127;
       float decay = 3000.0f * val;
       Filter_Decay_Value = decay;
@@ -374,14 +374,14 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 73: { // Filter Sustain (percentage)
+    case CC_Filter_Sustain: { // Filter Sustain (percentage)
       float sustain = value * DIV127;
       Filter_Sustain_Value = sustain;
       DroneCarry_Filter_Sustain_Value = sustain;
       break;
     }
 
-    case 74: { // Filter Release
+    case CC_Filter_Release: { // Filter Release
       float val = value * DIV127;
       float release = 3000.0f * val;
       Filter_Release_Value = release;
@@ -395,7 +395,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 76: {
+    case CC_LFO_Rate: {
       float rate = value * DIV127;  // value is MIDI value 0–127
       float minFreq = 0.1f;         // 0.1 Hz (lowest speed)
       float maxFreq = 25.0f;        // 25 Hz (fastest speed)
@@ -406,12 +406,12 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 77: {
+    case CC_LFO_Depth: {
       LFOdepth = value * DIV127;
       break;
     }
 
-    case 78: {
+    case CC_LFO_Delay: {
       float val = value * DIV127;
       LFOdelay = 3000.0f * val; // ms, default
       break;
@@ -456,7 +456,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 85: {
+    case CC_MasterVolume: {
       // MASTER volume 0 .. 127 -> 0 .. 1
       MASTERVolume = value * DIV127;
       amp_MASTER.gain(MASTERVolume);
@@ -476,7 +476,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 87: {
+    case CCnoise: {
       // Pink volume 0 .. 127 -> 0 .. 1 -> 0 .. 0.75
       pinkVolume = value * DIV127 * 0.35f;
       pink_1.amplitude(pinkVolume);

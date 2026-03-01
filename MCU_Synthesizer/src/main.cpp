@@ -78,7 +78,10 @@
 
 // === KEYBOARD ===
 #include "Keyboard\HardwareKeyboard.h"
-#include "Keyboard\LEDoctave.h"
+// ==================
+
+// === LEDs ===
+#include "LEDs/LEDs.h"
 // ==================
 
 // === IO Expander API ===

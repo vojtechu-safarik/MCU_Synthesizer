@@ -1,5 +1,6 @@
 // === GLOBAL VARIABLES ===
 #include "Global_Variables\Global_Variables.h"
+#include "Global_Variables\Wavetable_Variables.h"
 // ==================
 
 // === CONFIGURATION ===
@@ -11,18 +12,29 @@
 #include "Controls\Inputs.h"
 // ==================
 
+// === SYNTHESIS FUNCTIONS ===
+#include "Synthesis\Drone.h"
+// ==================
+
 void checkMux() {
   static byte muxInput = 0;
   static int MUX_1_values[MUX_1_control] = {};  // holds the last value of MUX_1
   static int MUX_2_values[MUX_2_control] = {};  // holds the last value of MUX_2
+  static int MUX_3_values[MUX_3_control] = {};  // holds the last value of MUX_3
   unsigned long currentMicros = micros();
   static unsigned long lastTime = 0;
 
   // Three-way toggle switches (MUX only reads one channel at once)
+  static bool SubOctave_Position_1 = false;
+  static bool SubOctave_Position_3 = false;
   static bool LFOtype_1 = false;
   static bool LFOtype_3 = false;
   static bool SeqMode_1 = false;
   static bool SeqMode_3 = false;
+  static bool SeqOrder_1 = false;
+  static bool SeqOrder_3 = false;
+  static bool SeqOctaves_1 = false;
+  static bool SeqOctaves_3 = false;
 
   // spouštěj každých 1000 µs (1 ms)
   if (currentMicros - lastTime >= 1000) {
@@ -47,6 +59,16 @@ void checkMux() {
         MUX_1_read = (MUX_1_read >> 3); //Change range to 0-127
         
         switch (muxInput) {
+          case MUXwave_1:
+              // Rozdělí rozsah 0-127 do rovnoměrných úseků (0 až NUM_WAVEFAMILIES - 1)
+              VirtualControlChange(0, CCwave_1, (MUX_1_read * NUM_WAVEFAMILIES) / 128);
+              break;  
+          case MUXwave_2:
+              VirtualControlChange(0, CCwave_2, (MUX_1_read * NUM_WAVEFAMILIES) / 128);
+              break; 
+          case MUXwave_3:
+              VirtualControlChange(0, CCwave_3, (MUX_1_read * NUM_WAVEFAMILIES) / 128);
+              break;         
           case MUXshape_1:
               VirtualControlChange(0, CCshape_1, MUX_1_read);
               break;
@@ -56,50 +78,47 @@ void checkMux() {
           case MUXshape_3:
               VirtualControlChange(0, CCshape_3, MUX_1_read);
               break;
-          case MUXSeqGatePot:
-              VirtualControlChange(0, CCseqGatePot, MUX_1_read);
+          case MUXvolume_1:
+              VirtualControlChange(0, CCvolume_1, MUX_1_read);
+              break;
+          case MUXvolume_2:
+              VirtualControlChange(0, CCvolume_2, MUX_1_read);
+              break;
+          case MUXvolume_3:
+              VirtualControlChange(0, CCvolume_3, MUX_1_read);
               break;   
-          case MUX_SynthMode:
+          case MUXtune_1:
+              VirtualControlChange(0, CCtune_1, MUX_1_read);
+              break;        
+          case MUXtune_2:
+              VirtualControlChange(0, CCtune_2, MUX_1_read);
+              break;      
+          case MUXtune_3:
+              VirtualControlChange(0, CCtune_3, MUX_1_read);
+              break;    
+          case MUXnoise:
+              VirtualControlChange(0, CCnoise, MUX_1_read);
+              break;              
+          case MUXsynthMode:
               // pull-up: active LOW
               SynthMode = (MUX_1_read < 64) ? 1 : 0;
-              break;     
-          case MUX_LFOtype_1:
-              LFOtype_1 = (MUX_1_read < 64);
+              break; 
+          case MUXsubOctave_1:
+              SubOctave_Position_1 = (MUX_1_read < 64);
               break;
-          case MUX_LFOtype_3:
-              LFOtype_3 = (MUX_1_read < 64);
-              break;    
-          case MUX_SeqMode_1:
-              SeqMode_1 = (MUX_1_read < 64);
-              break;
-          case MUX_SeqMode_3:
-              SeqMode_3 = (MUX_1_read < 64);
-              break;    
-          case MUX_PORTswitch:
-              // PORTAMENTO only for SynthMode 0 (UNISON)
-              if (SynthMode == 0) {
-                // pull-up: active LOW
-                PORTswitch = (MUX_1_read < 64) ? 1 : 0;
-              }
-              break;       
+          case MUXsubOctave_3:
+              SubOctave_Position_3 = (MUX_1_read < 64);
+              break;      
         }
 
-        if (LFOtype_1 && !LFOtype_3) {
-            LFOtypeSelect = 0;   // levá poloha
-        } else if (!LFOtype_1 && LFOtype_3) {
-            LFOtypeSelect = 2;   // pravá poloha
+        if (SubOctave_Position_1 && !SubOctave_Position_3) {
+            VirtualControlChange(0, CCsubOctave, 0);   // levá poloha
+        } else if (!SubOctave_Position_1 && SubOctave_Position_3) {
+            VirtualControlChange(0, CCsubOctave, 2);   // pravá poloha
         } else {
-            LFOtypeSelect = 1;   // střed / žádná krajní (fallback)
-        }   
-        
-        // SeqMode: 0 = Off, 1 = Arp, 2 = Latch
-        if (SeqMode_1 && !SeqMode_3) {
-            CurrentSeqMode = 0;   // levá poloha
-        } else if (!SeqMode_1 && SeqMode_3) {
-            CurrentSeqMode = 2;   // pravá poloha
-        } else {
-            CurrentSeqMode = 1;   // střed / žádná krajní (fallback)
+            VirtualControlChange(0, CCsubOctave, 1);   // střed / žádná krajní (fallback)
         }
+
       }  
     }
 
@@ -128,16 +147,147 @@ void checkMux() {
           case MUX_EG_Int:
               VirtualControlChange(0, CC_EG_Int, MUX_2_read);
               break;    
+          case MUX_HPF_Cutoff:
+              VirtualControlChange(0, CC_HPF_Cutoff, MUX_2_read);
+              break;  
+          case MUX_Filter_Attack:
+              VirtualControlChange(0, CC_Filter_Attack, MUX_2_read);
+              break;  
+          case MUX_Filter_Decay:
+              VirtualControlChange(0, CC_Filter_Decay, MUX_2_read);
+              break;  
+          case MUX_Filter_Sustain:
+              VirtualControlChange(0, CC_Filter_Sustain, MUX_2_read);
+              break;  
+          case MUX_Filter_Release:
+              VirtualControlChange(0, CC_Filter_Release, MUX_2_read);
+              break;  
+          case MUX_LFO_Rate:
+              VirtualControlChange(0, CC_LFO_Rate, MUX_2_read);
+              break;  
+          case MUX_LFO_Depth:
+              VirtualControlChange(0, CC_LFO_Depth, MUX_2_read);
+              break;  
+          case MUX_LFO_Delay:
+              VirtualControlChange(0, CC_LFO_Delay, MUX_2_read);
+              break;  
+          case MUX_Amplitude_Attack:
+              VirtualControlChange(0, CC_Amplitude_Attack, MUX_2_read);
+              break;  
+          case MUX_Amplitude_Decay:
+              VirtualControlChange(0, CC_Amplitude_Decay, MUX_2_read);
+              break;  
+          case MUX_Amplitude_Sustain:
+              VirtualControlChange(0, CC_Amplitude_Sustain, MUX_2_read);
+              break;  
+          case MUX_Amplitude_Release:
+              VirtualControlChange(0, CC_Amplitude_Release, MUX_2_read);
+              break;  
         }
       }  
     }
+
+    // === MUX #3 ===
+    // if MUX #3 exists, read the value
+    if (muxInput < MUX_3_control) {
+      int MUX_3_read = analogRead(MUX_3_PIN);
+
+      // jednoduchý deadband ±7 pro filtraci šumu
+      if (MUX_3_read > (MUX_3_values[muxInput] + 7) || 
+          MUX_3_read < (MUX_3_values[muxInput] - 7)) {
+        
+        MUX_3_values[muxInput] = MUX_3_read;
+        MUX_3_read = (MUX_3_read >> 3); //Change range to 0-127
+        
+        switch (muxInput) {
+            case MUX_MasterVolume:
+              VirtualControlChange(0, CC_MasterVolume, MUX_3_read);
+              break; 
+            case MUXSeqGatePot:
+              VirtualControlChange(0, CCseqGatePot, MUX_3_read);
+              break;   
+          case MUX_LFOtype_1:
+              LFOtype_1 = (MUX_3_read < 64);
+              break;
+          case MUX_LFOtype_3:
+              LFOtype_3 = (MUX_3_read < 64);
+              break;    
+          case MUX_PORTswitch:
+              // PORTAMENTO only for SynthMode 0 (UNISON)
+              if (SynthMode == 0) {
+                // pull-up: active LOW
+                PORTswitch = (MUX_3_read < 64) ? 1 : 0;
+              }
+              break;            
+          case MUX_Portamento_Mode:
+                PORTmodeSelect = (MUX_3_read < 64) ? 1 : 0;
+              break;
+          case MUX_Drone_Switch:
+                DRONEmodeSelect = (MUX_3_read < 64) ? 1 : 0;
+              break;              
+          case MUX_SeqMode_1:
+              SeqMode_1 = (MUX_3_read < 64);
+              break;
+          case MUX_SeqMode_3:
+              SeqMode_3 = (MUX_3_read < 64);
+              break;    
+          case MUX_SeqOrder_1:
+              SeqOrder_1 = (MUX_3_read < 64);
+              break;
+          case MUX_SeqOrder_3:
+              SeqOrder_3 = (MUX_3_read < 64);
+              break;    
+          case MUX_SeqOctaves_1:
+              SeqOctaves_1 = (MUX_3_read < 64);
+              break;
+          case MUX_SeqOctaves_3:
+              SeqOctaves_3 = (MUX_3_read < 64);
+              break;    
+        }  
+
+        if (LFOtype_1 && !LFOtype_3) {
+            LFOtypeSelect = 0;   // levá poloha
+        } else if (!LFOtype_1 && LFOtype_3) {
+            LFOtypeSelect = 2;   // pravá poloha
+        } else {
+            LFOtypeSelect = 1;   // střed / žádná krajní (fallback)
+        }   
+        
+        // SeqMode: 0 = Off, 1 = Arp, 2 = Latch
+        if (SeqMode_1 && !SeqMode_3) {
+            CurrentSeqMode = 0;   // levá poloha
+        } else if (!SeqMode_1 && SeqMode_3) {
+            CurrentSeqMode = 2;   // pravá poloha
+        } else {
+            CurrentSeqMode = 1;   // střed / žádná krajní (fallback)
+        }
+
+        // SeqOrder: 0 = Up, 1 = Down, 2 = Queue
+        if (SeqOrder_1 && !SeqOrder_3) {
+            CurrentSeqOrder = 0;   // levá poloha
+        } else if (!SeqOrder_1 && SeqOrder_3) {
+            CurrentSeqOrder = 2;   // pravá poloha
+        } else {
+            CurrentSeqOrder = 1;   // střed / žádná krajní (fallback)
+        }
+
+        // SeqOctaves: 0 = 1 oct, 1 = 2 oct, 2 = 3 oct
+        if (SeqOctaves_1 && !SeqOctaves_3) {
+            CurrentSeqOctave = 0;   // levá poloha
+        } else if (!SeqOctaves_1 && SeqOctaves_3) {
+            CurrentSeqOctave = 2;   // pravá poloha
+        } else {
+            CurrentSeqOctave = 1;   // střed / žádná krajní (fallback)
+        }
+
+      }
+    }    
 
     // switch to next MUX channel --> "MUX_1_control = 16" as for 16 channels of CD74HC4067
     // --> its okay for all MUXes, even if one of them uses less channels
     muxInput++;
     if (muxInput >= MUX_1_control) muxInput = 0;
 
-    checkSwitch();
     checkEncoder();  
   }
 }
