@@ -17,20 +17,19 @@
 
 // === SYNTHESIS FUNCTIONS ===
 #include "Synthesis\Teensy_Audio.h"
-#include "Synthesis\BPMLock.h"
 #include "Synthesis\Drone.h"
 #include "Synthesis\updateMorphWaveform.h"
 #include "Synthesis\LFO.h"
-#include "Synthesis\BPMLock.h"
 #include "Synthesis\KBD_Tracking.h"
+#include "Synthesis\Portamento.h" // smazat, možná zbytečný
 // ==================
 
 // === VOICES FUNCTIONS ===
 #include "Voices\resetAllVoices.h"
 // ==================
 
-// === CONTROLS ===
-#include "Controls\MIDI_Control.h"
+// === CONFIGURATION ===
+#include "Configuration\MIDI_Config.h"
 // ==================
 
 // ====== end Headers required by function ======

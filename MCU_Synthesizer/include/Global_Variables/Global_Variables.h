@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 
+// Variables defining the specific selected Wavetable
 extern int currentWaveFamily_1;
 extern int currentShapeIndex_1;
 extern int currentWaveFamily_2;
@@ -10,25 +11,29 @@ extern int currentShapeIndex_2;
 extern int currentWaveFamily_3;
 extern int currentShapeIndex_3;
 
+// Filter variables
 extern float LPFcutoffFreq;
 extern float HPFcutoffFreq;
 extern float LPFresonanceVal;
 extern float LPFcutoffValue;
-extern float defaultHpfFreq;
-extern float defaultHpfRes;
+extern float default_HPF_Freq;
+extern float default_HPF_Res;
+extern float AA_filter_CornerFreq;
 
+// Volume variables
 extern float defaultVolume_1;
 extern float defaultVolume_2;
 extern float defaultVolume_3;
 extern float pinkVolume;
-
 extern float MASTERVolume;
 
+// Note frequency variables
 extern const byte Buffer;
 extern const float noteFreqs[128];
 extern int octave;
 extern int SubOctave;
 
+// Synthesizer voice variables
 extern byte SynthMode;
 extern bool voiceActive_1;
 extern bool voiceActive_2;
@@ -50,6 +55,7 @@ extern byte voiceNote_4;
 extern byte voiceNote_5;
 extern byte voiceNote_6;
 
+// LFO parameter variables
 extern unsigned int LFOrate;
 extern float LFOdepth;
 extern float LFOdelay;
@@ -57,6 +63,8 @@ extern int LFOwaveSelect;
 extern byte LFOmodeSelect;
 extern byte LFOtypeSelect;
 
+// ==== LFO ====
+// LFO state variables 
 extern unsigned long LFOdelayEnd_1;
 extern unsigned long LFOdelayEnd_2;
 extern unsigned long LFOdelayEnd_3;
@@ -120,6 +128,7 @@ extern bool LFOstop_5;
 extern bool LFOstop_6;
 extern elapsedMicros lfoTimer;
 
+// LFO type 1 variables
 extern float LFOfreqCutoffMod_1;
 extern float LFOfreqCutoffMod_2;
 extern float LFOfreqCutoffMod_3;
@@ -128,6 +137,7 @@ extern float LFOfreqCutoffMod_5;
 extern float LFOfreqCutoffMod_6;
 extern float LFOfreqCutoffMod_7;
 
+// LFO type 3 variables
 extern float Tune_1;
 extern float Tune_2;
 extern float Tune_3;
@@ -141,18 +151,22 @@ extern float LFOTune_4;
 extern float LFOTune_5;
 extern float LFOTune_6;
 
+// Frequency envelope variables
 extern float Filter_Attack_Value;
 extern float Filter_Decay_Value;
 extern float Filter_Sustain_Value;
 extern float Filter_Release_Value;
 extern float Filter_Intensity_Coeff;
 
+// Unison Triad mode variables
 extern uint8_t unisonTriad;
 extern bool unisonTriadToggle;
 extern float triadBaseFreq[2];
 
+// Global BPM, duh
 extern int GlobalBPM;
 
+// Keyboard tracking variables
 extern float KBDtrackingMod_1;
 extern float KBDtrackingMod_2;
 extern float KBDtrackingMod_3;
@@ -165,6 +179,7 @@ extern const int KBD_BASE_NOTE;
 extern float KBDtracking;
 extern float KBDmult[128];
 
+// Portamento mode variables
 extern byte PORTswitch;
 extern byte PORTmodeSelect;
 extern byte PORTlockRate;
@@ -214,12 +229,12 @@ extern float portTimeControl;
 extern float portRateSemitonesPerSubdivision;
 extern unsigned long lastPortamentoMicros;
 
-extern const float PORTAMENTO_LOCK_FACTORS_BY_INDEX[5];
+extern const float Portamento_Lock_Factors_by_Index[5];
 
 // ==== DRONE ====
 // Drone constants
-const int DRONE_SLOTS = 8;
-const int DRONE_WAVE_VOICES = 3;
+const int Drone_Slots = 8;
+const int Drone_Wave_Voices = 3;
 
 extern float DroneCarry_Amplitude_Attack_Value;
 extern float DroneCarry_Amplitude_Decay_Value;
@@ -258,6 +273,7 @@ extern uint8_t SeqRateSelect;
 // Keyboard
 extern int octaveValue;
 
+// divide by 127, used for ADC and MIDI values
 extern const float DIV127;
 
 #endif // GLOBAL_VARIABLES_H

@@ -64,6 +64,8 @@ extern AudioFilterLadder ladderClone_1;
 extern AudioFilterLadder ladderClone_2;
 extern AudioFilterLadder ladderClone_3;
 
+extern AudioFilterLadder ladder_Antialiasing;
+
 extern AudioFilterStateVariable SV_ladderDroneA_1;
 extern AudioFilterStateVariable SV_ladderDroneA_2;
 extern AudioFilterStateVariable SV_ladderDroneA_3;

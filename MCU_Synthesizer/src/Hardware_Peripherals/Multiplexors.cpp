@@ -7,9 +7,12 @@
 #include "Configuration\Pins_Config.h"
 // ==================
 
-// === CONTROLS ===
-#include "Controls\MIDI_Control.h"
-#include "Controls\Inputs.h"
+// === CONFIGURATION ===
+#include "Configuration\MIDI_Config.h"
+// ==================
+
+// === HARDWARE PERIPHERALS ===
+#include "Hardware_Peripherals\Encoder_and_Multiplexors.h"
 // ==================
 
 // === SYNTHESIS FUNCTIONS ===
@@ -36,11 +39,11 @@ void checkMux() {
   static bool SeqOctaves_1 = false;
   static bool SeqOctaves_3 = false;
 
-  // spouštěj každých 1000 µs (1 ms)
+  // run every 1000 µs (1 ms)
   if (currentMicros - lastTime >= 1000) {
     lastTime = currentMicros;
 
-    // nastav adresové piny MUXu
+    // set MUX address pins
     digitalWrite(MUX_S0, muxInput & B0001);
     digitalWrite(MUX_S1, muxInput & B0010);
     digitalWrite(MUX_S2, muxInput & B0100);
@@ -51,16 +54,16 @@ void checkMux() {
     if (muxInput < MUX_1_control) {
       int MUX_1_read = analogRead(MUX_1_PIN);
 
-      // jednoduchý deadband ±7 pro filtraci šumu
+      // simple deadband ±7 for noise filtering
       if (MUX_1_read > (MUX_1_values[muxInput] + 7) || 
           MUX_1_read < (MUX_1_values[muxInput] - 7)) {
         
         MUX_1_values[muxInput] = MUX_1_read;
-        MUX_1_read = (MUX_1_read >> 3); //Change range to 0-127
+        MUX_1_read = (MUX_1_read >> 3); // Change range to 0-127
         
         switch (muxInput) {
           case MUXwave_1:
-              // Rozdělí rozsah 0-127 do rovnoměrných úseků (0 až NUM_WAVEFAMILIES - 1)
+              // The range 0-127 normalises different ranges for each waves (0 to NUM_WAVEFAMILIES - 1)
               VirtualControlChange(0, CCwave_1, (MUX_1_read * NUM_WAVEFAMILIES) / 128);
               break;  
           case MUXwave_2:
@@ -112,11 +115,11 @@ void checkMux() {
         }
 
         if (SubOctave_Position_1 && !SubOctave_Position_3) {
-            VirtualControlChange(0, CCsubOctave, 0);   // levá poloha
+            VirtualControlChange(0, CCsubOctave, 0);   // left position
         } else if (!SubOctave_Position_1 && SubOctave_Position_3) {
-            VirtualControlChange(0, CCsubOctave, 2);   // pravá poloha
+            VirtualControlChange(0, CCsubOctave, 2);   // right position
         } else {
-            VirtualControlChange(0, CCsubOctave, 1);   // střed / žádná krajní (fallback)
+            VirtualControlChange(0, CCsubOctave, 1);   // middle / no edge (fallback)
         }
 
       }  
@@ -127,12 +130,12 @@ void checkMux() {
     if (muxInput < MUX_2_control) {
       int MUX_2_read = analogRead(MUX_2_PIN);
 
-      // jednoduchý deadband ±7 pro filtraci šumu
+      // simple deadband ±7 for noise filtering
       if (MUX_2_read > (MUX_2_values[muxInput] + 7) || 
           MUX_2_read < (MUX_2_values[muxInput] - 7)) {
         
         MUX_2_values[muxInput] = MUX_2_read;
-        MUX_2_read = (MUX_2_read >> 3); //Change range to 0-127
+        MUX_2_read = (MUX_2_read >> 3); // Change range to 0-127
         
         switch (muxInput) {
           case MUX_LPF_Cutoff:
@@ -192,12 +195,12 @@ void checkMux() {
     if (muxInput < MUX_3_control) {
       int MUX_3_read = analogRead(MUX_3_PIN);
 
-      // jednoduchý deadband ±7 pro filtraci šumu
+      // simple deadband ±7 for noise filtering
       if (MUX_3_read > (MUX_3_values[muxInput] + 7) || 
           MUX_3_read < (MUX_3_values[muxInput] - 7)) {
         
         MUX_3_values[muxInput] = MUX_3_read;
-        MUX_3_read = (MUX_3_read >> 3); //Change range to 0-127
+        MUX_3_read = (MUX_3_read >> 3); // Change range to 0-127
         
         switch (muxInput) {
             case MUX_MasterVolume:
@@ -246,38 +249,38 @@ void checkMux() {
         }  
 
         if (LFOtype_1 && !LFOtype_3) {
-            LFOtypeSelect = 0;   // levá poloha
+            LFOtypeSelect = 0;   // left position
         } else if (!LFOtype_1 && LFOtype_3) {
-            LFOtypeSelect = 2;   // pravá poloha
+            LFOtypeSelect = 2;   // right position
         } else {
-            LFOtypeSelect = 1;   // střed / žádná krajní (fallback)
+            LFOtypeSelect = 1;   // middle / no edge (fallback)
         }   
         
         // SeqMode: 0 = Off, 1 = Arp, 2 = Latch
         if (SeqMode_1 && !SeqMode_3) {
-            CurrentSeqMode = 0;   // levá poloha
+            CurrentSeqMode = 0;   // left position
         } else if (!SeqMode_1 && SeqMode_3) {
-            CurrentSeqMode = 2;   // pravá poloha
+            CurrentSeqMode = 2;   // right position
         } else {
-            CurrentSeqMode = 1;   // střed / žádná krajní (fallback)
+            CurrentSeqMode = 1;   // middle / no edge (fallback)
         }
 
         // SeqOrder: 0 = Up, 1 = Down, 2 = Queue
         if (SeqOrder_1 && !SeqOrder_3) {
-            CurrentSeqOrder = 0;   // levá poloha
+            CurrentSeqOrder = 0;   // left position
         } else if (!SeqOrder_1 && SeqOrder_3) {
-            CurrentSeqOrder = 2;   // pravá poloha
+            CurrentSeqOrder = 2;   // right position
         } else {
-            CurrentSeqOrder = 1;   // střed / žádná krajní (fallback)
+            CurrentSeqOrder = 1;   // middle / no edge (fallback)
         }
 
         // SeqOctaves: 0 = 1 oct, 1 = 2 oct, 2 = 3 oct
         if (SeqOctaves_1 && !SeqOctaves_3) {
-            CurrentSeqOctave = 0;   // levá poloha
+            CurrentSeqOctave = 0;   // left position
         } else if (!SeqOctaves_1 && SeqOctaves_3) {
-            CurrentSeqOctave = 2;   // pravá poloha
+            CurrentSeqOctave = 2;   // right position
         } else {
-            CurrentSeqOctave = 1;   // střed / žádná krajní (fallback)
+            CurrentSeqOctave = 1;   // middle / no edge (fallback)
         }
 
       }

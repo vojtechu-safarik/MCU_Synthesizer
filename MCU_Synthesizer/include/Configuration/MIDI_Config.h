@@ -1,5 +1,5 @@
-#ifndef MIDI_CONTROL_H
-#define MIDI_CONTROL_H
+#ifndef MIDI_CONFIG_H
+#define MIDI_CONFIG_H
 
 #include <Arduino.h>
 
@@ -19,6 +19,7 @@
 #define CCtune_3    58
 #define CCnoise     87
 #define CCsubOctave 60
+// ======================
 
 // Multiplexor 2
 #define CC_LPF_Cutoff        67
@@ -37,19 +38,20 @@
 #define CC_Amplitude_Decay   64
 #define CC_Amplitude_Sustain 65
 #define CC_Amplitude_Release 66
+// ======================
 
 // Multiplexor 3
 #define CC_MasterVolume 85
+#define CCseqGatePot 88
+// ======================
 
 #define CCoctave 59
-
 #define CCLFOwaveSelect 81
 
-#define CCseqGatePot 88
 // ===================
 
 void VirtualControlChange(byte channel, byte control, byte value);
 void myNoteOn(byte channel, byte note, byte velocity);
 void myNoteOff(byte channel, byte note, byte velocity);
 
-#endif // MIDI_CONTROL_H
+#endif // MIDI_CONFIG_H

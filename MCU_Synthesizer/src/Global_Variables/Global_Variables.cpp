@@ -17,8 +17,9 @@ float LPFcutoffFreq = 10000.0f;
 float HPFcutoffFreq = 20.0f;
 float LPFresonanceVal = 0.0f;
 float LPFcutoffValue = 1.0f;
-float defaultHpfFreq = 20.0f;
-float defaultHpfRes  = 0.707f;
+float default_HPF_Freq = 20.0f;
+float default_HPF_Res  = 0.707f;
+float AA_filter_CornerFreq = 17640.0f;  // 44 100 Hz / 2 = 22 050 Hz ... Nyquist freq ... * 0.8 = 17 640 Hz
 // Default volume
 float defaultVolume_1 = 0.75f;
 float defaultVolume_2 = 0.75f;
@@ -45,7 +46,7 @@ const float noteFreqs[128] = {8.176,    8.662,    9.177,    9.723,   10.301,   1
                            3322.438,     3520,  3729.31, 3951.066, 4186.009, 4434.922, 4698.636, 4978.032, 
                            5274.041, 5587.652, 5919.911, 6271.927, 6644.875,     7040,  7458.62, 7902.133, 
                            8372.018, 8869.844, 9397.273, 9956.063, 10548.08,  11175.3, 11839.82, 12543.85};
-// byte globalVelocity = 1; // not used in this version
+// byte globalVelocity = 1; // Velocity not implemented in this version
 int octave = 0;
 int SubOctave = 0;
 
@@ -179,6 +180,7 @@ float triadBaseFreq[2] = {0, 0};   // default frequency for triad 0 and 1
 // Global Variables of LOCK mode
 int GlobalBPM = 120;
 
+/* SMAZAT
 // LOCK mapping: index 0..5 (0=2/1, 5=1/8)
 const float LOCK_FACTORS_BY_INDEX[6] = {
   8.0f,        // 0 -> 2/1  (double whole = 8 * quarter)
@@ -187,7 +189,7 @@ const float LOCK_FACTORS_BY_INDEX[6] = {
   1.0f,        // 3 -> 1/4  (quarter = 1 * quarter)
   2.0f/3.0f,   // 4 -> 1/4T (quarter triplet = 2/3 * quarter)
   0.5f         // 5 -> 1/8  (eighth = 1/2 * quarter)
-};
+};*/
 
 float KBDtrackingMod_1 = 1.0f;
 float KBDtrackingMod_2 = 1.0f;
@@ -254,8 +256,8 @@ float portRateSemitonesPerSubdivision = 12.0f;   // default: 12 semitones per su
 // internal timer
 unsigned long lastPortamentoMicros = 0;
 
-// PORTAMENTO LOCK mapping: index 0 ... 4
-const float PORTAMENTO_LOCK_FACTORS_BY_INDEX[5] = {
+// Portamento Lock mapping: index 0 ... 4
+const float Portamento_Lock_Factors_by_Index[5] = {
   4.0f,        // 1 -> 1/1
   2.0f,        // 2 -> 1/2
   1.0f,        // 3 -> 1/4

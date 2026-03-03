@@ -45,13 +45,11 @@
 
 // === SYNTHESIS FUNCTIONS ===
 #include "Synthesis\Teensy_Audio.h"
-#include "Synthesis\BPMLock.h"
 #include "Synthesis\Drone.h"
 #include "Synthesis\Filter_Envelope.h"
 #include "Synthesis\updateMorphWaveform.h"
 #include "Synthesis\LFO.h"
 #include "Synthesis\Portamento.h"
-#include "Synthesis\BPMLock.h"
 #include "Synthesis\KBD_Tracking.h"
 // ==================
 
@@ -65,59 +63,33 @@
 // === CONFIGURATION ===
 #include "Configuration\Pins_Config.h"
 #include "Configuration\Setup.h"
+#include "Configuration\MIDI_Config.h"
 // ==================
 
-// === DISPLAY ===
-#include "Display\Display.h"
-// ==================
-
-// === CONTROLS ===
-#include "Controls\MIDI_Control.h"
-#include "Controls\Inputs.h"
-// ==================
-
-// === KEYBOARD ===
-#include "Keyboard\HardwareKeyboard.h"
-// ==================
-
-// === LEDs ===
-#include "LEDs/LEDs.h"
-// ==================
-
-// === IO Expander API ===
-#include "Drivers/IO_Expander.h"
+// === HARDWARE PERIPHERALS ===
+#include "Hardware_Peripherals\Display.h"
+#include "Hardware_Peripherals/IO_Expander.h"
+#include "Hardware_Peripherals\Encoder_and_Multiplexors.h"
+#include "Hardware_Peripherals/LEDs.h"
+#include "Hardware_Peripherals\HardwareKeyboard.h"
 // ==================
 
 // ====== end Project INCLUDES ======
 // ==================================
-
-// ===================
 
 // ============== Setup ==============
 void setup() {
   Serial.begin(115200);
   AudioMemory(64);
 
-  // Pure Data MIDI control
+  // USB MIDI configuration
   usbMIDI.setHandleControlChange(VirtualControlChange);
   usbMIDI.setHandleNoteOff(myNoteOff);
   usbMIDI.setHandleNoteOn(myNoteOn);
 
-  Teensy_Audio_setup();
-
-  recomputeKBDmult();
-
-  Display_setup();
-
-  Inputs_setup();
-
-  IOExpander_begin();
-  LEDoctave_begin();
-
-
-
-// ============================================
-}
+  // all setup functions at once (run once in main loop)
+  Synthesizer_setup(); 
+} // ================================
 
 // ============== Loop ==============
 void loop() {
@@ -189,6 +161,7 @@ void loop() {
   // SMAZAT
   Keyboard_update();
   
-  LEDoctave_update();   // počítá logiku a nastavuje flagy přes IOExpander_setLed()
+  LEDs_update();   // počítá logiku a nastavuje flagy přes IOExpander_setLed()
   IOExpander_update();  // provede skutečné I2C zápisy (batch)
+  
 }

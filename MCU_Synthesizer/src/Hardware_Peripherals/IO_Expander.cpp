@@ -1,8 +1,8 @@
 #include <Wire.h>
 #include "PCF8574.h"   // Rob Tillaart library
 
-// === IO Expander API ===
-#include "Drivers/IO_Expander.h"
+// === HARDWARE PERIPHERALS ===
+#include "Hardware_Peripherals/IO_Expander.h"
 // ==================
 
 // --- Configuration: expanders and mapping ---

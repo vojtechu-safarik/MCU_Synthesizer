@@ -45,20 +45,20 @@ struct DroneSnapshot {
     unsigned int lfoDelay_ms;
  
     // SAVED shape parameters to reconstruct morphing exactly
-    uint8_t savedWaveFamilyIndex[DRONE_WAVE_VOICES];
-    int     savedShapeIndex[DRONE_WAVE_VOICES];
+    uint8_t savedWaveFamilyIndex[Drone_Wave_Voices];
+    int     savedShapeIndex[Drone_Wave_Voices];
 
     // Snapshot params for Sequencer
-    // IZOLOVANÉ PARAMETRY PRO TENTO SLOT
+    // Isolated parameters for this slot
     int   snapBPM;          
     byte  snapOctave;       
     byte  snapSeqRateSel;   
     float snapSeqGate;      // 1-100
 
-    // VLASTNÍ BUFFER PRO KAŽDÝ SLOT
+    // Respective buffer for each slot
     bool seqEnabled = false;    
     int  seqStepCount = 0;      
-    int  seqNotes[256];      // Každý slot má svých 256 not
+    int  seqNotes[256];      // Each slot has its own 256 notes
     
 };
 
@@ -75,23 +75,23 @@ extern DroneSnapshot droneSnapshots[8];
 extern volatile bool DRONE_requestSave[8];
 
 // wavetable results
-extern int16_t droneWaveforms[DRONE_SLOTS][DRONE_WAVE_VOICES][TABLE_SIZE];
+extern int16_t droneWaveforms[Drone_Slots][Drone_Wave_Voices][TABLE_SIZE];
 
 // filter envelope runtime
-extern float droneFilterEnvelope_Coeff[DRONE_SLOTS];
-extern unsigned long droneEnvelopeStart[DRONE_SLOTS];
-extern unsigned long droneReleaseStart[DRONE_SLOTS];
-extern bool dronePrevNoteOn[DRONE_SLOTS];
-extern bool dronePrevReleasing[DRONE_SLOTS];
+extern float droneFilterEnvelope_Coeff[Drone_Slots];
+extern unsigned long droneEnvelopeStart[Drone_Slots];
+extern unsigned long droneReleaseStart[Drone_Slots];
+extern bool dronePrevNoteOn[Drone_Slots];
+extern bool dronePrevReleasing[Drone_Slots];
 
-extern float droneFilter_Attack_Coeff[DRONE_SLOTS];
-extern float droneFilter_Decay_Coeff[DRONE_SLOTS];
-extern float droneFilter_Sustain_Coeff[DRONE_SLOTS];
-extern float droneFilter_Release_Coeff[DRONE_SLOTS];
+extern float droneFilter_Attack_Coeff[Drone_Slots];
+extern float droneFilter_Decay_Coeff[Drone_Slots];
+extern float droneFilter_Sustain_Coeff[Drone_Slots];
+extern float droneFilter_Release_Coeff[Drone_Slots];
 
-extern float drone_savedAttackCoef[DRONE_SLOTS];
-extern float drone_savedDecayCoef[DRONE_SLOTS];
-extern float drone_savedSustainCoef[DRONE_SLOTS];
+extern float drone_savedAttackCoef[Drone_Slots];
+extern float drone_savedDecayCoef[Drone_Slots];
+extern float drone_savedSustainCoef[Drone_Slots];
 
 // PARAMETERS / RUNTIME STATE
 extern float defaultSVLpfRes;
@@ -136,8 +136,8 @@ extern bool droneGroupB_releasing;
 extern int  releasingDroneA_index;
 extern int  releasingDroneB_index;
 
-extern uint8_t SeqRate;     // Rychlost (např. z potenciometru)
-extern float SeqGatePot;  // Délka gate (0.1 - 1.0)
+extern uint8_t SeqRate;   // Speed set by potentiometer
+extern float SeqGatePot;  // Gate length (0.1 - 1.0)
 
 // API
 void DroneEnvelopesInit();                              // Initialize drone envelopes

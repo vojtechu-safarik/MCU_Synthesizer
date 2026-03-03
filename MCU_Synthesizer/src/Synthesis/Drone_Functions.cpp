@@ -5,16 +5,16 @@
 
 // === SYNTHESIS FUNCTIONS ===
 #include "Synthesis\Teensy_Audio.h"
-#include "Synthesis\BPMLock.h"
+#include "Synthesis\Portamento.h"
 #include "Synthesis\Drone.h"
 // ==================
 
-// === KEYBOARD ===
-#include "Keyboard\HardwareKeyboard.h"
+// === HARDWARE PERIPHERALS ===
+#include "Hardware_Peripherals\HardwareKeyboard.h"
 // ==================
 
-// === CONTROLS ===
-#include "Controls\MIDI_Control.h"
+// === CONFIGURATION ===
+#include "Configuration\MIDI_Config.h"
 // ==================
 
 // Runtime proměnné (mimo funkci)
@@ -39,14 +39,14 @@ static int findSnapshotIndex(byte note) {
 
 // Save current synth settings into a drone snapshot
 void DroneSaveValues(int snapshotIndex) {
-    if (snapshotIndex < 0 || snapshotIndex >= DRONE_SLOTS) return;
+    if (snapshotIndex < 0 || snapshotIndex >= Drone_Slots) return;
     DroneSnapshot &snap = droneSnapshots[snapshotIndex];
 
     // Save filter and HP settings (resolved current values)
     snap.cutoff = LPFcutoffFreq;
     snap.resonance = 0.7 + (LPFresonanceVal - 0.0) * (5.0 - 0.7) / (1.8 - 0.0); // out = out_min + (in - in_min) * (out_max - out_min) / (in_max - in_min)
     snap.hpfFreq = HPFcutoffFreq;
-    snap.hpfRes = defaultHpfRes;
+    snap.hpfRes = default_HPF_Res;
 
     // Copy the morph result waveforms (primary three) into pool
     memcpy(droneWaveforms[snapshotIndex][0], myWaveform_1, sizeof(myWaveform_1));
@@ -180,7 +180,7 @@ static void playSnapshot(int snapIndex, bool useGroupA) {
     int gIdx = useGroupA ? 0 : 1;
     // --------------------------------
 
-    if (snapIndex < 0 || snapIndex >= DRONE_SLOTS) return;
+    if (snapIndex < 0 || snapIndex >= Drone_Slots) return;
     DroneSnapshot &snap = droneSnapshots[snapIndex];
 
     // safety: if snapshot is not valid, do nothing
@@ -352,8 +352,8 @@ static void playSnapshot(int snapIndex, bool useGroupA) {
         if (noteIndex > 127) noteIndex = 127;
         float freq = noteFreqs[noteIndex];
 
-        // select waveform index (0..DRONE_WAVE_VOICES-1). voices >= DRONE_WAVE_VOICES inherit last index
-        int wfIdx = (i < DRONE_WAVE_VOICES) ? i : (DRONE_WAVE_VOICES - 1);
+        // select waveform index (0..Drone_Wave_Voices-1). voices >= Drone_Wave_Voices inherit last index
+        int wfIdx = (i < Drone_Wave_Voices) ? i : (Drone_Wave_Voices - 1);
 
         // amplitude mapping depending on SynthMode + saved volumes
         float amp = 0.0f;
@@ -577,7 +577,7 @@ static void playSnapshot(int snapIndex, bool useGroupA) {
     
   // Ensure per-snapshot envelope state is ready so DroneEnvelopes_update() sees the rising edge
   // Clear release/start bookkeeping for this snapshot (so attack starts fresh)
-  if (snapIndex >= 0 && snapIndex < DRONE_SLOTS) {
+  if (snapIndex >= 0 && snapIndex < Drone_Slots) {
       dronePrevNoteOn[snapIndex] = false;
       dronePrevReleasing[snapIndex] = false;
       droneReleaseStart[snapIndex] = 0;
@@ -586,11 +586,11 @@ static void playSnapshot(int snapIndex, bool useGroupA) {
       drone_savedDecayCoef[snapIndex]  = 1.0f;
       drone_savedSustainCoef[snapIndex]= 1.0f;
   }
-      // 1. Zjistíme, jestli má tento snapshot sekvenci
+      // 1. We find out, if the snapshot has a sequence
     if (snap.seqEnabled && snap.seqStepCount > 0) {
         droneSeqRunning[gIdx] = true;
         droneStepIdx[gIdx] = 0;
-        droneNextStepT[gIdx] = millis(); // První krok proběhne okamžitě v loopu
+        droneNextStepT[gIdx] = millis(); // First step happens immediately in the loop
         droneGateActive[gIdx] = false;
     } else {
         droneSeqRunning[gIdx] = false;
@@ -602,7 +602,7 @@ static void playSnapshot(int snapIndex, bool useGroupA) {
 static void stopGroup(bool useGroupA) {
 
     int gIdx = useGroupA ? 0 : 1;
-    droneSeqRunning[gIdx] = false; // Zastavit logiku sekvenceru
+    droneSeqRunning[gIdx] = false; // Stop the sequencer logic
     droneGateActive[gIdx] = false;
 
     if (useGroupA) {
@@ -875,13 +875,13 @@ void DroneLFO_update() {
 
         // apply to active snapshot group
         int activeIndex = isA ? activeDroneA : activeDroneB;
-        if (activeIndex < 0 || activeIndex >= DRONE_SLOTS) return;
+        if (activeIndex < 0 || activeIndex >= Drone_Slots) return;
         DroneSnapshot &snap = droneSnapshots[activeIndex];
         if (!snap.valid) return;
 
         // compute per-snapshot envelope coefficient once (applies regardless of LFO type)
         float envCoeff = 1.0f;
-        if (activeIndex >= 0 && activeIndex < DRONE_SLOTS) {
+        if (activeIndex >= 0 && activeIndex < Drone_Slots) {
             envCoeff = droneFilterEnvelope_Coeff[activeIndex];
             // defensive clamp
             if (!isfinite(envCoeff)) envCoeff = 1.0f;
@@ -911,7 +911,7 @@ void DroneLFO_update() {
             noteIndex = constrain(noteIndex, 0, 127);
             float baseFreq = noteFreqs[noteIndex];
 
-            int wfIdx = (i < DRONE_WAVE_VOICES) ? i : (DRONE_WAVE_VOICES - 1);
+            int wfIdx = (i < Drone_Wave_Voices) ? i : (Drone_Wave_Voices - 1);
             // --- LFO TYPE HANDLING: detune / cutoff / shape / fallback ---
             // ALWAYS ensure cutoff gets updated by envelope (baseCutByEnv)
             if (LFOtypeSelect == 2) {
@@ -984,7 +984,7 @@ void DroneLFO_update() {
                 if (voiceActiveHere) {
                     uint8_t savedWfIdx = 0;
                     int savedShapeIdx = 0;
-                    if (wfIdx >= 0 && wfIdx < DRONE_WAVE_VOICES) {
+                    if (wfIdx >= 0 && wfIdx < Drone_Wave_Voices) {
                         savedWfIdx    = snap.savedWaveFamilyIndex[wfIdx];
                         savedShapeIdx = snap.savedShapeIndex[wfIdx];
                     }
@@ -1165,7 +1165,7 @@ finalizeGroupIfDone();
 void DroneEnvelopes_update() {
     unsigned long now = millis();
 
-    for (int s = 0; s < DRONE_SLOTS; ++s) {
+    for (int s = 0; s < Drone_Slots; ++s) {
         DroneSnapshot &snap = droneSnapshots[s];
 
         // if snapshot invalid -> reset and skip
@@ -1328,17 +1328,17 @@ void DroneEnvelopes_update() {
     } // end for
 }
 
-// NOVÉ - ověřit, kdyžtak smazat
+// Functions added after implementing Sequencer - still needs some work on bugs SMAZAT
 
 void triggerDroneVoiceEnvelope(bool isA, int voiceIdx, bool state) {
     if (isA) {
-        // Vypnout všechny obálky v grupě A
+        // Turn off all Group A envelopes
         if (!state) {
             envelopeDroneA_Amplitude_1.noteOff(); envelopeDroneA_Amplitude_2.noteOff();
             envelopeDroneA_Amplitude_3.noteOff(); envelopeDroneA_Amplitude_4.noteOff();
             envelopeDroneA_Amplitude_5.noteOff();
         } else {
-            // Zapnout jen tu jednu konkrétní
+            // Turn on only the one specific
             if (voiceIdx == 0) envelopeDroneA_Amplitude_1.noteOn();
             else if (voiceIdx == 1) envelopeDroneA_Amplitude_2.noteOn();
             else if (voiceIdx == 2) envelopeDroneA_Amplitude_3.noteOn();
@@ -1346,7 +1346,7 @@ void triggerDroneVoiceEnvelope(bool isA, int voiceIdx, bool state) {
             else if (voiceIdx == 4) envelopeDroneA_Amplitude_5.noteOn();
         }
     } else {
-        // Vypnout všechny obálky v grupě B
+        // // Turn off all Group B envelopes
         if (!state) {
             envelopeDroneB_Amplitude_1.noteOff(); envelopeDroneB_Amplitude_2.noteOff();
             envelopeDroneB_Amplitude_3.noteOff(); envelopeDroneB_Amplitude_4.noteOff();
@@ -1361,7 +1361,7 @@ void triggerDroneVoiceEnvelope(bool isA, int voiceIdx, bool state) {
     }
 }
 
-// Pomocná funkce pro přepočet MIDI na frekvenci (vlož do Drone_Functions.cpp)
+// Helper function to recalculate frequency
 void DroneRefreshFrequency(bool isA, int slotIdx) {
     DroneSnapshot &snap = droneSnapshots[slotIdx];
     float f = 440.0 * pow(2.0, (snap.note[0] - 69.0) / 12.0);
@@ -1381,15 +1381,15 @@ void DroneSequencer_update() {
     unsigned long now = millis();
     int activeSlots[2] = {activeDroneA, activeDroneB};
 
-    // --- OPRAVA: Statické proměnné pro zálohu původní noty ---
-    static float drone_backupNote[2];      // Uloží původní snap.note[0]
-    static bool  drone_hasBackup[2] = {false, false}; // Flag, zda máme zálohu
-    static int   drone_lastSlot[2]  = {-1, -1};       // Detekce změny slotu
+    // Static variables to backup previous notes
+    static float drone_backupNote[2];      // Save previous snap.note[0]
+    static bool  drone_hasBackup[2] = {false, false}; // Backup flag
+    static int   drone_lastSlot[2]  = {-1, -1};       // Detect slot change
 
     for (int i = 0; i < 2; i++) {
         int sIdx = activeSlots[i];
         
-        // Pokud se změnil slot nebo je neplatný, resetujeme zálohu
+        // If slot is changed or invalid, reset the backup
         if (sIdx != drone_lastSlot[i] || sIdx < 0) {
              drone_hasBackup[i] = false;
              drone_lastSlot[i] = sIdx;
@@ -1406,21 +1406,21 @@ void DroneSequencer_update() {
 
         unsigned long gateMs = (stepMs * (unsigned long)snap.snapSeqGate) / 100;
 
-        // --- TRIGGER KROKU ---
+        // Trigger step
         if (now >= droneNextStepT[i]) {
             droneNextStepT[i] = now + stepMs;
 
             int rawNote = snap.seqNotes[droneStepIdx[i]];
             
             if (rawNote != 254) {
-                // OPRAVA: Před přepsáním noty si uložíme originál (pokud ho už nemáme z minula - např. legato)
-                // Ukládáme jen tehdy, když začínáme novou "Gate fázi" (z ticha) nebo pokud nemáme zálohu.
+                // Before note overwrite save the original
+                // Save only when we start new Gate step (from quiet) or if no backup
                 if (!droneGateActive[i] || !drone_hasBackup[i]) {
                     drone_backupNote[i] = snap.note[0];
                     drone_hasBackup[i] = true;
                 }
 
-                // Nyní bezpečně přepíšeme notu pro přehrávání
+                // Safely overwrite note after playing
                 snap.note[0] = rawNote + ((snap.snapOctave - 2) * 12);
                 
                 DroneRefreshFrequency((i == 0), sIdx);
@@ -1431,20 +1431,16 @@ void DroneSequencer_update() {
             droneStepIdx[i] = (droneStepIdx[i] + 1) % snap.seqStepCount;
         }
 
-        // --- KONEC GATE ---
+        // End Gate
         if (droneGateActive[i] && (now >= (droneNextStepT[i] - stepMs + gateMs))) {
             triggerDroneVoiceEnvelope((i == 0), 0, false);
             droneGateActive[i] = false;
 
-            // OPRAVA: Gate skončila, vracíme původní notu do snapshotu.
-            // Pokud nyní uživatel uloží preset, uloží se správná "Base Note", nikoliv ta ze sekvence.
+            // Gate ended, we return the original note into the snapshot
+            // If user saves the drone, it saves the correct note, not the one from sequence
             if (drone_hasBackup[i]) {
                 snap.note[0] = drone_backupNote[i];
-                // Poznámka: Flag hasBackup neresetujeme nutně hned, ale logika "if (!droneGateActive)" 
-                // nahoře zajistí, že při příštím triggeru se hodnota znovu zazálohuje, což je bezpečné.
             }
         }
     }
 }
-
-// ==== end of DRONE ====

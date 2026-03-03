@@ -8,9 +8,7 @@
 #include "Synthesis\Teensy_Audio.h"
 // ==================
 
-// =========================================================
-// VOICE STATE (defined elsewhere, zde jen extern)
-// =========================================================
+// Voice state variables
 extern bool voiceActive_1;
 extern bool voiceActive_2;
 extern bool voiceActive_3;

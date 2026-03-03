@@ -8,12 +8,13 @@ extern byte sequenceLength;;
 
 void Keyboard_init();
 
-// update – zavoláš v loop()
+// Update regularly called in the main loop
 void Keyboard_update();
 
+// Rebuild sequencer buffer after a change
 void rebuildSequence();
 
-// musí existovat jinde v projektu (už máš)
+// MIDI function (defined in MIDI config)
 void myNoteOn(byte channel, byte note, byte velocity);
 void myNoteOff(byte channel, byte note, byte velocity);
 

@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-// FUNCTION DECLARATIONS
+// Function declarations
 void LFOupdate();                                                   // Update all LFO states
 void resetLFOstate();                                               // Reset all LFOs
 

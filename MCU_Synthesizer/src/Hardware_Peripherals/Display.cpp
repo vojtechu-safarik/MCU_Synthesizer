@@ -11,8 +11,8 @@
 #include "Global_Variables\Wavetable_Variables.h"
 // ==================
 
-// === DISPLAY ===
-#include "Display\Display.h"
+// === HARDWARE PERIPHERALS ===
+#include "Hardware_Peripherals\Display.h"
 // ==================
 
 // === CONFIGURATION ===
@@ -545,6 +545,7 @@ void drawOscBlock_fast(int idx) {
 // =====================================================================
 // ============================= S E T U P =============================
 // =====================================================================
+
 void Display_setup() {
   safeTFTpinsInit();
 
@@ -600,6 +601,7 @@ void Display_Waveform_Snapshot() {
 // =====================================================================
 // ============================== L O O P ==============================
 // =====================================================================
+
 void Display_loop() {
   unsigned long nowDisplay = millis();
   if (nowDisplay - lastRefresh >= REFRESH_MS) {

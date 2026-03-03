@@ -16,9 +16,8 @@
 #include "Voices\oscStopVoice.h"
 // ==================
 
-// ==================
-// === CONTROLS ===
-#include "Controls\MIDI_Control.h"
+// === CONFIGURATION ===
+#include "Configuration\MIDI_Config.h"
 // ==================
 
 // ----------- Keyboard -----------
@@ -28,7 +27,7 @@ void myNoteOn(byte channel, byte note, byte velocity) {
     if (unisonTriadToggle == true) {
       unisonTriad ^= 1;     // toggle 0 <-> 1
     } else if (unisonTriadToggle == false) {
-      unisonTriad = 1;      // only use the second triad of oscillators - first suffers more aliasing, i guess? - bug, didnt figure out yet
+      unisonTriad = 1;      // SMAZAT only use the second triad of oscillators - first suffers more aliasing, i guess? - bug, didnt figure out yet
     }  
   // Serial.print("Current unisonTriad = "); Serial.println(unisonTriad);
     if (unisonTriad == 0) {

@@ -6,8 +6,8 @@
 #include "Configuration\Pins_Config.h"
 // ==================
 
-// === DISPLAY FUNCTIONS ===
-#include "Display\Display.h"
+// === HARDWARE PERIPHERALS ===
+#include "Hardware_Peripherals\Display.h"
 // ==================
 
 // Encoder state variables
@@ -16,34 +16,29 @@ int lastStateCLK;
 unsigned long lastEncButtonPress = 0;
 
 void checkEncoder() {
-  currentStateCLK = digitalRead(ENC_CLK);  // Read the current state of CLK
+  currentStateCLK = digitalRead(Encoder_CLK);  // Read the current state of CLK
 
-  // Pokud se stav CLK změnil
+  // if CLK state has changed
   if (currentStateCLK != lastStateCLK) {
-    // Urči směr podle stavu DT
-    if (digitalRead(ENC_DT) != currentStateCLK) {
-      GlobalBPM--;  // proti směru
+    // decide the direction according to the DT state
+    if (digitalRead(Encoder_DT) != currentStateCLK) {
+      GlobalBPM--;  // anti-clockwise
     } else {
-      GlobalBPM++;  // po směru
+      GlobalBPM++;  // clockwise
     }
 
-    // omez hodnotu BPM
+    // BPM value constrain
     GlobalBPM = constrain(GlobalBPM, 40, 240);
     headerDirty = true;
-    
-    /* // debug 
-    Serial.print("Global BPM: ");
-    Serial.println(GlobalBPM);
-    */
   }
 
   lastStateCLK = currentStateCLK;
 
-  // --- Tlačítko (zatím nevyužito, ale necháme pro budoucí rozšíření) ---
-  int btnState = digitalRead(ENC_SW);
+  // Button (not used yet, implement Preset mode later)
+  int btnState = digitalRead(Encoder_SW);
   if (btnState == LOW) {
     if (millis() - lastEncButtonPress > 50) {
-      Serial.println("Button pressed!");
+      //Serial.println("Button pressed!");
     }
     lastEncButtonPress = millis();
   }

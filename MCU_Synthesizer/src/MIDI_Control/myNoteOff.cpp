@@ -16,8 +16,8 @@
 #include "Voices\oscStopVoice.h"
 // ==================
 
-// === CONTROLS ===
-#include "Controls\MIDI_Control.h"
+// === CONFIGURATION ===
+#include "Configuration\MIDI_Config.h"
 // ==================
 
 // ----------- Keyboard -----------

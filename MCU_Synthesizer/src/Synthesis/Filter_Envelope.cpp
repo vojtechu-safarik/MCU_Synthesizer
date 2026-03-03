@@ -10,7 +10,7 @@
 unsigned long envelopeStartTime[FILTER_ENV_VOICES];
 unsigned long releaseStartTime[FILTER_ENV_VOICES];
 
-bool prevActiveArr[FILTER_ENV_VOICES]; // previous active state per voice
+bool prevActiveArr[FILTER_ENV_VOICES];    // previous active state per voice
 bool prevNoteOnArr[FILTER_ENV_VOICES];    // track previous voiceActive state (note-on edge)
 bool prevReleasingArr[FILTER_ENV_VOICES]; // track previous voiceReleasing state (release edge)
 

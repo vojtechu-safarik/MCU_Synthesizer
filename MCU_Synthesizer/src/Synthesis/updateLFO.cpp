@@ -12,8 +12,8 @@
 #include "Voices\resetAllVoices.h"
 // ==================
 
-// === DISPLAY FUNCTIONS ===
-#include "Display\Display.h"
+// === HARDWARE PERIPHERALS ===
+#include "Hardware_Peripherals\Display.h"
 // ==================
 
 void LFOupdate() {

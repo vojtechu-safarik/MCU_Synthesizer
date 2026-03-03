@@ -8,8 +8,8 @@ const int FILTER_ENV_VOICES = 6;
 extern unsigned long envelopeStartTime[FILTER_ENV_VOICES];
 extern unsigned long releaseStartTime[FILTER_ENV_VOICES];
 
-extern bool prevActiveArr[FILTER_ENV_VOICES]; // previous active state per voice
-extern bool prevNoteOnArr[FILTER_ENV_VOICES]; // track previous voiceActive state (note-on edge)
+extern bool prevActiveArr[FILTER_ENV_VOICES];    // previous active state per voice
+extern bool prevNoteOnArr[FILTER_ENV_VOICES];    // track previous voiceActive state (note-on edge)
 extern bool prevReleasingArr[FILTER_ENV_VOICES]; // track previous voiceReleasing state (release edge)
 
 extern float filterEnvelope_Attack_Coeff[FILTER_ENV_VOICES];

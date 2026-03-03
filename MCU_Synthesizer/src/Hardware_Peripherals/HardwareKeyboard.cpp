@@ -8,12 +8,13 @@
 #include "Global_Variables/Global_Variables.h"
 // ==================
 
-// === CONTROLS ===
-#include "Controls/MIDI_Control.h"
+// === CONFIGURATION ===
+#include "Configuration/MIDI_Config.h"
+#include "Configuration\Pins_Config.h"
 // ==================
 
-// === KEYBOARD ===
-#include "Keyboard/HardwareKeyboard.h"
+// === HARDWARE PERIPHERALS ===
+#include "Hardware_Peripherals/HardwareKeyboard.h"
 // ==================
 
 /* === CONFIGURATION === */
@@ -45,8 +46,8 @@ SeqRateSelect:
 
 static const byte ROWS = 3;
 static const byte COLS = 3;
-static byte rowPins[ROWS] = {30, 31, 32};
-static byte colPins[COLS] = {27, 28, 29};
+static byte rowPins[ROWS] = {Row_1, Row_2, Row_3};
+static byte colPins[COLS] = {Column_1, Column_2, Column_3};
 
 static char keymap[ROWS][COLS] = {
   {'0','1','2'},
@@ -54,7 +55,7 @@ static char keymap[ROWS][COLS] = {
   {'6','7','8'}
 };
 
-// MIDI notes: 254 = Rest (pauza)
+// MIDI notes: 254 = Rest (pause)
 static const byte keyToMidiNote[9] = {
   0,   // 0 - Oct Down
   0,   // 1 - Oct Up
@@ -86,9 +87,9 @@ unsigned long shiftPressTime = 0;
 
 static Keypad keypad = Keypad(makeKeymap(keymap), rowPins, colPins, ROWS, COLS);
 
-static byte activeKeyStack[32]; // Zvětšeno pro více not v Latch/Range
+static byte activeKeyStack[32]; // Amount of notes in Latch
 static byte activeKeyCount = 0;
-static int playingNotes[9];     // Sledování not v Direct Play pro okamžitou transpozici
+static int playingNotes[9];     // Tracking the notes in Direct Play for immediate transposition
 
 int sequenceBuffer[256];
 byte sequenceLength = 0;
@@ -110,7 +111,7 @@ void internal_stopNote() {
     }
 }
 
-// Okamžitě změní výšku tónů, které právě zní v Direct Play
+// Immediately change the pitch of Direct play
 void updateDirectPlayOctave() {
     if (CurrentSeqMode != 0) return; 
     for (int i = KEY_FIRST_NOTE; i <= KEY_LAST_NOTE; i++) {
@@ -125,14 +126,14 @@ void updateDirectPlayOctave() {
 }
 
 void pushKey(byte keyIndex) {
-    // V Arp módu (1) duplicity nechceme, aby to nehrálo divně
+    // Arp mode (1) doesnt support duplicities
     if (CurrentSeqMode == 1) {
         for (byte i = 0; i < activeKeyCount; i++) {
             if (activeKeyStack[i] == keyIndex) return; 
         }
     }
     
-    // V Latch módu (2) a ostatních teď můžeš sázet stejné noty za sebe
+    // Latch mode (2) can have the same notes in a row
     if (activeKeyCount < 12) {
         activeKeyStack[activeKeyCount++] = keyIndex;
     }
@@ -158,7 +159,7 @@ void rebuildSequence() {
         tempNotes[i] = keyToMidiNote[activeKeyStack[i]];
     }
 
-    // Sort pro UP/DOWN (Queue mód 2 se přeskakuje)
+    // Sort for UP/DOWN (Queue mode 2 is being skipped)
     if (CurrentSeqOrder < 2) {
         for (byte i = 0; i < activeKeyCount; i++) {
             for (byte j = i + 1; j < activeKeyCount; j++) {
@@ -181,7 +182,7 @@ void rebuildSequence() {
         int base = tempNotes[i];
         for (byte r = 0; r <= CurrentSeqOctave; r++) {
             if (sequenceLength < 32) {
-                // Pokud je to pauza (254), nepřičítáme oktávy
+                // If pause (254), dont increment octaves
                 sequenceBuffer[sequenceLength++] = (base == 254) ? 254 : (base + (r * 12));
             }
         }
@@ -224,7 +225,7 @@ void internal_sequencerUpdate() {
     internal_stopNote();
 
     if (rawNote == 254) {
-        internal_currentlyPlayingNote = -1; // Pauza
+        internal_currentlyPlayingNote = -1; // pause
     } else {
         int finalNote = rawNote + ((octaveValue - 2) * 12);
         if (finalNote < 0) finalNote = 0; if (finalNote > 127) finalNote = 127;
@@ -245,21 +246,21 @@ void Keyboard_init() {
 }
 
 void Keyboard_update() {
-    // 1. Sequencer musí běžet pořád
+    // 1. Sequencer must run all the time
     internal_sequencerUpdate();
 
-    // 2. TIMER PRO SMAZÁNÍ (přesunuto SEM)
-    // Musí být před "if (!keypad.getKeys()) return;", aby běžel i když se na nic nemačká
+    // 2. Timer for deleteing sequence
+    // must be before "if (!keypad.getKeys()) return;", so that it runs even if nothing is being pressed
     if (shiftActive && CurrentSeqMode == 2 && activeKeyCount > 0) {
         if (millis() - shiftPressTime > 2000) { 
             activeKeyCount = 0; 
             internal_stopNote();
             internal_playHead = 0;
-            shiftPressTime = millis(); // Reset pro další cyklus
+            shiftPressTime = millis(); // Reset for next cycle
         }
     }
 
-    // 3. Kontrola změn na klávesnici
+    // 3. Change checking for keyboard
     if (!keypad.getKeys()) return;
 
     for (byte i = 0; i < LIST_MAX; i++) {

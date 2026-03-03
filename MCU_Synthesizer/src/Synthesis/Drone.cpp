@@ -5,42 +5,42 @@
 
 // === SYNTHESIS FUNCTIONS ===
 #include "Synthesis\Teensy_Audio.h"
-#include "Synthesis\BPMLock.h"
+#include "Synthesis\Portamento.h" // smazat, možná zbytečný
 #include "Synthesis\Drone.h"
 // ==================
 
-// === CONTROLS ===
-#include "Controls\MIDI_Control.h"
+// === CONFIGURATION ===
+#include "Configuration\MIDI_Config.h"
 // ==================
 
-// STORAGE
+// Storage
 DroneSnapshot droneSnapshots[8];
 volatile bool DRONE_requestSave[8] = { false, false, false, false, false, false, false, false };
 
-int16_t droneWaveforms[DRONE_SLOTS][DRONE_WAVE_VOICES][TABLE_SIZE];
+int16_t droneWaveforms[Drone_Slots][Drone_Wave_Voices][TABLE_SIZE];
 
-// ENVELOPE STATE
-float droneFilterEnvelope_Coeff[DRONE_SLOTS];
-unsigned long droneEnvelopeStart[DRONE_SLOTS];
-unsigned long droneReleaseStart[DRONE_SLOTS];
-bool dronePrevNoteOn[DRONE_SLOTS];
-bool dronePrevReleasing[DRONE_SLOTS];
+// Envelope state
+float droneFilterEnvelope_Coeff[Drone_Slots];
+unsigned long droneEnvelopeStart[Drone_Slots];
+unsigned long droneReleaseStart[Drone_Slots];
+bool dronePrevNoteOn[Drone_Slots];
+bool dronePrevReleasing[Drone_Slots];
 
-float droneFilter_Attack_Coeff[DRONE_SLOTS];
-float droneFilter_Decay_Coeff[DRONE_SLOTS];
-float droneFilter_Sustain_Coeff[DRONE_SLOTS];
-float droneFilter_Release_Coeff[DRONE_SLOTS];
+float droneFilter_Attack_Coeff[Drone_Slots];
+float droneFilter_Decay_Coeff[Drone_Slots];
+float droneFilter_Sustain_Coeff[Drone_Slots];
+float droneFilter_Release_Coeff[Drone_Slots];
 
-float drone_savedAttackCoef[DRONE_SLOTS];
-float drone_savedDecayCoef[DRONE_SLOTS];
-float drone_savedSustainCoef[DRONE_SLOTS];
+float drone_savedAttackCoef[Drone_Slots];
+float drone_savedDecayCoef[Drone_Slots];
+float drone_savedSustainCoef[Drone_Slots];
 
-// PARAMETERS
+// Parameters
 float defaultSVLpfRes = 0.707f;
 float DroneA_HPFcutoff = HPFcutoffFreq;
 float DroneB_HPFcutoff = HPFcutoffFreq;
 
-// LFO STATE
+// LFO State
 unsigned long DroneA_LFOrate_us = 0;
 unsigned long DroneB_LFOrate_us = 0;
 
@@ -98,7 +98,7 @@ bool droneGroupB_releasing = false;
 int releasingDroneA_index = -1;
 int releasingDroneB_index = -1;
 
-// FUNCTIONS
+// Functions
 void DroneInit() {
     DRONEmodeSelect = 0;
 
@@ -107,7 +107,7 @@ void DroneInit() {
 }
 
 void DroneEnvelopesInit() {
-    for (int i = 0; i < DRONE_SLOTS; ++i) {
+    for (int i = 0; i < Drone_Slots; ++i) {
         droneFilterEnvelope_Coeff[i] = 1.0f;
         droneEnvelopeStart[i] = 0;
         droneReleaseStart[i] = 0;

@@ -1,5 +1,5 @@
-#ifndef INPUTS_H
-#define INPUTS_H
+#ifndef ENCODER_AND_MULTIPLEXORS_H
+#define ENCODER_AND_MULTIPLEXORS_H
 
 // === GLOBAL VARIABLES ===
 #include "Global_Variables\Global_Variables.h"
@@ -10,9 +10,8 @@ extern int currentStateCLK;
 extern int lastStateCLK;
 extern unsigned long lastEncButtonPress;
 
-// FUNCTION DECLARATIONS
+// Function declarations
 void checkMux();                                         // Scan multiplexer inputs
-void checkSwitch();                                      // Read switch states
 void checkEncoder();                                     // Read rotary encoder
 
-#endif // INPUTS_H
+#endif // ENCODER_AND_MULTIPLEXORS_H
