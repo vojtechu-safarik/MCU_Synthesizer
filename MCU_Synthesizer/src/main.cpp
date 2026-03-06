@@ -107,13 +107,6 @@ void loop() {
     Serial.print("%, Total CPU Usage: ");
     Serial.print(AudioProcessorUsageMax());
     Serial.println("%");
-    
-    Serial.print("Voice 1 Active: ");
-    Serial.println(voiceActive_1);
-    Serial.print("Voice 2 Active: ");
-    Serial.println(voiceActive_2);
-    Serial.print("Voice 3 Active: ");
-    Serial.println(voiceActive_3);
   }
   */
 
@@ -132,7 +125,7 @@ void loop() {
   usbMIDI.read();
     static elapsedMillis lfoUpdateTimer;
     if (lfoUpdateTimer >= LFO_UPDATE_INTERVAL) {
-        LFOupdate();
+        LFO_update();
         DroneLFO_update();
         lfoUpdateTimer = 0;
     }
@@ -140,13 +133,13 @@ void loop() {
   updateVoices(); 
   
   if ((CurrentSeqMode != 0) && (LFOtypeSelect == 2)) {
-    LFOupdate();
+    LFO_update();
   }
 
-  // Zpracovat pending save požadavky ze vstupu (PD/MIDI)
+  // process pending save requests from input
   for (uint8_t s = 0; s < 8; ++s) {
     if (DRONE_requestSave[s]) {
-      // volání, které zkopíruje potřebné globální proměnné do snapshotu
+      // copy global variables into snapshot
       DroneSaveValues(s);
       DRONE_requestSave[s] = false;
     }
@@ -161,7 +154,7 @@ void loop() {
   // SMAZAT
   Keyboard_update();
   
-  LEDs_update();   // počítá logiku a nastavuje flagy přes IOExpander_setLed()
-  IOExpander_update();  // provede skutečné I2C zápisy (batch)
+  LEDs_update();        // all LED update functions at once - set flags for IOExpander_setLed()
+  IOExpander_update();  // flush cached states to IO Expander - batch I2C write
   
 }

@@ -16,7 +16,7 @@
 #include "Hardware_Peripherals\Display.h"
 // ==================
 
-void LFOupdate() {
+void LFO_update() {
     // === PHASE INCREMENT ACCORDING TO LFOrate ===
     // LFOrate in µs – length of one period
     float safeRate_us = max(1.0f, (float)LFOrate);  // at minimum 10 ms = 0.1 Hz

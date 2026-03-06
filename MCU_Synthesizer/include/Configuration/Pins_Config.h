@@ -80,10 +80,10 @@
 // ===================
 
 // === LED pins ===
-#define PIN_LED_Octave_1             22
-#define PIN_LED_Octave_2             17
-#define PIN_LED_Octave_3             16
-#define PIN_LED_Octave_4             15
+#define PIN_LED_Octave_1          22
+#define PIN_LED_Octave_2          17
+#define PIN_LED_Octave_3          16
+#define PIN_LED_Octave_4          15
 #define PIN_LED_Sequencer_Rate_1  14
 #define PIN_LED_Sequencer_Rate_2  18
 // ===================
