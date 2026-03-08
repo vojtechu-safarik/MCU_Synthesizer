@@ -1,0 +1,12 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "Library-KY-040")(type "KiCad")(uri "${KIPRJMOD}/Libraries/KY-040/Library-KY-040.pretty")(options "")(descr ""))
+  (lib (name "Library-74HC4067")(type "KiCad")(uri "${KIPRJMOD}/Libraries/74HC4067/Library-74HC4067.pretty")(options "")(descr ""))
+  (lib (name "Library-Teensy41")(type "KiCad")(uri "${KIPRJMOD}/Libraries/TeensyMCU/Library-Teensy41.pretty")(options "")(descr ""))
+  (lib (name "Rotary_Potentiometer")(type "KiCad")(uri "${KIPRJMOD}/Libraries/RotaryPot/Rotary_Potentiometer.pretty")(options "")(descr ""))
+  (lib (name "MX_Solderable")(type "KiCad")(uri "${KIPRJMOD}/Libraries/MXswitches/MX_Solderable.pretty")(options "")(descr ""))
+  (lib (name "ToggleSwitches")(type "KiCad")(uri "${KIPRJMOD}/Libraries/ToggleSwitches/ToggleSwitches.pretty")(options "")(descr ""))
+  (lib (name "PCF8574T_Custom")(type "KiCad")(uri "${KIPRJMOD}/Libraries/PCF8574T/PCF8574T_Custom.pretty")(options "")(descr ""))
+  (lib (name "TerminalBlock_2.54")(type "KiCad")(uri "${KIPRJMOD}/Libraries/TerminalBlock_2.54/TerminalBlock_2.54.pretty")(options "")(descr ""))
+  (lib (name "TerminalBlock_5")(type "KiCad")(uri "${KIPRJMOD}/Libraries/TerminalBlock_5/TerminalBlock_5.pretty")(options "")(descr ""))
+)

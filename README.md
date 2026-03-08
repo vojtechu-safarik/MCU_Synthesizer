@@ -11,7 +11,7 @@ Those header files have been further edited in order to lower the amount of anti
 
 ## Synthesis controls
 
-![Synthesizer - front view](images/synthesizer_front_view)
+![Synthesizer - front view](images/Synthesizer-front_view)
 
 sem jen obecně popsat bloky, lfo, drone a preset
 
@@ -21,10 +21,10 @@ sem jen obecně popsat bloky, lfo, drone a preset
   - what it does
 
 ## Circuit & PCB schematics
-![Main panel circuit schematics](images/main_panel_circuit_schematics)
-![Keyboard panel circuit schematics](images/keyboard_panel_circuit_schematics)
-![Main panel PCB schematics](images/main_panel_PCB_schematics)
-![Keyboard panel PCB schematics](images/keyboard_panel_PCB_schematics)
+![Main panel PCB schematics](Images/PCB_schematics-Main_panel)
+![Keyboard panel PCB schematics](Images/PCB_schematics-Keyboard_panel)
+
+Circuit & PCB schematics have been made in KiCad 9.0 and the project is available [here.](./Design/KiCad)
 
 ## Pinout Configuration
 
@@ -75,9 +75,9 @@ sem jen obecně popsat bloky, lfo, drone a preset
 
 ### 3D Model
 
-![3D Model - front view](images/3d_model_front_view)
-![3D Model - side view](images/3d_model_side_view)
-![3D Model - back view](images/3d_model_back_view)
+![3D Model - front view](Images/3D_model-front_view)
+![3D Model - side view](Images/3D_model-side_view)
+![3D Panel](Images/3D_panel)
 
 byl vyrobenej pro návrh ovládacích panelů ke gravírování a dodržení správných rozměrů
 

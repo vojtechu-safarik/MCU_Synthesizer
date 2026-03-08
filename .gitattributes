@@ -1,0 +1,11 @@
+# Ignore documentation in stats
+Design/** linguist-vendored
+Images/** linguist-vendored
+
+# Ignore used libraries in stats
+MCU_Synthesizer/lib/** linguist-vendored
+
+# Ignore every HTML files everywhere (for measure)
+*.html linguist-vendored
+*.css linguist-vendored
+*.js linguist-vendored

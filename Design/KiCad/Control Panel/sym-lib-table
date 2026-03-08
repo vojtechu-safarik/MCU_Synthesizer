@@ -1,0 +1,6 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "Teensy41")(type "KiCad")(uri "D:/Škola/VUT/Bakalářská práce/Návrh/KiCad/Libraries/TeensyMCU/teensy.kicad_sym")(options "")(descr ""))
+  (lib (name "74HC4067")(type "KiCad")(uri "D:/Škola/VUT/Bakalářská práce/Návrh/KiCad/Libraries/74HC4067/74HC4067.kicad_sym")(options "")(descr ""))
+  (lib (name "KY-040")(type "KiCad")(uri "D:/Škola/VUT/Bakalářská práce/Návrh/KiCad/Libraries/KY-040/KY-040.kicad_sym")(options "")(descr ""))
+)
