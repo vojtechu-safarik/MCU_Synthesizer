@@ -2,7 +2,7 @@
 #define ENCODER_AND_MULTIPLEXORS_H
 
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
+#include "Global_Variables/Global_Variables.h"
 // ==================
 
 // Encoder state variables

@@ -1,13 +1,13 @@
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
+#include "Global_Variables/Global_Variables.h"
 // ==================
 
 // === CONFIGURATION ===
-#include "Configuration\Pins_Config.h"
+#include "Configuration/Pins_Config.h"
 // ==================
 
 // === HARDWARE PERIPHERALS ===
-#include "Hardware_Peripherals\Display.h"
+#include "Hardware_Peripherals/Display.h"
 // ==================
 
 // Encoder state variables

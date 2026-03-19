@@ -1,9 +1,9 @@
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
+#include "Global_Variables/Global_Variables.h"
 // ==================
 
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\KBD_Tracking.h"
+#include "Synthesis/KBD_Tracking.h"
 // ==================
 
 // PRECOMPUTE KEYBOARD MULTIPLIERS

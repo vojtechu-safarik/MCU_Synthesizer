@@ -1,9 +1,9 @@
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
+#include "Global_Variables/Global_Variables.h"
 // ==================
 
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\LFO.h"
+#include "Synthesis/LFO.h"
 // ==================
 
 void resetLFOstate() {

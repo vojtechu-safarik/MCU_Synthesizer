@@ -1,16 +1,16 @@
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
-#include "Global_Variables\Wavetable_Variables.h"
+#include "Global_Variables/Global_Variables.h"
+#include "Global_Variables/Wavetable_Variables.h"
 // ==================
 
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\Teensy_Audio.h"
-#include "Synthesis\Portamento.h" // smazat, možná zbytečný
-#include "Synthesis\Drone.h"
+#include "Synthesis/Teensy_Audio.h"
+#include "Synthesis/Portamento.h" // smazat, možná zbytečný
+#include "Synthesis/Drone.h"
 // ==================
 
 // === CONFIGURATION ===
-#include "Configuration\MIDI_Config.h"
+#include "Configuration/MIDI_Config.h"
 // ==================
 
 // Storage

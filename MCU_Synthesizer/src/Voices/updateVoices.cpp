@@ -1,19 +1,19 @@
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
+#include "Global_Variables/Global_Variables.h"
 // ==================
 
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\Teensy_Audio.h"
-#include "Synthesis\Drone.h"
-#include "Synthesis\LFO.h"
-#include "Synthesis\KBD_Tracking.h"
-#include "Synthesis\Filter_Envelope.h"
-#include "Synthesis\Portamento.h"
+#include "Synthesis/Teensy_Audio.h"
+#include "Synthesis/Drone.h"
+#include "Synthesis/LFO.h"
+#include "Synthesis/KBD_Tracking.h"
+#include "Synthesis/Filter_Envelope.h"
+#include "Synthesis/Portamento.h"
 // ==================
 
 // === VOICES FUNCTIONS ===
-#include "Voices\updateVoices.h"
-#include "Voices\oscStopVoice.h"
+#include "Voices/updateVoices.h"
+#include "Voices/oscStopVoice.h"
 // ==================
 
 void updateVoices() {

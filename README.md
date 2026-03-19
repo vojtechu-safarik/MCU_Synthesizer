@@ -11,9 +11,31 @@ Those header files have been further edited in order to lower the amount of anti
 
 ## Synthesis controls
 
-![Synthesizer - front view](images/Synthesizer-front_view.png "Synthesizer - front view")
+![Synthesizer - front view](Images/Synthesizer-front_view.png "Synthesizer - front view")
 
-sem jen obecně popsat bloky, lfo, drone a preset
+### Oscillators
+abc
+
+### Filters
+abc
+
+### Envelopes
+abc
+
+### LFO
+abc
+
+### Portamento
+abc
+
+### Sequencer
+abc
+
+### Drone
+abc
+
+### Preset
+abc
 
 ## List of hardware components
 
@@ -88,6 +110,7 @@ sem jen obecně popsat bloky, lfo, drone a preset
 
   ### I/O Expander 1 Pinout:
   | I/O Expander Pin | Parameter name |
+  | :--- | :--- |
   | P0 | **LFO Mode #1** |
   | P1 | **LFO Mode #2** |
   | P2 | **LFO Mode #3** |
@@ -99,6 +122,7 @@ sem jen obecně popsat bloky, lfo, drone a preset
 
   ### I/O Expander 2 Pinout:
   | I/O Expander Pin | Parameter name |
+  | :--- | :--- |
   | P0 | **Sequencer Rate #3** |
   | P1 | **Sequencer Rate #4** |
   | P2 | **LFO Wave #5** |
@@ -202,11 +226,11 @@ Circuit & PCB schematics have been made in KiCad 9.0 and the project is availabl
 
 ![3D Model - front view](Images/3D_model-front_view.png "3D Model - front view")
 ![3D Model - side view](Images/3D_model-side_view.png "3D Model - side view")
-![3D Panel](Images/3D_panel)
+![3D Panel](Images/3D_panel.png "3D Panel")
 
 The 3D model has been made for laser engraving of the control panel and during the designing phase to check the real dimensions and component distances. 
 
 ## References
 
-* Teensy 4.1 information: [link](https://www.pjrc.com/store/teensy41.html)
-* Audio Adaptor Board for Teensy information: [link](https://www.pjrc.com/store/teensy3_audio.html)
+* Teensy 4.1 information: [link PJRC.com](https://www.pjrc.com/store/teensy41.html)
+* Audio Adaptor Board for Teensy information: [link PJRC.com](https://www.pjrc.com/store/teensy3_audio.html)

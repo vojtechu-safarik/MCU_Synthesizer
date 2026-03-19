@@ -1,12 +1,12 @@
 #include <Arduino.h>
 
 // === CONFIGURATION ===
-#include "Configuration\Pins_Config.h"
-#include "Configuration\Setup.h"
+#include "Configuration/Pins_Config.h"
+#include "Configuration/Setup.h"
 // ==================
 
 // === HARDWARE PERIPHERALS ===
-#include "Hardware_Peripherals\Encoder_and_Multiplexors.h"
+#include "Hardware_Peripherals/Encoder_and_Multiplexors.h"
 // ==================
 
 void Encoder_and_Mux_setup() {

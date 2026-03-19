@@ -4,8 +4,8 @@
 #include <Arduino.h>
 
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
-#include "Global_Variables\Wavetable_Variables.h"
+#include "Global_Variables/Global_Variables.h"
+#include "Global_Variables/Wavetable_Variables.h"
 // ==================
 
 // Structure for storing a drone snapshot (settings)

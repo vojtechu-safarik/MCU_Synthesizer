@@ -1,17 +1,17 @@
 #include <Arduino.h>
 
 // === WAVETABLES ===
-#include "Wavetables\Saw_Wavetables_AA.h"        // contains saw1  ... saw11
-#include "Wavetables\Square_Wavetables_AA.h"     // contains square1 ... square8
-#include "Wavetables\Triangle_Wavetables_AA.h"   // contains triangle1  ... triangle8
-#include "Wavetables\Sine_Wavetables_AA.h"       // contains sine1 ... sineXY
-#include "Wavetables\Instrument_Wavetables_AA.h" // contains instrument1  ... instrumentXY
-#include "Wavetables\Voice_Wavetables_AA.h"      // contains voice1 ... voiceXY
-#include "Wavetables\LFO_Wavetables.h"           // contains sine, sawRISE, sawFALL, square, noise
+#include "Wavetables/Saw_Wavetables_AA.h"        // contains saw1  ... saw11
+#include "Wavetables/Square_Wavetables_AA.h"     // contains square1 ... square8
+#include "Wavetables/Triangle_Wavetables_AA.h"   // contains triangle1  ... triangle8
+#include "Wavetables/Sine_Wavetables_AA.h"       // contains sine1 ... sineXY
+#include "Wavetables/Instrument_Wavetables_AA.h" // contains instrument1  ... instrumentXY
+#include "Wavetables/Voice_Wavetables_AA.h"      // contains voice1 ... voiceXY
+#include "Wavetables/LFO_Wavetables.h"           // contains sine, sawRISE, sawFALL, square, noise
 // ==================
 
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Wavetable_Variables.h"
+#include "Global_Variables/Wavetable_Variables.h"
 // ==================
 
 #define TABLE_SIZE 256

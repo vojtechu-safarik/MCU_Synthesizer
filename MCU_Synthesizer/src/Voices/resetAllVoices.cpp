@@ -1,9 +1,9 @@
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\updateMorphWaveform.h"
+#include "Synthesis/updateMorphWaveform.h"
 // ==================
 
 // === VOICES FUNCTIONS ===
-#include "Voices\resetAllVoices.h"
+#include "Voices/resetAllVoices.h"
 // ==================
 
 // resets the voices upon SynthMode change 

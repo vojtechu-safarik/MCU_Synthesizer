@@ -115,12 +115,20 @@
 
 // === Hardware Keyboard pins ===
 // Matrix - organised in rows and columns
-#define Row_1     30
-#define Row_2     31  
-#define Row_3     32  
-#define Column_1  27
-#define Column_2  28
-#define Column_3  29
+#define Column_1  24
+#define Column_2  25
+#define Column_3  26
+#define Column_4  27
+#define Column_5  28
+#define Column_6  29
+#define Column_7  30
+#define Column_8  31
+#define Column_9  32
+#define Row_1     33
+#define Row_2     34  
+#define Row_3     35  
+#define Row_4     36  
+#define Row_5     37  
 // ===================
 
 #endif // PINS_CONFIG_H

@@ -5,7 +5,7 @@
 #include <Arduino.h>
 
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\Teensy_Audio.h"
+#include "Synthesis/Teensy_Audio.h"
 // ==================
 
 // Voice state variables

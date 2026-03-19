@@ -10,7 +10,7 @@
 
 // === CONFIGURATION ===
 #include "Configuration/MIDI_Config.h"
-#include "Configuration\Pins_Config.h"
+#include "Configuration/Pins_Config.h"
 // ==================
 
 // === HARDWARE PERIPHERALS ===
@@ -19,8 +19,7 @@
 
 /* === CONFIGURATION === */
 
-/* 
-SeqMode: 
+/* SeqMode: 
     0 = Off
     1 = Arp
     2 = Latch
@@ -44,32 +43,90 @@ SeqRateSelect:
 
 /* ===================== */
 
-static const byte ROWS = 3;
-static const byte COLS = 3;
-static byte rowPins[ROWS] = {Row_1, Row_2, Row_3};
-static byte colPins[COLS] = {Column_1, Column_2, Column_3};
+static const byte ROWS = 5;
+static const byte COLS = 9;
+static byte rowPins[ROWS] = {Row_1, Row_2, Row_3, Row_4, Row_5};
+static byte colPins[COLS] = {Column_1, Column_2, Column_3, Column_4, Column_5, Column_6, Column_7, Column_8, Column_9};
 
 static char keymap[ROWS][COLS] = {
-  {'0','1','2'},
-  {'3','4','5'},
-  {'6','7','8'}
+  { 1,  2,  3,  4,  5,  6,  7,  8,  9},
+  {10, 11, 12, 13, 14, 15, 16, 17, 18},
+  {19, 20, 21, 22, 23, 24, 25, 26, 27},
+  {28, 29, 30, 31, 32, 33, 34, 35, 36},
+  {37, 38, 39, 40, 41, 42, 43, 44, 45}
 };
 
 // MIDI notes: 254 = Rest (pause)
-static const byte keyToMidiNote[9] = {
+static const byte keyToMidiNote[45] = {
   0,   // 0 - Oct Down
   0,   // 1 - Oct Up
-  60,  // 2
-  67,  // 3
-  72,  // 4
-  64,  // 5
-  79,  // 6
-  83,  // 7
-  254  // 8 - SHIFT / REST
+  28,  // 2 - FIRST NOTE
+  29,  // 3
+  30,  // 4
+  31,  // 5
+  32,  // 6
+  33,  // 7
+  34,  // 8
+  35,  // 9
+  36,  // 10
+  37,  // 11
+  38,  // 12
+  39,  // 13
+  40,  // 14
+  41,  // 15
+  42,  // 16
+  43,  // 17
+  44,  // 18
+  45,  // 19
+  46,  // 20
+  47,  // 21
+  48,  // 22
+  49,  // 23
+  50,  // 24
+  51,  // 25
+  52,  // 26
+  53,  // 27
+  54,  // 28
+  55,  // 29
+  56,  // 30 - LAST NOTE
+  254, // 31 - Rest Button
+  0,   // 32 - Drone Button #1
+  0,   // 33 - Drone Button #2
+  0,   // 34 - Drone Button #3
+  0,   // 35 - Drone Button #4
+  0,   // 36 - Drone Button #5
+  0,   // 37 - Drone Button #6
+  0,   // 38 - Drone Button #7
+  0,   // 39 - Drone Button #8
+  0,   // 40 - LFO Mode #1 #2
+  0,   // 41 - LFO Mode #3 #4
+  0,   // 42 - (Unused)
+  0,   // 43 - (Unused)
+  0    // 44 - Shift Button
 };
 
-static const byte keyToLFOWave[9] = {
-  255, 255, 0, 2, 3, 1, 255, 255, 255
+static const byte keyToLFOWave[45] = {
+  255, 255,   0, 255,   1, 255,   2,   3, 255,
+    4, 255, 255, 255, 255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255, 255, 255, 255, 255
+};
+
+static const byte keyToPORTlockRate[45] = {
+  255, 255, 255, 255, 255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,   0,   1,   2,   3,
+    4,   5, 255, 255, 255, 255, 255, 255, 255
+};
+
+static const byte keyToSeqRateSelect[45] = {
+    0,   1, 255, 255, 255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255, 255, 255, 255, 255
 };
 
 static constexpr byte HW_CHANNEL  = 0;
@@ -78,18 +135,17 @@ static constexpr byte HW_VELOCITY = 127;
 static constexpr byte KEY_OCT_DOWN   = 0;
 static constexpr byte KEY_OCT_UP     = 1;
 static constexpr byte KEY_FIRST_NOTE = 2;
-static constexpr byte KEY_LAST_NOTE  = 7;
-static constexpr byte KEY_SHIFT      = 8;
-
-unsigned long shiftPressTime = 0;
+static constexpr byte KEY_LAST_NOTE  = 30;
+static constexpr byte KEY_REST       = 31;
+static constexpr byte KEY_SHIFT      = 44;
 
 /* ================== STATE VARIABLES ================== */
 
 static Keypad keypad = Keypad(makeKeymap(keymap), rowPins, colPins, ROWS, COLS);
 
-static byte activeKeyStack[32]; // Amount of notes in Latch
+static byte activeKeyStack[32];  // Amount of notes in Latch
 static byte activeKeyCount = 0;
-static int playingNotes[9];     // Tracking the notes in Direct Play for immediate transposition
+static int playingNotes[45];     // Tracking the notes in Direct Play for immediate transposition
 
 int sequenceBuffer[256];
 byte sequenceLength = 0;
@@ -100,6 +156,9 @@ static unsigned long internal_gateOffTime = 0;
 static byte internal_playHead = 0; 
 
 static bool shiftActive = false;
+static bool restActive = false;
+unsigned long restPressTime = 0; // for deleting sequence
+
 int octaveValue = 2; 
 
 /* ================== HELPERS ================== */
@@ -156,7 +215,11 @@ void rebuildSequence() {
 
     int tempNotes[12];
     for (byte i = 0; i < activeKeyCount; i++) {
-        tempNotes[i] = keyToMidiNote[activeKeyStack[i]];
+        if (activeKeyStack[i] == KEY_REST) {
+            tempNotes[i] = 254;
+        } else {
+            tempNotes[i] = keyToMidiNote[activeKeyStack[i]];
+        }
     }
 
     // Sort for UP/DOWN (Queue mode 2 is being skipped)
@@ -240,7 +303,7 @@ void internal_sequencerUpdate() {
 /* ================== CORE LOOP ================== */
 
 void Keyboard_init() {
-    for(int i=0; i<9; i++) playingNotes[i] = -1;
+    for(int i=0; i<45; i++) playingNotes[i] = -1;
     activeKeyCount = 0;
     internal_lastStepTime = millis();
 }
@@ -249,14 +312,13 @@ void Keyboard_update() {
     // 1. Sequencer must run all the time
     internal_sequencerUpdate();
 
-    // 2. Timer for deleteing sequence
-    // must be before "if (!keypad.getKeys()) return;", so that it runs even if nothing is being pressed
-    if (shiftActive && CurrentSeqMode == 2 && activeKeyCount > 0) {
-        if (millis() - shiftPressTime > 2000) { 
+    // 2. Timer for deleting sequence
+    if (restActive && CurrentSeqMode == 2 && activeKeyCount > 0) {
+        if (millis() - restPressTime > 2000) { 
             activeKeyCount = 0; 
             internal_stopNote();
             internal_playHead = 0;
-            shiftPressTime = millis(); // Reset for next cycle
+            restPressTime = millis(); // Reset for next cycle
         }
     }
 
@@ -265,42 +327,71 @@ void Keyboard_update() {
 
     for (byte i = 0; i < LIST_MAX; i++) {
         if (!keypad.key[i].stateChanged) continue;
-        byte index = keypad.key[i].kchar - '0';
-        if (index >= 9) continue;
+        
+        byte index = keypad.key[i].kchar - 1; 
+        if (index >= 45) continue;
 
         switch (keypad.key[i].kstate) {
             case PRESSED:
+                if (index == KEY_SHIFT) {
+                    shiftActive = true;
+                    break;
+                }
+
+                // --- SHIFT LOGIC ---
+                if (shiftActive) {
+                    // LFO Wave selection
+                    if (keyToLFOWave[index] != 255) {
+                        VirtualControlChange(0, CC_LFOwaveSelect, keyToLFOWave[index]);
+                    }
+                    // Portamento/Lock Rate
+                    if (keyToPORTlockRate[index] != 255) {
+                        VirtualControlChange(0, CC_PORTlockRate, keyToPORTlockRate[index]);
+                    }
+                    
+                    // Seq Rate Increment/Decrement (0..3)
+                    // KEY_OCT_DOWN (Index 0) decreases rate
+                    if (index == KEY_OCT_DOWN) {
+                        if (SeqRateSelect > 0) SeqRateSelect--;
+                    }
+                    // KEY_OCT_UP (Index 1) increases rate
+                    if (index == KEY_OCT_UP) {
+                        if (SeqRateSelect < 3) SeqRateSelect++;
+                    }
+                    break; 
+                }
+
+                // --- NORMAL LOGIC ---
                 if (index == KEY_OCT_DOWN) {
                     if (octaveValue > 0) {
                         octaveValue--;
-                        if (CurrentSeqMode == 0) VirtualControlChange(0, CCoctave, octaveValue);
+                        if (CurrentSeqMode == 0) VirtualControlChange(0, CC_octave, octaveValue);
                     }
                     break;
                 }
                 if (index == KEY_OCT_UP) {
                     if (octaveValue < 4) {
                         octaveValue++;
-                        if (CurrentSeqMode == 0) VirtualControlChange(0, CCoctave, octaveValue);
+                        if (CurrentSeqMode == 0) VirtualControlChange(0, CC_octave, octaveValue);
                     }
                     break;
                 }
-                if (index == KEY_SHIFT) {
-                    shiftActive = true;
-                    shiftPressTime = millis(); 
-                    if (CurrentSeqMode > 0) pushKey(index); 
+
+                if (index == KEY_REST) {
+                    restActive = true;
+                    restPressTime = millis();
+                    if (CurrentSeqMode > 0) pushKey(index);
                     break;
                 }
 
                 if (index >= KEY_FIRST_NOTE && index <= KEY_LAST_NOTE) {
-                    if (shiftActive) {
-                        byte lfoWave = keyToLFOWave[index];
-                        if (lfoWave != 255) VirtualControlChange(0, CCLFOwaveSelect, lfoWave);
+                    if (CurrentSeqMode > 0) {
+                        pushKey(index);
                     } else {
-                        if (CurrentSeqMode > 0) {
-                            pushKey(index);
-                        } else {
-                            byte note = keyToMidiNote[index];
-                            if (note != 0) myNoteOn(HW_CHANNEL, note, HW_VELOCITY);
+                        byte note = keyToMidiNote[index];
+                        if (note != 0) {
+                            playingNotes[index] = note + ((octaveValue - 2) * 12);
+                            myNoteOn(HW_CHANNEL, (byte)playingNotes[index], HW_VELOCITY);
                         }
                     }
                 }
@@ -309,13 +400,20 @@ void Keyboard_update() {
             case RELEASED:
                 if (index == KEY_SHIFT) {
                     shiftActive = false;
+                } 
+                else if (index == KEY_REST) {
+                    restActive = false;
                     if (CurrentSeqMode == 1) popKey(index);
-                } else if (index >= KEY_FIRST_NOTE && index <= KEY_LAST_NOTE) {
+                } 
+                else if (index >= KEY_FIRST_NOTE && index <= KEY_LAST_NOTE) {
                     if (CurrentSeqMode == 1) {
                         popKey(index);
                     } else if (CurrentSeqMode == 0) {
                         byte note = keyToMidiNote[index];
-                        if (note != 0) myNoteOff(HW_CHANNEL, note, 0);
+                        if (note != 0 && playingNotes[index] != -1) {
+                            myNoteOff(HW_CHANNEL, (byte)playingNotes[index], 0);
+                            playingNotes[index] = -1;
+                        }
                     }
                 }
                 break;

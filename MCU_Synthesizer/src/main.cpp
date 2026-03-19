@@ -29,49 +29,49 @@
 // ====== Project INCLUDES ======
 
 // === WAVETABLES ===
-#include "Wavetables\Saw_Wavetables_AA.h"        // contains saw1  ... saw11
-#include "Wavetables\Square_Wavetables_AA.h"     // contains square1 ... square8
-#include "Wavetables\Triangle_Wavetables_AA.h"   // contains triangle1  ... triangle8
-#include "Wavetables\Sine_Wavetables_AA.h"       // contains sine1 ... sineXY
-#include "Wavetables\Instrument_Wavetables_AA.h" // contains instrument1  ... instrumentXY
-#include "Wavetables\Voice_Wavetables_AA.h"      // contains voice1 ... voiceXY
-#include "Wavetables\LFO_Wavetables.h"           // contains sine, sawRISE, sawFALL, square, noise
+#include "Wavetables/Saw_Wavetables_AA.h"        // contains saw1  ... saw11
+#include "Wavetables/Square_Wavetables_AA.h"     // contains square1 ... square8
+#include "Wavetables/Triangle_Wavetables_AA.h"   // contains triangle1  ... triangle8
+#include "Wavetables/Sine_Wavetables_AA.h"       // contains sine1 ... sineXY
+#include "Wavetables/Instrument_Wavetables_AA.h" // contains instrument1  ... instrumentXY
+#include "Wavetables/Voice_Wavetables_AA.h"      // contains voice1 ... voiceXY
+#include "Wavetables/LFO_Wavetables.h"           // contains sine, sawRISE, sawFALL, square, noise
 // ==================
 
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
-#include "Global_Variables\Wavetable_Variables.h"
+#include "Global_Variables/Global_Variables.h"
+#include "Global_Variables/Wavetable_Variables.h"
 // ==================
 
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\Teensy_Audio.h"
-#include "Synthesis\Drone.h"
-#include "Synthesis\Filter_Envelope.h"
-#include "Synthesis\updateMorphWaveform.h"
-#include "Synthesis\LFO.h"
-#include "Synthesis\Portamento.h"
-#include "Synthesis\KBD_Tracking.h"
+#include "Synthesis/Teensy_Audio.h"
+#include "Synthesis/Drone.h"
+#include "Synthesis/Filter_Envelope.h"
+#include "Synthesis/updateMorphWaveform.h"
+#include "Synthesis/LFO.h"
+#include "Synthesis/Portamento.h"
+#include "Synthesis/KBD_Tracking.h"
 // ==================
 
 // === VOICES FUNCTIONS ===
-#include "Voices\resetAllVoices.h"
-#include "Voices\oscPlayVoice.h"
-#include "Voices\oscStopVoice.h"
-#include "Voices\updateVoices.h"
+#include "Voices/resetAllVoices.h"
+#include "Voices/oscPlayVoice.h"
+#include "Voices/oscStopVoice.h"
+#include "Voices/updateVoices.h"
 // ==================
 
 // === CONFIGURATION ===
-#include "Configuration\Pins_Config.h"
-#include "Configuration\Setup.h"
-#include "Configuration\MIDI_Config.h"
+#include "Configuration/Pins_Config.h"
+#include "Configuration/Setup.h"
+#include "Configuration/MIDI_Config.h"
 // ==================
 
 // === HARDWARE PERIPHERALS ===
-#include "Hardware_Peripherals\Display.h"
+#include "Hardware_Peripherals/Display.h"
 #include "Hardware_Peripherals/IO_Expander.h"
-#include "Hardware_Peripherals\Encoder_and_Multiplexors.h"
+#include "Hardware_Peripherals/Encoder_and_Multiplexors.h"
 #include "Hardware_Peripherals/LEDs.h"
-#include "Hardware_Peripherals\HardwareKeyboard.h"
+#include "Hardware_Peripherals/HardwareKeyboard.h"
 // ==================
 
 // ====== end Project INCLUDES ======

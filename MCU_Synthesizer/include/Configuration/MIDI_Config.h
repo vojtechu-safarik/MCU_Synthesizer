@@ -45,8 +45,9 @@
 #define CCseqGatePot 88
 // ======================
 
-#define CCoctave 59
-#define CCLFOwaveSelect 81
+#define CC_octave 59
+#define CC_LFOwaveSelect 81
+#define CC_PORTlockRate 84
 
 // ===================
 

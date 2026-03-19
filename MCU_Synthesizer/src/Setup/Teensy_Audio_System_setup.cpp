@@ -1,7 +1,7 @@
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\Teensy_Audio.h"
-#include "Synthesis\Drone.h"
-#include "Synthesis\updateMorphWaveform.h"
+#include "Synthesis/Teensy_Audio.h"
+#include "Synthesis/Drone.h"
+#include "Synthesis/updateMorphWaveform.h"
 // ==================
 
 void Teensy_Audio_setup() {

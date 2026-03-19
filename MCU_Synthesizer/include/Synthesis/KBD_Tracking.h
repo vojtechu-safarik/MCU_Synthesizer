@@ -2,7 +2,7 @@
 #define KBD_TRACKING_H
 
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
+#include "Global_Variables/Global_Variables.h"
 // ==================
 
 // INLINE HELPERS

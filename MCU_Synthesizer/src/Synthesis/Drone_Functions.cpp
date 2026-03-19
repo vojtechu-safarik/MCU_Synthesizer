@@ -1,20 +1,20 @@
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
-#include "Global_Variables\Wavetable_Variables.h"
+#include "Global_Variables/Global_Variables.h"
+#include "Global_Variables/Wavetable_Variables.h"
 // ==================
 
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\Teensy_Audio.h"
-#include "Synthesis\Portamento.h"
-#include "Synthesis\Drone.h"
+#include "Synthesis/Teensy_Audio.h"
+#include "Synthesis/Portamento.h"
+#include "Synthesis/Drone.h"
 // ==================
 
 // === HARDWARE PERIPHERALS ===
-#include "Hardware_Peripherals\HardwareKeyboard.h"
+#include "Hardware_Peripherals/HardwareKeyboard.h"
 // ==================
 
 // === CONFIGURATION ===
-#include "Configuration\MIDI_Config.h"
+#include "Configuration/MIDI_Config.h"
 // ==================
 
 // Runtime proměnné (mimo funkci)

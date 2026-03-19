@@ -2,7 +2,7 @@
 #define PORTAMENTO_H
 
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"  // možná smazat, zbytečný
+#include "Global_Variables/Global_Variables.h"  // možná smazat, zbytečný
 // ==================
 
 // Inline timing helper

@@ -4,7 +4,7 @@
 // ========================
 
 // === CONFIGURATION ===
-#include "Configuration\Pins_Config.h"
+#include "Configuration/Pins_Config.h"
 // ==================
 
 // === HARDWARE PERIPHERALS ===

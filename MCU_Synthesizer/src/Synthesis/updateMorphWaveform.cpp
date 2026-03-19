@@ -1,10 +1,10 @@
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
-#include "Global_Variables\Wavetable_Variables.h"
+#include "Global_Variables/Global_Variables.h"
+#include "Global_Variables/Wavetable_Variables.h"
 // ==================
 
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\Teensy_Audio.h"
+#include "Synthesis/Teensy_Audio.h"
 // ==================
 
 // ----------- Update interpolated waveform -----------

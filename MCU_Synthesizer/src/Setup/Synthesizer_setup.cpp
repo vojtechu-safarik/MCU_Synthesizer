@@ -1,15 +1,15 @@
 // === CONFIGURATION ===
-#include "Configuration\Setup.h"
+#include "Configuration/Setup.h"
 // ==================
 
 // === HARDWARE PERIPHERALS ===
-#include "Hardware_Peripherals\Display.h"
+#include "Hardware_Peripherals/Display.h"
 #include "Hardware_Peripherals/IO_Expander.h"
 #include "Hardware_Peripherals/LEDs.h"
 // ==================
 
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\KBD_Tracking.h"
+#include "Synthesis/KBD_Tracking.h"
 // ==================
 
 // all setup functions at once (run once in main loop)

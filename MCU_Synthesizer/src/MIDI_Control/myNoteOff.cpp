@@ -2,22 +2,22 @@
 // ====== Headers required by function ======
 
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
+#include "Global_Variables/Global_Variables.h"
 // ==================
 
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\Teensy_Audio.h"
-#include "Synthesis\LFO.h"
-#include "Synthesis\KBD_Tracking.h"
+#include "Synthesis/Teensy_Audio.h"
+#include "Synthesis/LFO.h"
+#include "Synthesis/KBD_Tracking.h"
 // ==================
 
 // === VOICES FUNCTIONS ===
-#include "Voices\oscPlayVoice.h"
-#include "Voices\oscStopVoice.h"
+#include "Voices/oscPlayVoice.h"
+#include "Voices/oscStopVoice.h"
 // ==================
 
 // === CONFIGURATION ===
-#include "Configuration\MIDI_Config.h"
+#include "Configuration/MIDI_Config.h"
 // ==================
 
 // ----------- Keyboard -----------

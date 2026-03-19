@@ -1,5 +1,5 @@
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\Portamento.h"
+#include "Synthesis/Portamento.h"
 // ==================
 
 void PortamentoUpdate() {

@@ -5,7 +5,7 @@
 #include <SerialFlash.h>
 
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\Teensy_Audio.h"
+#include "Synthesis/Teensy_Audio.h"
 // ==================
 
 // GUItool: begin automatically generated code

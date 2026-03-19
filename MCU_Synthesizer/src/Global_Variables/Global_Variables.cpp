@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
+#include "Global_Variables/Global_Variables.h"
 // ==================
 
 // Wavetable state variables

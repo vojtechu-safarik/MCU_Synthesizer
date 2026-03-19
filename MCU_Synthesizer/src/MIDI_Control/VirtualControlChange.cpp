@@ -2,34 +2,34 @@
 // ====== Headers required by function ======
 
 // === WAVETABLES ===
-#include "Wavetables\Saw_Wavetables_AA.h"        // contains saw1  ... saw11
-#include "Wavetables\Square_Wavetables_AA.h"     // contains square1 ... square8
-#include "Wavetables\Triangle_Wavetables_AA.h"   // contains triangle1  ... triangle8
-#include "Wavetables\Sine_Wavetables_AA.h"       // contains sine1 ... sineXY
-#include "Wavetables\Instrument_Wavetables_AA.h" // contains instrument1  ... instrumentXY
-#include "Wavetables\Voice_Wavetables_AA.h"      // contains voice1 ... voiceXY
-#include "Wavetables\LFO_Wavetables.h"           // contains sine, sawRISE, sawFALL, square, noise
+#include "Wavetables/Saw_Wavetables_AA.h"        // contains saw1  ... saw11
+#include "Wavetables/Square_Wavetables_AA.h"     // contains square1 ... square8
+#include "Wavetables/Triangle_Wavetables_AA.h"   // contains triangle1  ... triangle8
+#include "Wavetables/Sine_Wavetables_AA.h"       // contains sine1 ... sineXY
+#include "Wavetables/Instrument_Wavetables_AA.h" // contains instrument1  ... instrumentXY
+#include "Wavetables/Voice_Wavetables_AA.h"      // contains voice1 ... voiceXY
+#include "Wavetables/LFO_Wavetables.h"           // contains sine, sawRISE, sawFALL, square, noise
 // ==================
 
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
+#include "Global_Variables/Global_Variables.h"
 // ==================
 
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\Teensy_Audio.h"
-#include "Synthesis\Drone.h"
-#include "Synthesis\updateMorphWaveform.h"
-#include "Synthesis\LFO.h"
-#include "Synthesis\KBD_Tracking.h"
-#include "Synthesis\Portamento.h" // smazat, možná zbytečný
+#include "Synthesis/Teensy_Audio.h"
+#include "Synthesis/Drone.h"
+#include "Synthesis/updateMorphWaveform.h"
+#include "Synthesis/LFO.h"
+#include "Synthesis/KBD_Tracking.h"
+#include "Synthesis/Portamento.h" // smazat, možná zbytečný
 // ==================
 
 // === VOICES FUNCTIONS ===
-#include "Voices\resetAllVoices.h"
+#include "Voices/resetAllVoices.h"
 // ==================
 
 // === CONFIGURATION ===
-#include "Configuration\MIDI_Config.h"
+#include "Configuration/MIDI_Config.h"
 // ==================
 
 // ====== end Headers required by function ======
@@ -201,7 +201,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }    
 
-    case CCoctave: {
+    case CC_octave: {
       switch (value) {
         case 0:
           octave = 24;
@@ -431,7 +431,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case CCLFOwaveSelect: {
+    case CC_LFOwaveSelect: {
       LFOwaveSelect = value;
       break;
     }
@@ -450,7 +450,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 84: {
+    case CC_PORTlockRate: {
       PORTlockRate = value;
       break;
     }

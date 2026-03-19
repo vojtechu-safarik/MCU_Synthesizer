@@ -1,22 +1,22 @@
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
-#include "Global_Variables\Wavetable_Variables.h"
+#include "Global_Variables/Global_Variables.h"
+#include "Global_Variables/Wavetable_Variables.h"
 // ==================
 
 // === CONFIGURATION ===
-#include "Configuration\Pins_Config.h"
+#include "Configuration/Pins_Config.h"
 // ==================
 
 // === CONFIGURATION ===
-#include "Configuration\MIDI_Config.h"
+#include "Configuration/MIDI_Config.h"
 // ==================
 
 // === HARDWARE PERIPHERALS ===
-#include "Hardware_Peripherals\Encoder_and_Multiplexors.h"
+#include "Hardware_Peripherals/Encoder_and_Multiplexors.h"
 // ==================
 
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\Drone.h"
+#include "Synthesis/Drone.h"
 // ==================
 
 void checkMux() {

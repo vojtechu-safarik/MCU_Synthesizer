@@ -1,19 +1,19 @@
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
-#include "Global_Variables\Wavetable_Variables.h"
+#include "Global_Variables/Global_Variables.h"
+#include "Global_Variables/Wavetable_Variables.h"
 // ==================
 
 // === SYNTHESIS FUNCTIONS ===
-#include "Synthesis\updateMorphWaveform.h"
-#include "Synthesis\LFO.h"
+#include "Synthesis/updateMorphWaveform.h"
+#include "Synthesis/LFO.h"
 // ==================
 
 // === VOICES FUNCTIONS ===
-#include "Voices\resetAllVoices.h"
+#include "Voices/resetAllVoices.h"
 // ==================
 
 // === HARDWARE PERIPHERALS ===
-#include "Hardware_Peripherals\Display.h"
+#include "Hardware_Peripherals/Display.h"
 // ==================
 
 void LFO_update() {

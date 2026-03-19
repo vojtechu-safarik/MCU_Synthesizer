@@ -7,16 +7,16 @@
 #include "ili9341_t3n_OCR_A_Custom_Font.h"
 
 // === GLOBAL VARIABLES ===
-#include "Global_Variables\Global_Variables.h"
-#include "Global_Variables\Wavetable_Variables.h"
+#include "Global_Variables/Global_Variables.h"
+#include "Global_Variables/Wavetable_Variables.h"
 // ==================
 
 // === HARDWARE PERIPHERALS ===
-#include "Hardware_Peripherals\Display.h"
+#include "Hardware_Peripherals/Display.h"
 // ==================
 
 // === CONFIGURATION ===
-#include "Configuration\Pins_Config.h"
+#include "Configuration/Pins_Config.h"
 // ==================
 
 // Create TFT Display object (SPI)
@@ -165,7 +165,7 @@ void drawRightPanelAllOnce() {
     int shapeIndex = (idx==0) ? currentShapeIndex_1 : (idx==1) ? currentShapeIndex_2 : currentShapeIndex_3;
 
     // 1) Wave – convert number to word (name)
-    const char* waveNames[] = { "SAW", "SQUARE", "TRIANGLE", "SINE" };
+    const char* waveNames[] = { "SAW", "SQUARE", "TRIANGLE", "SINE", "INSTRUMENT", "VOICE" };
     const char* waveName = (waveFamily >= 0 && waveFamily < 4) ? waveNames[waveFamily] : "?";
     snprintf(tb, sizeof(tb), waveName);
     tft.setCursor(tx, ty);
@@ -187,6 +187,10 @@ void drawRightPanelAllOnce() {
       shapeNorm = int(shapeIndex * 0.89);
     } else if (waveFamily == 3) {
       shapeNorm = int(shapeIndex * 1.38);
+    } else if (waveFamily == 2) {
+      shapeNorm = int(shapeIndex * 30.53); // smazat opravit otestovat doplnit
+    } else if (waveFamily == 3) {
+      shapeNorm = int(shapeIndex * 1.78); // smazat opravit otestovat doplnit
     }
 
     snprintf(tb, sizeof(tb), "Shape: %d", shapeNorm);
@@ -492,7 +496,7 @@ void drawOscBlock_fast(int idx) {
   char tb[48];
 
   // 1) Wave – convert number to name
-  const char* waveNames[] = { "SAW", "SQUARE", "TRIANGLE", "SINE" };
+  const char* waveNames[] = { "SAW", "SQUARE", "TRIANGLE", "SINE", "INSTRUMENT", "VOICE" };
   const char* waveName = (waveFamily >= 0 && waveFamily < 4) ? waveNames[waveFamily] : "?";
   snprintf(tb, sizeof(tb), waveName);
   tft.setCursor(tx, ty);
