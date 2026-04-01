@@ -113,9 +113,10 @@ AudioMixer4              mixer_4;                    //xy=1550,1425
 AudioMixer4              mixer_5;                    //xy=1750,650
 AudioMixer4              mixer_6;                    //xy=1900,1275
 AudioMixer4              mixer_7;                    //xy=1550,1725
+AudioMixer4              mixer_INVERT;               //xy=2500,1425
 AudioFilterLadder        ladder_Antialiasing;        //xy=2100,1275
 AudioAmplifier           amp_MASTER;                 //xy=2300,1275
-AudioOutputI2S           i2s_1;                      //xy=2500,1275
+AudioOutputI2S           i2s_1;                      //xy=2700,1275
 AudioConnection          patchCord1(waveform_1, amp_1);
 AudioConnection          patchCord2(waveform_2, amp_2);
 AudioConnection          patchCord3(waveform_3, amp_3);
@@ -209,19 +210,20 @@ AudioConnection          patchCord90(mixer_5, 0, mixer_6, 0);
 AudioConnection          patchCord91(mixer_6, 0, ladder_Antialiasing, 0);
 AudioConnection          patchCord92(ladder_Antialiasing, amp_MASTER);
 AudioConnection          patchCord93(amp_MASTER, 0, i2s_1, 0);
-AudioConnection          patchCord94(amp_MASTER, 0, i2s_1, 1);
-AudioConnection          patchCord95(pink_1, 0, filterNoiseLP_1, 0);
-AudioConnection          patchCord96(pinkDroneA, 0, filterNoiseDroneALP, 0);
-AudioConnection          patchCord97(pinkDroneB, 0, filterNoiseDroneBLP, 0);
-AudioConnection          patchCord98(filterNoiseLP_1, 0, filterNoiseHP_1, 0);
-AudioConnection          patchCord99(filterNoiseDroneALP, 0, filterNoiseDroneAHP, 0);
-AudioConnection          patchCord100(filterNoiseDroneBLP, 0, filterNoiseDroneBHP, 0);
-AudioConnection          patchCord101(filterNoiseHP_1, 2, envelopeNoise_1, 0);
-AudioConnection          patchCord102(filterNoiseDroneAHP, 2, envelopeNoiseDroneA, 0);
-AudioConnection          patchCord103(filterNoiseDroneBHP, 2, envelopeNoiseDroneB, 0);
-AudioConnection          patchCord104(envelopeNoise_1, 0, mixer_7, 0);
-AudioConnection          patchCord105(envelopeNoiseDroneA, 0, mixer_7, 1);
-AudioConnection          patchCord106(envelopeNoiseDroneB, 0, mixer_7, 2);
-AudioConnection          patchCord107(mixer_7, 0, mixer_6, 3);
-AudioControlSGTL5000     sgtl5000_1;                 //xy=2500,1025
+AudioConnection          patchCord94(amp_MASTER, 0, mixer_INVERT, 0);
+AudioConnection          patchCord95(mixer_INVERT, 0, i2s_1, 1);
+AudioConnection          patchCord96(pink_1, 0, filterNoiseLP_1, 0);
+AudioConnection          patchCord97(pinkDroneA, 0, filterNoiseDroneALP, 0);
+AudioConnection          patchCord98(pinkDroneB, 0, filterNoiseDroneBLP, 0);
+AudioConnection          patchCord99(filterNoiseLP_1, 0, filterNoiseHP_1, 0);
+AudioConnection          patchCord100(filterNoiseDroneALP, 0, filterNoiseDroneAHP, 0);
+AudioConnection          patchCord101(filterNoiseDroneBLP, 0, filterNoiseDroneBHP, 0);
+AudioConnection          patchCord102(filterNoiseHP_1, 2, envelopeNoise_1, 0);
+AudioConnection          patchCord103(filterNoiseDroneAHP, 2, envelopeNoiseDroneA, 0);
+AudioConnection          patchCord104(filterNoiseDroneBHP, 2, envelopeNoiseDroneB, 0);
+AudioConnection          patchCord105(envelopeNoise_1, 0, mixer_7, 0);
+AudioConnection          patchCord106(envelopeNoiseDroneA, 0, mixer_7, 1);
+AudioConnection          patchCord107(envelopeNoiseDroneB, 0, mixer_7, 2);
+AudioConnection          patchCord108(mixer_7, 0, mixer_6, 3);
+AudioControlSGTL5000     sgtl5000_1;                 //xy=2700,1025
 // GUItool: end automatically generated code

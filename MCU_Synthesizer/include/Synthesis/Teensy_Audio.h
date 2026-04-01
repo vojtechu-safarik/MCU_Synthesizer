@@ -142,6 +142,7 @@ extern AudioMixer4 mixer_4;
 extern AudioMixer4 mixer_5;
 extern AudioMixer4 mixer_6;
 extern AudioMixer4 mixer_7;
+extern AudioMixer4 mixer_INVERT;
 
 extern AudioOutputI2S i2s_1;
 extern AudioControlSGTL5000 sgtl5000_1;

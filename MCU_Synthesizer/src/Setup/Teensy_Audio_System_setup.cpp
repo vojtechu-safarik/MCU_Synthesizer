@@ -30,6 +30,7 @@ void Teensy_Audio_setup() {
   mixer_6.gain(0, 0.5);
   mixer_6.gain(1, 0.5);
   mixer_6.gain(2, 0.5);
+  mixer_INVERT.gain(0, -0.5); // invert Right (stereo) channel to make reverse phase L signal for symmetrical MONO output
 
   // initialization of the first waveform
   updateMorphWaveform_1();
