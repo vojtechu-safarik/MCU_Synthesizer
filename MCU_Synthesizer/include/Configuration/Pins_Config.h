@@ -45,17 +45,17 @@
 #define MUX_KBD_Track         2
 #define MUX_EG_Int            3
 #define MUX_HPF_Cutoff        4
-#define MUX_Filter_Attack     5
-#define MUX_Filter_Decay      6
-#define MUX_Filter_Sustain    7
-#define MUX_Filter_Release    8
-#define MUX_LFO_Rate          9
+#define MUX_Filter_Release    5
+#define MUX_Filter_Sustain    6
+#define MUX_Filter_Decay      7
+#define MUX_Filter_Attack     8
+#define MUX_LFO_Delay         9
 #define MUX_LFO_Depth         10
-#define MUX_LFO_Delay         11
-#define MUX_Amplitude_Attack  12
-#define MUX_Amplitude_Decay   13
-#define MUX_Amplitude_Sustain 14
-#define MUX_Amplitude_Release 15
+#define MUX_LFO_Rate          11
+#define MUX_Amplitude_Release 12
+#define MUX_Amplitude_Sustain 13
+#define MUX_Amplitude_Decay   14
+#define MUX_Amplitude_Attack  15
 // ===================
 
 // === Multiplexer #3 ===
@@ -89,22 +89,22 @@
 // ===================
 
 // === IO Expander pins ===
-#define PIN_LED_LFO_Mode_1        0
-#define PIN_LED_LFO_Mode_2        1
-#define PIN_LED_LFO_Mode_3        2
-#define PIN_LED_LFO_Mode_4        3
-#define PIN_LED_LFO_Wave_1        4
-#define PIN_LED_LFO_Wave_2        5
-#define PIN_LED_LFO_Wave_3        6
-#define PIN_LED_LFO_Wave_4        7
-#define PIN_LED_Sequencer_Rate_3  8
-#define PIN_LED_Sequencer_Rate_4  9
-#define PIN_LED_LFO_Wave_5        10
-#define PIN_LED_Portamento_Rate_1 11
-#define PIN_LED_Portamento_Rate_2 12
-#define PIN_LED_Portamento_Rate_3 13
-#define PIN_LED_Portamento_Rate_4 14
-#define PIN_LED_Portamento_Rate_5 15
+#define PIN_LED_LFO_Mode_1        3
+#define PIN_LED_LFO_Mode_2        2
+#define PIN_LED_LFO_Mode_3        4
+#define PIN_LED_LFO_Mode_4        5
+#define PIN_LED_LFO_Wave_1        8
+#define PIN_LED_LFO_Wave_2        9
+#define PIN_LED_LFO_Wave_3        10
+#define PIN_LED_LFO_Wave_4        11
+#define PIN_LED_Sequencer_Rate_3  1
+#define PIN_LED_Sequencer_Rate_4  0
+#define PIN_LED_LFO_Wave_5        12
+#define PIN_LED_Portamento_Rate_1 13
+#define PIN_LED_Portamento_Rate_2 14
+#define PIN_LED_Portamento_Rate_3 15
+#define PIN_LED_Portamento_Rate_4 6
+#define PIN_LED_Portamento_Rate_5 7
 // ===================
 
 // === Encoder KY-040 pins ===
@@ -115,20 +115,20 @@
 
 // === Hardware Keyboard pins ===
 // Matrix - organised in rows and columns
-#define Column_1  24
-#define Column_2  25
-#define Column_3  26
-#define Column_4  27
-#define Column_5  28
-#define Column_6  29
-#define Column_7  30
-#define Column_8  31
-#define Column_9  32
-#define Row_1     33
-#define Row_2     34  
-#define Row_3     35  
-#define Row_4     36  
-#define Row_5     37  
+#define Row_1    24
+#define Row_2    25
+#define Row_3    26
+#define Row_4    27
+#define Row_5    28
+#define Row_6    29
+#define Row_7    30
+#define Row_8    31
+#define Row_9    32
+#define Column_1 33
+#define Column_2 34  
+#define Column_3 35  
+#define Column_4 36  
+#define Column_5 37  
 // ===================
 
 #endif // PINS_CONFIG_H

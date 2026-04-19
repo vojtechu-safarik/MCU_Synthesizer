@@ -43,101 +43,119 @@ SeqRateSelect:
 
 /* ===================== */
 
-static const byte ROWS = 5;
-static const byte COLS = 9;
-static byte rowPins[ROWS] = {Row_1, Row_2, Row_3, Row_4, Row_5};
-static byte colPins[COLS] = {Column_1, Column_2, Column_3, Column_4, Column_5, Column_6, Column_7, Column_8, Column_9};
+static const byte ROWS = 9;
+static const byte COLS = 5;
+static byte rowPins[ROWS] = {Row_1, Row_2, Row_3, Row_4, Row_5, Row_6, Row_7, Row_8, Row_9};
+static byte colPins[COLS] = {Column_1, Column_2, Column_3, Column_4, Column_5};
 
 static char keymap[ROWS][COLS] = {
-  { 1,  2,  3,  4,  5,  6,  7,  8,  9},
-  {10, 11, 12, 13, 14, 15, 16, 17, 18},
-  {19, 20, 21, 22, 23, 24, 25, 26, 27},
-  {28, 29, 30, 31, 32, 33, 34, 35, 36},
-  {37, 38, 39, 40, 41, 42, 43, 44, 45}
+  { 1,  2,  3,  4,  5},
+  { 6,  7,  8,  9, 10},
+  {11, 12, 13, 14, 15},
+  {16, 17, 18, 19, 20},
+  {21, 22, 23, 24, 25},
+  {26, 27, 28, 29, 30}, 
+  {31, 32, 33, 34, 35},
+  {36, 37, 38, 39, 40},
+  {41, 42, 43, 44, 45}
 };
 
 // MIDI notes: 254 = Rest (pause)
 static const byte keyToMidiNote[45] = {
-  0,   // 0 - Oct Down
-  0,   // 1 - Oct Up
-  28,  // 2 - FIRST NOTE
-  29,  // 3
-  30,  // 4
-  31,  // 5
-  32,  // 6
-  33,  // 7
-  34,  // 8
-  35,  // 9
-  36,  // 10
-  37,  // 11
-  38,  // 12
-  39,  // 13
-  40,  // 14
-  41,  // 15
-  42,  // 16
-  43,  // 17
-  44,  // 18
-  45,  // 19
-  46,  // 20
-  47,  // 21
-  48,  // 22
-  49,  // 23
-  50,  // 24
-  51,  // 25
-  52,  // 26
-  53,  // 27
-  54,  // 28
-  55,  // 29
-  56,  // 30 - LAST NOTE
-  254, // 31 - Rest Button
-  0,   // 32 - Drone Button #1
-  0,   // 33 - Drone Button #2
-  0,   // 34 - Drone Button #3
-  0,   // 35 - Drone Button #4
-  0,   // 36 - Drone Button #5
-  0,   // 37 - Drone Button #6
-  0,   // 38 - Drone Button #7
-  0,   // 39 - Drone Button #8
-  0,   // 40 - LFO Mode #1 #2
-  0,   // 41 - LFO Mode #3 #4
-  0,   // 42 - (Unused)
-  0,   // 43 - (Unused)
-  0    // 44 - Shift Button
+  // === Row 1 (Blue 1) ===
+  0,   // [0] Column 1 (R1 B1): Oct Down
+  44,  // [1] Column 2 (R2 B1): Note E2
+  0,   // [2] Column 3 (R3 B1): (Shift)
+  46,  // [3] Column 4 (R4 B1): Note F#2
+  56,  // [4] Column 5 (R5 B1): Note E3
+
+  // === Row 2 (Blue 2) ===
+  0,   // [5] Column 1 (R1 B2): Oct Up
+  42,  // [6] Column 2 (R2 B2): Note D2
+  0,   // [7] Column 3 (R3 B2): (LFO - Rise / Fall)
+  48,  // [8] Column 4 (R4 B2): Note G#2
+  55,   // [9] Column 5 (R5 B2): Note D#3
+
+  // === Row 3 (Blue 3) ===
+  28,  // [10] Column 1 (R1 B3): Note C1 (First Note)
+  40,  // [11] Column 2 (R2 B3): Note C2
+  0,   // [12] Column 3 (R3 B3): (LFO - Free / Trig)
+  50,  // [13] Column 4 (R4 B3): Note A#2
+  53,  // [14] Column 5 (R5 B3): Note C#3
+
+  // === Row 4 (Blue 4) ===
+  30,  // [15] Column 1 (R1 B4): Note D1
+  39,  // [16] Column 2 (R2 B4): Note B1
+  0,  // [17] Column 3 (R3 B4): Drone #1
+  45,  // [18] Column 4 (R4 B4): Note F2
+  0,   // [19] Column 5 (R5 B4): Drone #5
+
+  // === Row 5 (Blue 5) ===
+  32,  // [20] Column 1 (R1 B5): Note E1
+  37,  // [21] Column 2 (R2 B5): Note A1
+  0,  // [22] Column 3 (R3 B5): Drone #2
+  47,  // [23] Column 4 (R4 B5): Note G2
+  0,   // [24] Column 5 (R5 B5): Drone #6
+
+  // === Row 6 (Blue 6) ===
+  33,  // [25] Column 1 (R1 B6): Note F1
+  35,  // [26] Column 2 (R2 B6): Note G1
+  0,  // [27] Column 3 (R3 B6): Drone #3
+  49,  // [28] Column 4 (R4 B6): Note A2
+  0,   // [29] Column 5 (R5 B6): Drone #7
+
+  // === Row 7 (Blue 7) ===
+  0,   // [30] Column 1 (R1 B7): (Unused)
+  38, // [31] Column 2 (R2 B7): Note A#1
+  0,  // [32] Column 3 (R3 B7): Drone #4
+  51,  // [33] Column 4 (R4 B7): Note B2
+  0,   // [34] Column 5 (R5 B7): Drone #8
+
+  // === Row 8 (Blue 8) ===
+  29,  // [35] Column 1 (R1 B8): Note C#1
+  36,   // [36] Column 2 (R2 B8): Note G#1
+  41,  // [37] Column 3 (R3 B8): Note C#2
+  52,  // [38] Column 4 (R4 B8): Note C3
+  0,   // [39] Column 5 (R5 B8): (Unused)
+
+  // === Row 9 (Blue 9) ===
+  31,  // [40] Column 1 (R1 B9): Note D#1
+  34,   // [41] Column 2 (R2 B9): Note F#1
+  43,  // [42] Column 3 (R3 B9): Note D#2
+  54,  // [43] Column 4 (R4 B9): Note D3
+  0    // [44] Column 5 (R5 B9): (Unused)
 };
 
 static const byte keyToLFOWave[45] = {
-  255, 255,   0, 255,   1, 255,   2,   3, 255,
-    4, 255, 255, 255, 255, 255, 255, 255, 255,
-  255, 255, 255, 255, 255, 255, 255, 255, 255,
-  255, 255, 255, 255, 255, 255, 255, 255, 255,
-  255, 255, 255, 255, 255, 255, 255, 255, 255
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+    0, 255, 255, 255, 255,
+    1, 255, 255, 255, 255,
+    2, 255, 255, 255, 255,
+    3,   4, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255
 };
 
 static const byte keyToPORTlockRate[45] = {
-  255, 255, 255, 255, 255, 255, 255, 255, 255,
-  255, 255, 255, 255, 255, 255, 255, 255, 255,
-  255, 255, 255, 255, 255, 255, 255, 255, 255,
-  255, 255, 255, 255, 255,   0,   1,   2,   3,
-    4,   5, 255, 255, 255, 255, 255, 255, 255
-};
-
-static const byte keyToSeqRateSelect[45] = {
-    0,   1, 255, 255, 255, 255, 255, 255, 255,
-  255, 255, 255, 255, 255, 255, 255, 255, 255,
-  255, 255, 255, 255, 255, 255, 255, 255, 255,
-  255, 255, 255, 255, 255, 255, 255, 255, 255,
-  255, 255, 255, 255, 255, 255, 255, 255, 255
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255,   4, 255, 255, 255,
+    0,   3, 255, 255, 255,
+    1,   2, 255, 255, 255
 };
 
 static constexpr byte HW_CHANNEL  = 0;
 static constexpr byte HW_VELOCITY = 127;
 
 static constexpr byte KEY_OCT_DOWN   = 0;
-static constexpr byte KEY_OCT_UP     = 1;
-static constexpr byte KEY_FIRST_NOTE = 2;
-static constexpr byte KEY_LAST_NOTE  = 30;
-static constexpr byte KEY_REST       = 31;
-static constexpr byte KEY_SHIFT      = 44;
+static constexpr byte KEY_OCT_UP     = 5;
+static constexpr byte KEY_SHIFT      = 2;
 
 /* ================== STATE VARIABLES ================== */
 
@@ -156,8 +174,7 @@ static unsigned long internal_gateOffTime = 0;
 static byte internal_playHead = 0; 
 
 static bool shiftActive = false;
-static bool restActive = false;
-unsigned long restPressTime = 0; // for deleting sequence
+// restActive state variables removed
 
 int octaveValue = 2; 
 
@@ -173,7 +190,8 @@ void internal_stopNote() {
 // Immediately change the pitch of Direct play
 void updateDirectPlayOctave() {
     if (CurrentSeqMode != 0) return; 
-    for (int i = KEY_FIRST_NOTE; i <= KEY_LAST_NOTE; i++) {
+    // Loop through all possible keys instead of bounded notes
+    for (int i = 0; i < 45; i++) {
         if (playingNotes[i] != -1) {
             myNoteOff(HW_CHANNEL, (byte)playingNotes[i], 0);
             int newNote = keyToMidiNote[i] + ((octaveValue - 2) * 12);
@@ -207,6 +225,9 @@ void popKey(byte keyIndex) {
     if (found && activeKeyCount > 0) activeKeyCount--;
 }
 
+static unsigned long shiftPressTime = 0;
+static bool latchCleared = false;
+
 /* ================== SEQUENCER LOGIC ================== */
 
 void rebuildSequence() {
@@ -215,11 +236,8 @@ void rebuildSequence() {
 
     int tempNotes[12];
     for (byte i = 0; i < activeKeyCount; i++) {
-        if (activeKeyStack[i] == KEY_REST) {
-            tempNotes[i] = 254;
-        } else {
-            tempNotes[i] = keyToMidiNote[activeKeyStack[i]];
-        }
+        // We handle 254 as a REST natively in the array now
+        tempNotes[i] = keyToMidiNote[activeKeyStack[i]];
     }
 
     // Sort for UP/DOWN (Queue mode 2 is being skipped)
@@ -312,14 +330,10 @@ void Keyboard_update() {
     // 1. Sequencer must run all the time
     internal_sequencerUpdate();
 
-    // 2. Timer for deleting sequence
-    if (restActive && CurrentSeqMode == 2 && activeKeyCount > 0) {
-        if (millis() - restPressTime > 2000) { 
-            activeKeyCount = 0; 
-            internal_stopNote();
-            internal_playHead = 0;
-            restPressTime = millis(); // Reset for next cycle
-        }
+    // Sequence deletion logic temporarily removed
+    if (shiftActive && !latchCleared && (millis() - shiftPressTime > 3000)) {
+        activeKeyCount = 0; // Clears the notes saved in latch
+        latchCleared = true; // only once
     }
 
     // 3. Change checking for keyboard
@@ -335,11 +349,14 @@ void Keyboard_update() {
             case PRESSED:
                 if (index == KEY_SHIFT) {
                     shiftActive = true;
+                    shiftPressTime = millis();
+                    latchCleared = false; // Clear latch, reset sequencer
                     break;
                 }
 
                 // --- SHIFT LOGIC ---
                 if (shiftActive) {
+
                     // LFO Wave selection
                     if (keyToLFOWave[index] != 255) {
                         VirtualControlChange(0, CC_LFOwaveSelect, keyToLFOWave[index]);
@@ -349,16 +366,14 @@ void Keyboard_update() {
                         VirtualControlChange(0, CC_PORTlockRate, keyToPORTlockRate[index]);
                     }
                     
-                    // Seq Rate Increment/Decrement (0..3)
-                    // KEY_OCT_DOWN (Index 0) decreases rate
+                    // Seq Rate Increment/Decrement
                     if (index == KEY_OCT_DOWN) {
                         if (SeqRateSelect > 0) SeqRateSelect--;
                     }
-                    // KEY_OCT_UP (Index 1) increases rate
                     if (index == KEY_OCT_UP) {
                         if (SeqRateSelect < 3) SeqRateSelect++;
                     }
-                    break; 
+                    break;
                 }
 
                 // --- NORMAL LOGIC ---
@@ -367,52 +382,49 @@ void Keyboard_update() {
                         octaveValue--;
                         if (CurrentSeqMode == 0) VirtualControlChange(0, CC_octave, octaveValue);
                     }
-                    break;
-                }
-                if (index == KEY_OCT_UP) {
+                } 
+                else if (index == KEY_OCT_UP) {
                     if (octaveValue < 4) {
                         octaveValue++;
                         if (CurrentSeqMode == 0) VirtualControlChange(0, CC_octave, octaveValue);
                     }
-                    break;
-                }
-
-                if (index == KEY_REST) {
-                    restActive = true;
-                    restPressTime = millis();
-                    if (CurrentSeqMode > 0) pushKey(index);
-                    break;
-                }
-
-                if (index >= KEY_FIRST_NOTE && index <= KEY_LAST_NOTE) {
-                    if (CurrentSeqMode > 0) {
-                        pushKey(index);
-                    } else {
-                        byte note = keyToMidiNote[index];
-                        if (note != 0) {
+                } 
+                else {
+                    byte note = keyToMidiNote[index];
+                    // IMPORTANT FIX: Push to sequencer ONLY if it is a valid MIDI note
+                    if (note > 0 && note < 128) {
+                        if (CurrentSeqMode > 0) {
+                            pushKey(index);
+                        } else {
                             playingNotes[index] = note + ((octaveValue - 2) * 12);
                             myNoteOn(HW_CHANNEL, (byte)playingNotes[index], HW_VELOCITY);
                         }
                     }
                 }
+                if (index == 12) { // Free / Trig
+                        LFOmodeSelect = (LFOmodeSelect >= 2) ? 0 : (1 - LFOmodeSelect);
+                    }
+                    else if (index == 7) { // Rise / Fall
+                        LFOmodeSelect = (LFOmodeSelect < 2) ? 2 : (LFOmodeSelect == 2 ? 3 : 2);
+                    }
                 break;
 
             case RELEASED:
                 if (index == KEY_SHIFT) {
                     shiftActive = false;
+                    shiftPressTime = 0;
                 } 
-                else if (index == KEY_REST) {
-                    restActive = false;
-                    if (CurrentSeqMode == 1) popKey(index);
-                } 
-                else if (index >= KEY_FIRST_NOTE && index <= KEY_LAST_NOTE) {
-                    if (CurrentSeqMode == 1) {
-                        popKey(index);
-                    } else if (CurrentSeqMode == 0) {
-                        byte note = keyToMidiNote[index];
-                        if (note != 0 && playingNotes[index] != -1) {
-                            myNoteOff(HW_CHANNEL, (byte)playingNotes[index], 0);
-                            playingNotes[index] = -1;
+                else if (index != KEY_OCT_DOWN && index != KEY_OCT_UP) {
+                    byte note = keyToMidiNote[index];
+                    // Match the press logic: only pop or stop if it was a valid note
+                    if (note > 0 && note < 128) {
+                        if (CurrentSeqMode == 1) {
+                            popKey(index);
+                        } else if (CurrentSeqMode == 0) {
+                            if (playingNotes[index] != -1) {
+                                myNoteOff(HW_CHANNEL, (byte)playingNotes[index], 0);
+                                playingNotes[index] = -1;
+                            }
                         }
                     }
                 }

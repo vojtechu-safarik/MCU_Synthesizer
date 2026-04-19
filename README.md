@@ -203,20 +203,20 @@ Circuit & PCB schematics have been made in KiCad 9.0 and the project is availabl
 | 21 | **BCLK** | **Audioshield** |
 | 22 | **Signal #5** | **LED #5 (Octave #1)** |
 | 23 | **MCLK** | **Audioshield** |
-| 24 | **Column #1** | **Keyboard** |
-| 25 | **Column #2** | **Keyboard** |
-| 26 | **Column #3** | **Keyboard** |
-| 27 | **Column #4** | **Keyboard** |
-| 28 | **Column #5** | **Keyboard** |
-| 29 | **Column #6** | **Keyboard** |
-| 30 | **Column #7** | **Keyboard** |
-| 31 | **Column #8** | **Keyboard** |
-| 32 | **Column #9** | **Keyboard** |
-| 33 | **Row #1** | **Keyboard** |
-| 34 | **Row #2** | **Keyboard** |
-| 35 | **Row #3** | **Keyboard** |
-| 36 | **Row #4** | **Keyboard** |
-| 37 | **Row #5** | **Keyboard** |
+| 24 | **Row #1** | **Keyboard** |
+| 25 | **Row #2** | **Keyboard** |
+| 26 | **Row #3** | **Keyboard** |
+| 27 | **Row #4** | **Keyboard** |
+| 28 | **Row #5** | **Keyboard** |
+| 29 | **Row #6** | **Keyboard** |
+| 30 | **Row #7** | **Keyboard** |
+| 31 | **Row #8** | **Keyboard** |
+| 32 | **Row #9** | **Keyboard** |
+| 33 | **Column #1** | **Keyboard** |
+| 34 | **Column #2** | **Keyboard** |
+| 35 | **Column #3** | **Keyboard** |
+| 36 | **Column #4** | **Keyboard** |
+| 37 | **Column #5** | **Keyboard** |
 | 38 | **Signal #6** | **LED #6 (Sequencer Rate #2)** |
 | 39 | **Sig (A15)** | **Mux #1** |
 | 40 | **Sig (A16)** | **Mux #2** |

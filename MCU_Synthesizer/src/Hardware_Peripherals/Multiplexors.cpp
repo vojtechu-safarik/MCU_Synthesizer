@@ -53,6 +53,8 @@ void checkMux() {
     // if MUX #1 exists, read the value
     if (muxInput < MUX_1_control) {
       int MUX_1_read = analogRead(MUX_1_PIN);
+      // invert potentiometer values (because of inverted readings caused by my wiring)
+      MUX_1_read = 1023 - MUX_1_read;
 
       // simple deadband ±7 for noise filtering
       if (MUX_1_read > (MUX_1_values[muxInput] + 7) || 
@@ -129,6 +131,7 @@ void checkMux() {
     // if MUX #2 exists, read the value
     if (muxInput < MUX_2_control) {
       int MUX_2_read = analogRead(MUX_2_PIN);
+      if (muxInput < 5) MUX_2_read = 1023 - MUX_2_read;
 
       // simple deadband ±7 for noise filtering
       if (MUX_2_read > (MUX_2_values[muxInput] + 7) || 
@@ -194,6 +197,7 @@ void checkMux() {
     // if MUX #3 exists, read the value
     if (muxInput < MUX_3_control) {
       int MUX_3_read = analogRead(MUX_3_PIN);
+      MUX_3_read = 1023 - MUX_3_read;
 
       // simple deadband ±7 for noise filtering
       if (MUX_3_read > (MUX_3_values[muxInput] + 7) || 
@@ -220,6 +224,9 @@ void checkMux() {
               if (SynthMode == 0) {
                 // pull-up: active LOW
                 PORTswitch = (MUX_3_read < 64) ? 1 : 0;
+                unisonTriad = 1;                        // MAYBE delete later, not sure, doesnt work now and this may not be the reason
+              } else {
+                unisonTriad = 0;
               }
               break;            
           case MUX_Portamento_Mode:
