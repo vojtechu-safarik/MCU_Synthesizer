@@ -70,6 +70,16 @@ struct VoiceSnapshot {
     float level;
 };
 
+// === Drone keys define (for HardwareKeyboard and VirtualControlChange) ===
+#define DroneKeyboardNr1  91
+#define DroneKeyboardNr2  92
+#define DroneKeyboardNr3  93
+#define DroneKeyboardNr4  94
+#define DroneKeyboardNr5  95
+#define DroneKeyboardNr6  96
+#define DroneKeyboardNr7  97
+#define DroneKeyboardNr8  98
+
 // GLOBAL STATE (extern)
 extern DroneSnapshot droneSnapshots[8];
 extern volatile bool DRONE_requestSave[8];

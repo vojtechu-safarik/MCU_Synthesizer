@@ -21,9 +21,26 @@
 
 void checkMux() {
   static byte muxInput = 0;
-  static int MUX_1_values[MUX_1_control] = {};  // holds the last value of MUX_1
-  static int MUX_2_values[MUX_2_control] = {};  // holds the last value of MUX_2
-  static int MUX_3_values[MUX_3_control] = {};  // holds the last value of MUX_3
+  
+  // MIDI values arrays (0-127)
+  static int MUX_1_values[MUX_1_control]; 
+  static int MUX_2_values[MUX_2_control]; 
+  static int MUX_3_values[MUX_3_control]; 
+
+  // EMA filter state arrays
+  static float MUX_1_ema[MUX_1_control] = {0};
+  static float MUX_2_ema[MUX_2_control] = {0};
+  static float MUX_3_ema[MUX_3_control] = {0};
+
+  // Force initial state send on boot
+  static bool isInitialized = false;
+  if (!isInitialized) {
+      for (int i = 0; i < MUX_1_control; i++) MUX_1_values[i] = -1;
+      for (int i = 0; i < MUX_2_control; i++) MUX_2_values[i] = -1;
+      for (int i = 0; i < MUX_3_control; i++) MUX_3_values[i] = -1;
+      isInitialized = true;
+  }
+
   unsigned long currentMicros = micros();
   static unsigned long lastTime = 0;
 
@@ -50,22 +67,20 @@ void checkMux() {
     digitalWrite(MUX_S3, muxInput & B1000);
 
     // === MUX #1 ===
-    // if MUX #1 exists, read the value
     if (muxInput < MUX_1_control) {
-      int MUX_1_read = analogRead(MUX_1_PIN);
-      // invert potentiometer values (because of inverted readings caused by my wiring)
-      MUX_1_read = 1023 - MUX_1_read;
+      int raw_read = analogRead(MUX_1_PIN);
+      raw_read = 1023 - raw_read; // invert potentiometer values
 
-      // simple deadband ±7 for noise filtering
-      if (MUX_1_read > (MUX_1_values[muxInput] + 7) || 
-          MUX_1_read < (MUX_1_values[muxInput] - 7)) {
-        
-        MUX_1_values[muxInput] = MUX_1_read;
-        MUX_1_read = (MUX_1_read >> 3); // Change range to 0-127
+      // EMA Filter
+      MUX_1_ema[muxInput] = (raw_read * 0.2f) + (MUX_1_ema[muxInput] * 0.8f); // This ratio - the lower the coeff, the longer it stabilises but better it works
+      int current_MIDI = ((int)MUX_1_ema[muxInput]) >> 3; // Change range to 0-127
+
+      if (current_MIDI != MUX_1_values[muxInput]) {
+        MUX_1_values[muxInput] = current_MIDI;
+        int MUX_1_read = current_MIDI;
         
         switch (muxInput) {
           case MUXwave_1:
-              // The range 0-127 normalises different ranges for each waves (0 to NUM_WAVEFAMILIES - 1)
               VirtualControlChange(0, CCwave_1, (MUX_1_read * NUM_WAVEFAMILIES) / 128);
               break;  
           case MUXwave_2:
@@ -105,7 +120,6 @@ void checkMux() {
               VirtualControlChange(0, CCnoise, MUX_1_read);
               break;              
           case MUXsynthMode:
-              // pull-up: active LOW
               SynthMode = (MUX_1_read < 64) ? 1 : 0;
               break; 
           case MUXsubOctave_1:
@@ -123,22 +137,21 @@ void checkMux() {
         } else {
             VirtualControlChange(0, CCsubOctave, 1);   // middle / no edge (fallback)
         }
-
       }  
     }
 
     // === MUX #2 ===
-    // if MUX #2 exists, read the value
     if (muxInput < MUX_2_control) {
-      int MUX_2_read = analogRead(MUX_2_PIN);
-      if (muxInput < 5) MUX_2_read = 1023 - MUX_2_read;
+      int raw_read = analogRead(MUX_2_PIN);
+      if (muxInput < 5) raw_read = 1023 - raw_read; // specific logic inversion
 
-      // simple deadband ±7 for noise filtering
-      if (MUX_2_read > (MUX_2_values[muxInput] + 7) || 
-          MUX_2_read < (MUX_2_values[muxInput] - 7)) {
-        
-        MUX_2_values[muxInput] = MUX_2_read;
-        MUX_2_read = (MUX_2_read >> 3); // Change range to 0-127
+      // EMA Filter
+      MUX_2_ema[muxInput] = (raw_read * 0.2f) + (MUX_2_ema[muxInput] * 0.8f);
+      int current_MIDI = ((int)MUX_2_ema[muxInput]) >> 3; // Change range to 0-127
+
+      if (current_MIDI != MUX_2_values[muxInput]) {
+        MUX_2_values[muxInput] = current_MIDI;
+        int MUX_2_read = current_MIDI;
         
         switch (muxInput) {
           case MUX_LPF_Cutoff:
@@ -194,17 +207,17 @@ void checkMux() {
     }
 
     // === MUX #3 ===
-    // if MUX #3 exists, read the value
     if (muxInput < MUX_3_control) {
-      int MUX_3_read = analogRead(MUX_3_PIN);
-      MUX_3_read = 1023 - MUX_3_read;
+      int raw_read = analogRead(MUX_3_PIN);
+      raw_read = 1023 - raw_read; // invert potentiometer values
 
-      // simple deadband ±7 for noise filtering
-      if (MUX_3_read > (MUX_3_values[muxInput] + 7) || 
-          MUX_3_read < (MUX_3_values[muxInput] - 7)) {
-        
-        MUX_3_values[muxInput] = MUX_3_read;
-        MUX_3_read = (MUX_3_read >> 3); // Change range to 0-127
+      // EMA Filter
+      MUX_3_ema[muxInput] = (raw_read * 0.2f) + (MUX_3_ema[muxInput] * 0.8f);
+      int current_MIDI = ((int)MUX_3_ema[muxInput]) >> 3; // Change range to 0-127
+
+      if (current_MIDI != MUX_3_values[muxInput]) {
+        MUX_3_values[muxInput] = current_MIDI;
+        int MUX_3_read = current_MIDI;
         
         switch (muxInput) {
             case MUX_MasterVolume:
@@ -220,12 +233,11 @@ void checkMux() {
               LFOtype_3 = (MUX_3_read < 64);
               break;    
           case MUX_PORTswitch:
-              // PORTAMENTO only for SynthMode 0 (UNISON)
               if (SynthMode == 0) {
-                // pull-up: active LOW
                 PORTswitch = (MUX_3_read < 64) ? 1 : 0;
-                unisonTriad = 1;                        // MAYBE delete later, not sure, doesnt work now and this may not be the reason
+                unisonTriad = 1;                        
               } else {
+                PORTswitch = 0;
                 unisonTriad = 0;
               }
               break;            
@@ -263,7 +275,6 @@ void checkMux() {
             LFOtypeSelect = 1;   // middle / no edge (fallback)
         }   
         
-        // SeqMode: 0 = Off, 1 = Arp, 2 = Latch
         if (SeqMode_1 && !SeqMode_3) {
             CurrentSeqMode = 0;   // left position
         } else if (!SeqMode_1 && SeqMode_3) {
@@ -272,7 +283,6 @@ void checkMux() {
             CurrentSeqMode = 1;   // middle / no edge (fallback)
         }
 
-        // SeqOrder: 0 = Up, 1 = Down, 2 = Queue
         if (SeqOrder_1 && !SeqOrder_3) {
             CurrentSeqOrder = 0;   // left position
         } else if (!SeqOrder_1 && SeqOrder_3) {
@@ -281,7 +291,6 @@ void checkMux() {
             CurrentSeqOrder = 1;   // middle / no edge (fallback)
         }
 
-        // SeqOctaves: 0 = 1 oct, 1 = 2 oct, 2 = 3 oct
         if (SeqOctaves_1 && !SeqOctaves_3) {
             CurrentSeqOctave = 0;   // left position
         } else if (!SeqOctaves_1 && SeqOctaves_3) {
@@ -289,12 +298,10 @@ void checkMux() {
         } else {
             CurrentSeqOctave = 1;   // middle / no edge (fallback)
         }
-
       }
     }    
 
-    // switch to next MUX channel --> "MUX_1_control = 16" as for 16 channels of CD74HC4067
-    // --> its okay for all MUXes, even if one of them uses less channels
+    // switch to next MUX channel
     muxInput++;
     if (muxInput >= MUX_1_control) muxInput = 0;
 

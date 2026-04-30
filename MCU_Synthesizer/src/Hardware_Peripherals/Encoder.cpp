@@ -22,9 +22,9 @@ void checkEncoder() {
   if (currentStateCLK != lastStateCLK) {
     // decide the direction according to the DT state
     if (digitalRead(Encoder_DT) != currentStateCLK) {
-      GlobalBPM--;  // anti-clockwise
+      GlobalBPM++;  // anti-clockwise
     } else {
-      GlobalBPM++;  // clockwise
+      GlobalBPM--;  // clockwise
     }
 
     // BPM value constrain

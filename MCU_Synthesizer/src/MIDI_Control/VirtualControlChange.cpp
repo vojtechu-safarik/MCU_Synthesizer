@@ -437,11 +437,14 @@ void VirtualControlChange(byte channel, byte control, byte value) {
     }
 
     case 82: {
-      PORTswitch = value;
-      if (PORTswitch == 1) {
-        SynthMode = 0;
+      if (SynthMode == 0) {
+        PORTswitch = value;
+        unisonTriad = 1;
         resetAllVoices();
-      }
+      } else {
+        PORTswitch = 0;
+        unisonTriad = 0;
+      }   
       break;
     }
 
@@ -498,7 +501,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }   
 
-    case 91: {
+    case DroneKeyboardNr1: {
       DRONEkeyNr1 = value;
 
       if (value == 1) { // tlačítko stisknuto
@@ -517,7 +520,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
     
-    case 92: {
+    case DroneKeyboardNr2: {
       DRONEkeyNr2 = value;
 
       if (value == 1) {
@@ -534,7 +537,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
     
-    case 93: {
+    case DroneKeyboardNr3: {
       DRONEkeyNr3 = value;
 
       if (value == 1) {
@@ -551,7 +554,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 94: {
+    case DroneKeyboardNr4: {
       DRONEkeyNr4 = value;
 
       if (value == 1) {
@@ -568,7 +571,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 95: {
+    case DroneKeyboardNr5: {
       DRONEkeyNr5 = value;
 
       if (value == 1) {
@@ -585,7 +588,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 96: {
+    case DroneKeyboardNr6: {
       DRONEkeyNr6 = value;
 
       if (value == 1) {
@@ -602,7 +605,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 97: {
+    case DroneKeyboardNr7: {
       DRONEkeyNr7 = value;
 
       if (value == 1) {
@@ -619,7 +622,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 98: {
+    case DroneKeyboardNr8: {
       DRONEkeyNr8 = value;
 
       if (value == 1) {

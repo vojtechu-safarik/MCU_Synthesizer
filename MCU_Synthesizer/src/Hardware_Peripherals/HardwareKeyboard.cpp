@@ -17,6 +17,10 @@
 #include "Hardware_Peripherals/HardwareKeyboard.h"
 // ==================
 
+// === SYNTHESIS FUNCTIONS ===
+#include "Synthesis/Drone.h"
+// ==================
+
 /* === CONFIGURATION === */
 
 /* SeqMode: 
@@ -150,6 +154,30 @@ static const byte keyToPORTlockRate[45] = {
     1,   2, 255, 255, 255
 };
 
+static const byte keyRest[45] = {
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255,   0, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255
+};
+
+static const byte keyToDrone[45] = {
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 91,  255, 95, 
+  255, 255, 92,  255, 96, 
+  255, 255, 93,  255, 97,  
+  255, 255, 94,  255, 98,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255
+};
+
 static constexpr byte HW_CHANNEL  = 0;
 static constexpr byte HW_VELOCITY = 127;
 
@@ -161,7 +189,7 @@ static constexpr byte KEY_SHIFT      = 2;
 
 static Keypad keypad = Keypad(makeKeymap(keymap), rowPins, colPins, ROWS, COLS);
 
-static byte activeKeyStack[32];  // Amount of notes in Latch
+static int activeKeyStack[32];  // Amount of notes in Latch
 static byte activeKeyCount = 0;
 static int playingNotes[45];     // Tracking the notes in Direct Play for immediate transposition
 
@@ -174,7 +202,10 @@ static unsigned long internal_gateOffTime = 0;
 static byte internal_playHead = 0; 
 
 static bool shiftActive = false;
-// restActive state variables removed
+
+// Sequencer step length modifier variables
+static byte nextNoteLenCode = 4; // 4 = 1.0x, 8 = 2.0x, 16 = 4.0x, 2 = 0.5x, 1 = 0.25x
+static float currentStepDurationMult = 1.0;
 
 int octaveValue = 2; 
 
@@ -202,25 +233,30 @@ void updateDirectPlayOctave() {
     }
 }
 
-void pushKey(byte keyIndex) {
+void pushKey(byte keyIndex, bool isRest = false) {
     // Arp mode (1) doesnt support duplicities
     if (CurrentSeqMode == 1) {
         for (byte i = 0; i < activeKeyCount; i++) {
-            if (activeKeyStack[i] == keyIndex) return; 
+            // Mask bits 0-6 to check only the physical key index
+            if ((activeKeyStack[i] & 0x7F) == keyIndex) return; 
         }
     }
     
     // Latch mode (2) can have the same notes in a row
     if (activeKeyCount < 12) {
-        activeKeyStack[activeKeyCount++] = keyIndex;
+        // Encode: [Length Code: 8 bits] [isRest: 1 bit] [KeyIndex: 7 bits]
+        int packedValue = (nextNoteLenCode << 8) | (isRest ? 0x80 : 0) | (keyIndex & 0x7F);
+        activeKeyStack[activeKeyCount++] = packedValue;
+        nextNoteLenCode = 4; // Reset to normal length after use
     }
 }
 
 void popKey(byte keyIndex) {
     bool found = false;
     for (byte i = 0; i < activeKeyCount; i++) {
-        if (activeKeyStack[i] == keyIndex) found = true;
-        if (found && i < 11) activeKeyStack[i] = activeKeyStack[i+1];
+        // Compare only the physical index (bits 0-6)
+        if ((activeKeyStack[i] & 0x7F) == keyIndex) found = true;
+        if (found && i < 31) activeKeyStack[i] = activeKeyStack[i+1];
     }
     if (found && activeKeyCount > 0) activeKeyCount--;
 }
@@ -236,15 +272,20 @@ void rebuildSequence() {
 
     int tempNotes[12];
     for (byte i = 0; i < activeKeyCount; i++) {
-        // We handle 254 as a REST natively in the array now
-        tempNotes[i] = keyToMidiNote[activeKeyStack[i]];
+        byte keyIdx = activeKeyStack[i] & 0x7F;
+        bool isRest = (activeKeyStack[i] & 0x80) != 0;
+        byte lenCode = (activeKeyStack[i] >> 8) & 0xFF;
+        
+        // Use 254 if marked as rest, else look up standard MIDI mapping
+        int midiNote = isRest ? 254 : keyToMidiNote[keyIdx];
+        tempNotes[i] = (lenCode << 8) | midiNote;
     }
 
     // Sort for UP/DOWN (Queue mode 2 is being skipped)
     if (CurrentSeqOrder < 2) {
         for (byte i = 0; i < activeKeyCount; i++) {
             for (byte j = i + 1; j < activeKeyCount; j++) {
-                if (tempNotes[j] < tempNotes[i]) {
+                if ((tempNotes[j] & 0xFF) < (tempNotes[i] & 0xFF)) {
                     int t = tempNotes[i]; tempNotes[i] = tempNotes[j]; tempNotes[j] = t;
                 }
             }
@@ -260,11 +301,13 @@ void rebuildSequence() {
 
     // Expansion + Final Buffer
     for (byte i = 0; i < activeKeyCount; i++) {
-        int base = tempNotes[i];
+        int base = tempNotes[i] & 0xFF;
+        byte lenCode = (tempNotes[i] >> 8) & 0xFF;
         for (byte r = 0; r <= CurrentSeqOctave; r++) {
             if (sequenceLength < 32) {
                 // If pause (254), dont increment octaves
-                sequenceBuffer[sequenceLength++] = (base == 254) ? 254 : (base + (r * 12));
+                int finalNote = (base == 254) ? 254 : (base + (r * 12));
+                sequenceBuffer[sequenceLength++] = (lenCode << 8) | finalNote;
             }
         }
     }
@@ -283,15 +326,12 @@ void internal_sequencerUpdate() {
     int bpm = (GlobalBPM < 1) ? 120 : GlobalBPM;
     unsigned long stepMs = 60000UL / bpm; 
 
-    if (SeqRateSelect == 0) {
-        stepMs = stepMs * 2;
-    } else if (SeqRateSelect == 2) {
-        stepMs = stepMs / 2;
-    } else if (SeqRateSelect == 3) {
-        stepMs = stepMs / 4;
-    }
+    if (SeqRateSelect == 0) stepMs *= 2;
+    else if (SeqRateSelect == 2) stepMs /= 2;
+    else if (SeqRateSelect == 3) stepMs /= 4;
 
-    if ((now - internal_lastStepTime) < stepMs) return;
+    // Evaluate step wait time using current step's duration multiplier
+    if ((now - internal_lastStepTime) < (unsigned long)(stepMs * currentStepDurationMult)) return;
     internal_lastStepTime = now;
 
     rebuildSequence();
@@ -302,7 +342,18 @@ void internal_sequencerUpdate() {
 
     if (internal_playHead >= sequenceLength) internal_playHead = 0;
 
-    int rawNote = sequenceBuffer[internal_playHead];
+    int rawData = sequenceBuffer[internal_playHead];
+    int rawNote = rawData & 0xFF;
+    byte lenCode = (rawData >> 8) & 0xFF;
+
+    // Decode length byte to float multiplier for THIS specific note
+    if (lenCode == 1) currentStepDurationMult = 0.25;
+    else if (lenCode == 2) currentStepDurationMult = 0.5;
+    else if (lenCode == 4) currentStepDurationMult = 1.0;
+    else if (lenCode == 8) currentStepDurationMult = 2.0;
+    else if (lenCode == 16) currentStepDurationMult = 4.0;
+    else currentStepDurationMult = 1.0;
+
     internal_stopNote();
 
     if (rawNote == 254) {
@@ -314,9 +365,12 @@ void internal_sequencerUpdate() {
         myNoteOn(HW_CHANNEL, (byte)finalNote, HW_VELOCITY);
     }
 
-    internal_gateOffTime = now + (stepMs * SeqGatePot / 100);
+    // Gate length naturally scales with the stretched step duration
+    internal_gateOffTime = now + (unsigned long)((stepMs * currentStepDurationMult) * SeqGatePot / 100);
     internal_playHead++;
 }
+
+/* ================== CORE LOOP ================== */
 
 /* ================== CORE LOOP ================== */
 
@@ -324,16 +378,17 @@ void Keyboard_init() {
     for(int i=0; i<45; i++) playingNotes[i] = -1;
     activeKeyCount = 0;
     internal_lastStepTime = millis();
+    nextNoteLenCode = 4; // Start at normal 1.0x length
+    currentStepDurationMult = 1.0;
 }
 
 void Keyboard_update() {
     // 1. Sequencer must run all the time
     internal_sequencerUpdate();
 
-    // Sequence deletion logic temporarily removed
     if (shiftActive && !latchCleared && (millis() - shiftPressTime > 3000)) {
-        activeKeyCount = 0; // Clears the notes saved in latch
-        latchCleared = true; // only once
+        activeKeyCount = 0; 
+        latchCleared = true; 
     }
 
     // 3. Change checking for keyboard
@@ -350,12 +405,31 @@ void Keyboard_update() {
                 if (index == KEY_SHIFT) {
                     shiftActive = true;
                     shiftPressTime = millis();
-                    latchCleared = false; // Clear latch, reset sequencer
+                    latchCleared = false;
                     break;
                 }
 
                 // --- SHIFT LOGIC ---
                 if (shiftActive) {
+                    
+                    // LFO Free/Trig (index 12) -> Extend next note duration
+                    if (index == 12) {
+                        if (nextNoteLenCode < 16) nextNoteLenCode *= 2; 
+                        break;
+                    }
+                    // LFO Rise/Fall (index 7) -> Shorten next note duration
+                    if (index == 7) { 
+                        if (nextNoteLenCode > 1) nextNoteLenCode /= 2;
+                        break; 
+                    }
+
+                    // Check for Rest Entry using keyRest map
+                    if (keyRest[index] != 255) {
+                        if (CurrentSeqMode > 0) {
+                            pushKey(index, true); // true = push as REST
+                        }
+                        break;
+                    }
 
                     // LFO Wave selection
                     if (keyToLFOWave[index] != 255) {
@@ -389,24 +463,34 @@ void Keyboard_update() {
                         if (CurrentSeqMode == 0) VirtualControlChange(0, CC_octave, octaveValue);
                     }
                 } 
-                else {
+                else if (!shiftActive) {
+                    // --- DRONE KEY CHECK ---
+                    if (keyToDrone[index] != 255) {
+                        // Posíláme CC 91-98 s hodnotou 1 (Pressed)
+                        VirtualControlChange(0, keyToDrone[index], 1);
+                    }
+
+                    // --- REGULAR NOTE CHECK ---
                     byte note = keyToMidiNote[index];
-                    // IMPORTANT FIX: Push to sequencer ONLY if it is a valid MIDI note
                     if (note > 0 && note < 128) {
                         if (CurrentSeqMode > 0) {
-                            pushKey(index);
+                            pushKey(index, false);
                         } else {
                             playingNotes[index] = note + ((octaveValue - 2) * 12);
                             myNoteOn(HW_CHANNEL, (byte)playingNotes[index], HW_VELOCITY);
                         }
                     }
                 }
-                if (index == 12) { // Free / Trig
+                
+                // Triggers from normal logic (Upraveno, aby Shift neaktivoval LFO přepínání)
+                if (!shiftActive) {
+                    if (index == 12) { // Free / Trig
                         LFOmodeSelect = (LFOmodeSelect >= 2) ? 0 : (1 - LFOmodeSelect);
                     }
                     else if (index == 7) { // Rise / Fall
                         LFOmodeSelect = (LFOmodeSelect < 2) ? 2 : (LFOmodeSelect == 2 ? 3 : 2);
                     }
+                }
                 break;
 
             case RELEASED:
@@ -415,16 +499,20 @@ void Keyboard_update() {
                     shiftPressTime = 0;
                 } 
                 else if (index != KEY_OCT_DOWN && index != KEY_OCT_UP) {
-                    byte note = keyToMidiNote[index];
-                    // Match the press logic: only pop or stop if it was a valid note
-                    if (note > 0 && note < 128) {
-                        if (CurrentSeqMode == 1) {
-                            popKey(index);
-                        } else if (CurrentSeqMode == 0) {
-                            if (playingNotes[index] != -1) {
-                                myNoteOff(HW_CHANNEL, (byte)playingNotes[index], 0);
-                                playingNotes[index] = -1;
-                            }
+                    // --- DRONE RELEASE CHECK ---
+                    if (keyToDrone[index] != 255) {
+                        VirtualControlChange(0, keyToDrone[index], 0);
+                        // Pokud je v Arp módu Rest (index 17), popKey ho uklidí níže
+                    }
+
+                    // Safe cleanup: Try to pop by physical index regardless of what it was
+                    // (helps prevent stuck keys if Shift is released mid-press)
+                    if (CurrentSeqMode == 1) {
+                        popKey(index);
+                    } else if (CurrentSeqMode == 0) {
+                        if (playingNotes[index] != -1) {
+                            myNoteOff(HW_CHANNEL, (byte)playingNotes[index], 0);
+                            playingNotes[index] = -1;
                         }
                     }
                 }
