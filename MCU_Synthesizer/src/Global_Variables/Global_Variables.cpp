@@ -175,6 +175,7 @@ float Filter_Intensity_Coeff = 1.0f; // 0..1 (0 neutralizes the Filter EG, 1 kee
 // 0 = Default triad, 1 = Clone triad
 uint8_t unisonTriad = 0;
 bool unisonTriadToggle = false;
+bool TriadToggleFlag = false;
 float triadBaseFreq[2] = {0, 0};   // default frequency for triad 0 and 1
 
 // Global Variables of LOCK mode

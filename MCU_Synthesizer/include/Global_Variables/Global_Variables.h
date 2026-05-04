@@ -161,6 +161,7 @@ extern float Filter_Intensity_Coeff;
 // Unison Triad mode variables
 extern uint8_t unisonTriad;
 extern bool unisonTriadToggle;
+extern bool TriadToggleFlag;
 extern float triadBaseFreq[2];
 
 // Global BPM, duh

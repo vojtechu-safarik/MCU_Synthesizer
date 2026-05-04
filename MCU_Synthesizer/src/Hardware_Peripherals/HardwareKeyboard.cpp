@@ -71,7 +71,7 @@ static const byte keyToMidiNote[45] = {
   44,  // [1] Column 2 (R2 B1): Note E2
   0,   // [2] Column 3 (R3 B1): (Shift)
   46,  // [3] Column 4 (R4 B1): Note F#2
-  56,  // [4] Column 5 (R5 B1): Note E3
+  56,  // [4] Column 5 (R5 B1): Note E3 (Last Note)
 
   // === Row 2 (Blue 2) ===
   0,   // [5] Column 1 (R1 B2): Oct Up
@@ -159,6 +159,18 @@ static const byte keyRest[45] = {
   255, 255, 255, 255, 255,
   255, 255, 255, 255, 255,
   255, 255,   0, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255
+};
+
+static const byte keyUnisonTriadToggle[45] = {
+  255, 255, 255, 255,   0,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255,
   255, 255, 255, 255, 255,
   255, 255, 255, 255, 255,
   255, 255, 255, 255, 255,
@@ -438,6 +450,14 @@ void Keyboard_update() {
                     // Portamento/Lock Rate
                     if (keyToPORTlockRate[index] != 255) {
                         VirtualControlChange(0, CC_PORTlockRate, keyToPORTlockRate[index]);
+                    }
+
+                    // unisonTriadToggle
+                    if (index == 4) {
+                        static byte unisonTriadState = 0; // static, doesnt dissapear after loop
+                        TriadToggleFlag = !TriadToggleFlag; // to remember the set option before activating portamento when it gets turned off again
+                        unisonTriadState = !unisonTriadState;
+                        VirtualControlChange(0, CC_unisonTriadToggle, unisonTriadState);
                     }
                     
                     // Seq Rate Increment/Decrement

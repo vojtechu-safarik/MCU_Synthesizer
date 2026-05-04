@@ -43,11 +43,13 @@
 // Multiplexor 3
 #define CC_MasterVolume 85
 #define CCseqGatePot 88
+#define CC_PORTswitch 82
 // ======================
 
 #define CC_octave 59
 #define CC_LFOwaveSelect 81
 #define CC_PORTlockRate 84
+#define CC_unisonTriadToggle 86
 
 // ===================
 

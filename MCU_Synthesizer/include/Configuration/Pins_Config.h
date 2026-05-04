@@ -85,7 +85,7 @@
 #define PIN_LED_Octave_3          16
 #define PIN_LED_Octave_4          15
 #define PIN_LED_Sequencer_Rate_1  14
-#define PIN_LED_Sequencer_Rate_2  18
+#define PIN_LED_Sequencer_Rate_2  38
 // ===================
 
 // === IO Expander pins ===

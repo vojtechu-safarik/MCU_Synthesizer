@@ -48,7 +48,7 @@ void LED_Sequencer_Rate_update() {
   // Reset all SeqRateSelect LEDs to OFF first
   // active-low => OFF = HIGH
   digitalWrite(LED_Sequencer_Rate_1, HIGH);
-  digitalWrite(LED_Sequencer_Rate_2, LOW);
+  digitalWrite(LED_Sequencer_Rate_2, HIGH);
 
   // false = OFF for sink wiring
   IOExpander_setLed(LED_Sequencer_Rate_3, false);

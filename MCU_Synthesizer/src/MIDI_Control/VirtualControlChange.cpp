@@ -436,15 +436,12 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 82: {
+    case CC_PORTswitch: {
       if (SynthMode == 0) {
         PORTswitch = value;
-        unisonTriad = 1;
-        resetAllVoices();
       } else {
         PORTswitch = 0;
-        unisonTriad = 0;
-      }   
+      }
       break;
     }
 
@@ -465,7 +462,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
       break;
     }
 
-    case 86: {
+    case CC_unisonTriadToggle: {
       // enables unisonTriad toggle in UNISON SynthMode
       switch (value) {
         case 0:

@@ -234,11 +234,12 @@ void checkMux() {
               break;    
           case MUX_PORTswitch:
               if (SynthMode == 0) {
-                PORTswitch = (MUX_3_read < 64) ? 1 : 0;
-                unisonTriad = 1;                        
+                VirtualControlChange(0, CC_PORTswitch, (MUX_3_read < 64) ? 0 : 1);                     
+              } 
+              if (PORTswitch == 1) {
+                unisonTriadToggle = true;
               } else {
-                PORTswitch = 0;
-                unisonTriad = 0;
+                unisonTriadToggle = TriadToggleFlag;
               }
               break;            
           case MUX_Portamento_Mode:
