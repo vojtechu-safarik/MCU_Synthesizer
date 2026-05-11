@@ -86,8 +86,8 @@ void VirtualControlChange(byte channel, byte control, byte value) {
     }
 
     case CCvolume_1: {
-      // volume 0 .. 127 -> 0 .. 1 -> 0 .. 0.75
-      defaultVolume_1 = value * DIV127 * 0.75f;
+      // volume 0 .. 127 -> 0 .. 1
+      defaultVolume_1 = value * DIV127;
 
       if (SynthMode == 0) {
         amp_1.gain(defaultVolume_1);
@@ -103,7 +103,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
     }
 
     case CCvolume_2: {
-      defaultVolume_2 = value * DIV127 * 0.75f;
+      defaultVolume_2 = value * DIV127;
 
       if (SynthMode == 0) {
         amp_2.gain(defaultVolume_2);
@@ -117,7 +117,7 @@ void VirtualControlChange(byte channel, byte control, byte value) {
     }
 
     case CCvolume_3: {
-      defaultVolume_3 = value * DIV127 * 0.75f;
+      defaultVolume_3 = value * DIV127;
 
       if (SynthMode == 0) {
         amp_3.gain(defaultVolume_3);
@@ -230,12 +230,12 @@ void VirtualControlChange(byte channel, byte control, byte value) {
           SubOctave = 0;
           break;
         case 1:
-          mixer_1.gain(3, 0.5);
+          mixer_1.gain(3, 0.75);
           ampSub.gain(defaultVolume_1);
           SubOctave = -12;
           break;
         case 2:
-          mixer_1.gain(3, 0.5);
+          mixer_1.gain(3, 0.75);
           ampSub.gain(defaultVolume_1);
           SubOctave = -24;
           break;

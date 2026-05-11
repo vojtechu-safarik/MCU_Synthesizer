@@ -21,9 +21,9 @@ float default_HPF_Freq = 20.0f;
 float default_HPF_Res  = 0.707f;
 float AA_filter_CornerFreq = 17640.0f;  // 44 100 Hz / 2 = 22 050 Hz ... Nyquist freq ... * 0.8 = 17 640 Hz
 // Default volume
-float defaultVolume_1 = 0.75f;
-float defaultVolume_2 = 0.75f;
-float defaultVolume_3 = 0.75f;
+float defaultVolume_1 = 1.0f;
+float defaultVolume_2 = 1.0f;
+float defaultVolume_3 = 1.0f;
 float pinkVolume = 0.00f;
 // Master volume
 float MASTERVolume = 1.0f;

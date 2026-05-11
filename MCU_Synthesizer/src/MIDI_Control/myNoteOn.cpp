@@ -50,9 +50,9 @@ void myNoteOn(byte channel, byte note, byte velocity) {
 
       // initialization PORTAMENTO - voices 1 .. 3
       if (PORTswitch == 1) {
-        mixer_1.gain(0, 0.5);
-        mixer_1.gain(1, 0.5);
-        mixer_1.gain(2, 0.5);
+        mixer_1.gain(0, 0.75);
+        mixer_1.gain(1, 0.75);
+        mixer_1.gain(2, 0.75);
         bool sourceHolding = ( (voiceActive_4 && !voiceReleasing_4)
                             || (voiceActive_5 && !voiceReleasing_5)
                             || (voiceActive_6 && !voiceReleasing_6) );
@@ -172,12 +172,12 @@ void myNoteOn(byte channel, byte note, byte velocity) {
       }
       
       if (PORTswitch == 0) {
-        mixer_1.gain(0, 0.5);
-        mixer_1.gain(1, 0.5);
-        mixer_1.gain(2, 0.5);
-        mixer_2.gain(0, 0.5);
-        mixer_2.gain(1, 0.5);
-        mixer_2.gain(2, 0.5);
+        mixer_1.gain(0, 0.75);
+        mixer_1.gain(1, 0.75);
+        mixer_1.gain(2, 0.75);
+        mixer_2.gain(0, 0.75);
+        mixer_2.gain(1, 0.75);
+        mixer_2.gain(2, 0.75);
       }
 
       oscStopVoice_4();
@@ -227,9 +227,9 @@ void myNoteOn(byte channel, byte note, byte velocity) {
       
       // initialization PORTAMENTO - voices 4 .. 6
       if (PORTswitch == 1) {
-        mixer_2.gain(0, 0.5);
-        mixer_2.gain(1, 0.5);
-        mixer_2.gain(2, 0.5);
+        mixer_2.gain(0, 0.75);
+        mixer_2.gain(1, 0.75);
+        mixer_2.gain(2, 0.75);
         bool sourceHolding = ( (voiceActive_1 && !voiceReleasing_1)
                             || (voiceActive_2 && !voiceReleasing_2)
                             || (voiceActive_3 && !voiceReleasing_3) );
@@ -350,12 +350,12 @@ void myNoteOn(byte channel, byte note, byte velocity) {
       }  
 
       if (PORTswitch == 0) {
-        mixer_1.gain(0, 0.5);
-        mixer_1.gain(1, 0.5);
-        mixer_1.gain(2, 0.5);
-        mixer_2.gain(0, 0.5);
-        mixer_2.gain(1, 0.5);
-        mixer_2.gain(2, 0.5);
+        mixer_1.gain(0, 0.75);
+        mixer_1.gain(1, 0.75);
+        mixer_1.gain(2, 0.75);
+        mixer_2.gain(0, 0.75);
+        mixer_2.gain(1, 0.75);
+        mixer_2.gain(2, 0.75);
       }
 
       oscStopVoice_1();

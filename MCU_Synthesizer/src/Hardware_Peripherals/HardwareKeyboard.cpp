@@ -68,65 +68,65 @@ static char keymap[ROWS][COLS] = {
 static const byte keyToMidiNote[45] = {
   // === Row 1 (Blue 1) ===
   0,   // [0] Column 1 (R1 B1): Oct Down
-  44,  // [1] Column 2 (R2 B1): Note E2
+  56,  // [1] Column 2 (R2 B1): Note E3
   0,   // [2] Column 3 (R3 B1): (Shift)
-  46,  // [3] Column 4 (R4 B1): Note F#2
-  56,  // [4] Column 5 (R5 B1): Note E3 (Last Note)
+  58,  // [3] Column 4 (R4 B1): Note F#3
+  68,  // [4] Column 5 (R5 B1): Note E4 (Last Note)
 
   // === Row 2 (Blue 2) ===
   0,   // [5] Column 1 (R1 B2): Oct Up
-  42,  // [6] Column 2 (R2 B2): Note D2
+  54,  // [6] Column 2 (R2 B2): Note D3
   0,   // [7] Column 3 (R3 B2): (LFO - Rise / Fall)
-  48,  // [8] Column 4 (R4 B2): Note G#2
-  55,   // [9] Column 5 (R5 B2): Note D#3
+  60,  // [8] Column 4 (R4 B2): Note G#3
+  67,  // [9] Column 5 (R5 B2): Note D#4
 
   // === Row 3 (Blue 3) ===
-  28,  // [10] Column 1 (R1 B3): Note C1 (First Note)
-  40,  // [11] Column 2 (R2 B3): Note C2
+  40,  // [10] Column 1 (R1 B3): Note C2 (First Note)
+  52,  // [11] Column 2 (R2 B3): Note C3
   0,   // [12] Column 3 (R3 B3): (LFO - Free / Trig)
-  50,  // [13] Column 4 (R4 B3): Note A#2
-  53,  // [14] Column 5 (R5 B3): Note C#3
+  62,  // [13] Column 4 (R4 B3): Note A#3
+  65,  // [14] Column 5 (R5 B3): Note C#4
 
   // === Row 4 (Blue 4) ===
-  30,  // [15] Column 1 (R1 B4): Note D1
-  39,  // [16] Column 2 (R2 B4): Note B1
-  0,  // [17] Column 3 (R3 B4): Drone #1
-  45,  // [18] Column 4 (R4 B4): Note F2
+  42,  // [15] Column 1 (R1 B4): Note D2
+  51,  // [16] Column 2 (R2 B4): Note B2
+  0,   // [17] Column 3 (R3 B4): Drone #1
+  57,  // [18] Column 4 (R4 B4): Note F3
   0,   // [19] Column 5 (R5 B4): Drone #5
 
   // === Row 5 (Blue 5) ===
-  32,  // [20] Column 1 (R1 B5): Note E1
-  37,  // [21] Column 2 (R2 B5): Note A1
-  0,  // [22] Column 3 (R3 B5): Drone #2
-  47,  // [23] Column 4 (R4 B5): Note G2
+  44,  // [20] Column 1 (R1 B5): Note E2
+  49,  // [21] Column 2 (R2 B5): Note A2
+  0,   // [22] Column 3 (R3 B5): Drone #2
+  59,  // [23] Column 4 (R4 B5): Note G3
   0,   // [24] Column 5 (R5 B5): Drone #6
 
   // === Row 6 (Blue 6) ===
-  33,  // [25] Column 1 (R1 B6): Note F1
-  35,  // [26] Column 2 (R2 B6): Note G1
-  0,  // [27] Column 3 (R3 B6): Drone #3
-  49,  // [28] Column 4 (R4 B6): Note A2
+  45,  // [25] Column 1 (R1 B6): Note F2
+  47,  // [26] Column 2 (R2 B6): Note G2
+  0,   // [27] Column 3 (R3 B6): Drone #3
+  61,  // [28] Column 4 (R4 B6): Note A3
   0,   // [29] Column 5 (R5 B6): Drone #7
 
   // === Row 7 (Blue 7) ===
   0,   // [30] Column 1 (R1 B7): (Unused)
-  38, // [31] Column 2 (R2 B7): Note A#1
-  0,  // [32] Column 3 (R3 B7): Drone #4
-  51,  // [33] Column 4 (R4 B7): Note B2
+  50,  // [31] Column 2 (R2 B7): Note A#2
+  0,   // [32] Column 3 (R3 B7): Drone #4
+  63,  // [33] Column 4 (R4 B7): Note B3
   0,   // [34] Column 5 (R5 B7): Drone #8
 
   // === Row 8 (Blue 8) ===
-  29,  // [35] Column 1 (R1 B8): Note C#1
-  36,   // [36] Column 2 (R2 B8): Note G#1
-  41,  // [37] Column 3 (R3 B8): Note C#2
-  52,  // [38] Column 4 (R4 B8): Note C3
+  41,  // [35] Column 1 (R1 B8): Note C#2
+  48,  // [36] Column 2 (R2 B8): Note G#2
+  53,  // [37] Column 3 (R3 B8): Note C#3
+  64,  // [38] Column 4 (R4 B8): Note C4
   0,   // [39] Column 5 (R5 B8): (Unused)
 
   // === Row 9 (Blue 9) ===
-  31,  // [40] Column 1 (R1 B9): Note D#1
-  34,   // [41] Column 2 (R2 B9): Note F#1
-  43,  // [42] Column 3 (R3 B9): Note D#2
-  54,  // [43] Column 4 (R4 B9): Note D3
+  43,  // [40] Column 1 (R1 B9): Note D#2
+  46,  // [41] Column 2 (R2 B9): Note F#2
+  55,  // [42] Column 3 (R3 B9): Note D#3
+  66,  // [43] Column 4 (R4 B9): Note D4
   0    // [44] Column 5 (R5 B9): (Unused)
 };
 
@@ -201,7 +201,7 @@ static constexpr byte KEY_SHIFT      = 2;
 
 static Keypad keypad = Keypad(makeKeymap(keymap), rowPins, colPins, ROWS, COLS);
 
-static int activeKeyStack[32];  // Amount of notes in Latch
+static int activeKeyStack[256];  // Amount of notes in Latch
 static byte activeKeyCount = 0;
 static int playingNotes[45];     // Tracking the notes in Direct Play for immediate transposition
 
@@ -255,7 +255,7 @@ void pushKey(byte keyIndex, bool isRest = false) {
     }
     
     // Latch mode (2) can have the same notes in a row
-    if (activeKeyCount < 12) {
+    if (activeKeyCount < 255) {
         // Encode: [Length Code: 8 bits] [isRest: 1 bit] [KeyIndex: 7 bits]
         int packedValue = (nextNoteLenCode << 8) | (isRest ? 0x80 : 0) | (keyIndex & 0x7F);
         activeKeyStack[activeKeyCount++] = packedValue;
@@ -268,7 +268,7 @@ void popKey(byte keyIndex) {
     for (byte i = 0; i < activeKeyCount; i++) {
         // Compare only the physical index (bits 0-6)
         if ((activeKeyStack[i] & 0x7F) == keyIndex) found = true;
-        if (found && i < 31) activeKeyStack[i] = activeKeyStack[i+1];
+        if (found && i < activeKeyCount - 1) activeKeyStack[i] = activeKeyStack[i+1];
     }
     if (found && activeKeyCount > 0) activeKeyCount--;
 }
@@ -282,7 +282,7 @@ void rebuildSequence() {
     sequenceLength = 0;
     if (activeKeyCount == 0) return;
 
-    int tempNotes[12];
+    int tempNotes[256];
     for (byte i = 0; i < activeKeyCount; i++) {
         byte keyIdx = activeKeyStack[i] & 0x7F;
         bool isRest = (activeKeyStack[i] & 0x80) != 0;
@@ -316,7 +316,7 @@ void rebuildSequence() {
         int base = tempNotes[i] & 0xFF;
         byte lenCode = (tempNotes[i] >> 8) & 0xFF;
         for (byte r = 0; r <= CurrentSeqOctave; r++) {
-            if (sequenceLength < 32) {
+            if (sequenceLength < 256) {
                 // If pause (254), dont increment octaves
                 int finalNote = (base == 254) ? 254 : (base + (r * 12));
                 sequenceBuffer[sequenceLength++] = (lenCode << 8) | finalNote;
@@ -474,13 +474,13 @@ void Keyboard_update() {
                 if (index == KEY_OCT_DOWN) {
                     if (octaveValue > 0) {
                         octaveValue--;
-                        if (CurrentSeqMode == 0) VirtualControlChange(0, CC_octave, octaveValue);
+                        // if (CurrentSeqMode == 0) VirtualControlChange(0, CC_octave, octaveValue);
                     }
                 } 
                 else if (index == KEY_OCT_UP) {
                     if (octaveValue < 4) {
                         octaveValue++;
-                        if (CurrentSeqMode == 0) VirtualControlChange(0, CC_octave, octaveValue);
+                        // if (CurrentSeqMode == 0) VirtualControlChange(0, CC_octave, octaveValue);
                     }
                 } 
                 else if (!shiftActive) {
