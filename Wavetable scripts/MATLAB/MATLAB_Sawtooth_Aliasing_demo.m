@@ -124,7 +124,7 @@ plot(t_cont * fs, x_cont, 'b-', 'LineWidth', 1.0); hold on;
 xlim([0 num_intervals]);
 ylim([-1.1 1.1]);
 xlabel('Diskrétní vzorky v čase [-]');
-ylabel('Amplituda');
+ylabel('Hodnota');
 title('Spojitý signál');
 grid on;
 
@@ -135,7 +135,7 @@ stem(harm_freqs_plot/1e3, harm_mags_plot, 'b', 'LineWidth', 1.0);
 xlim([0 maxFreqPlot/1e3]);
 ylim([0 max(harm_mags_plot)*1.1]);
 xlabel('Frekvence [kHz]');
-ylabel('Amplituda');
+ylabel('Hodnota');
 title('Spektrální koeficienty spojitého signálu |C_k|');
 grid on;
 
@@ -146,7 +146,7 @@ plot(t_sample * fs, x_samp, 'b--', 'LineWidth', 0.8);
 xlim([0 num_intervals]);
 ylim([-1.1 1.1]);
 xlabel('Diskrétní vzorky v čase [-]');
-ylabel('Amplituda');
+ylabel('Hodnota');
 title('Diskrétní signál (vzorky)');
 grid on;
 
@@ -159,7 +159,7 @@ stem(rep_freqs_sorted/1e3, rep_mags_sorted, 'b', 'LineWidth', 0.8); hold on;
 xlim([0 maxFreqPlot/1e3]);
 ylim([0 max(harm_mags_plot)*1.1]);
 xlabel('Frekvence [kHz]');
-ylabel('Amplituda');
+ylabel('Hodnota');
 title('Spektrální koeficienty diskrétního signálu |C_k|');
 grid on;
 
@@ -170,6 +170,6 @@ grid on;
 set(findall(gcf,'-property','FontSize'),'FontSize',11);
 
 % Save picture
-% print(gcf,'-dpng','-r300','sawtooth_aliasing_figure.png');
+print(gcf,'-dpng','-r300','sawtooth_aliasing_figure.png');
 
 % End of script

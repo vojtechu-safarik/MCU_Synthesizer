@@ -93,34 +93,6 @@ void setup() {
 
 // ============== Loop ==============
 void loop() {
-  /*
-  // CPU and memory usage 
-  static unsigned long lastPrintTime = 0;
-  unsigned long nowCPUtest = millis();
-  if (nowCPUtest - lastPrintTime >= 1000) { // 1 second
-    lastPrintTime = nowCPUtest;
-    
-    Serial.print("Audio Memory Usage: ");
-    Serial.println(AudioMemoryUsageMax());
-    Serial.print("Filter CPU Usage: ");
-    Serial.print(ladder_1.processorUsageMax());
-    Serial.print("%, Total CPU Usage: ");
-    Serial.print(AudioProcessorUsageMax());
-    Serial.println("%");
-  }
-  */
-
-  /*
-  static unsigned long lastPrintTime = 0;
-  unsigned long nowShapeIndextest = millis();
-  if (nowShapeIndextest - lastPrintTime >= 1000) { // 1 second
-    lastPrintTime = nowShapeIndextest;
-    Serial.print("Current shapeIndex_1 = "); Serial.println(currentShapeIndex_1);
-    Serial.print("Current shapeIndex_2 = "); Serial.println(currentShapeIndex_2);
-    Serial.print("Current shapeIndex_3 = "); Serial.println(currentShapeIndex_3);
-  }
-  */
-
   // Read the values for virtual MIDI control at the start of the loop
   usbMIDI.read();
     static elapsedMillis lfoUpdateTimer;
@@ -146,14 +118,9 @@ void loop() {
   }
 
   DroneSequencer_update();
-
   checkMux();
-
   Display_loop();
-
-  // SMAZAT
   Keyboard_update();
-  
   LEDs_update();        // all LED update functions at once - set flags for IOExpander_setLed()
   IOExpander_update();  // flush cached states to IO Expander - batch I2C write
   

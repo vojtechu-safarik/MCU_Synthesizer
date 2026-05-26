@@ -7,35 +7,32 @@ The C++ code has been made in VS Code using PlatformIO and it utilises Teensy Au
 The scripts that generate wavetables (as a header file) have been made using Python.
 Those header files have been further edited in order to lower the amount of anti-aliasing using a MATLAB script. 
 
-[**Video demonstration of the Synthesizer**](add_here)
+[**Video demonstration of the Synthesizer**](https://youtu.be/89R-V2SBuqk)
 
 ## Synthesis controls
 
-![Synthesizer - front view](Images/Synthesizer-front_view.png "Synthesizer - front view")
+![Synthesizer - front view](Images/Synthesizer-front_view.jpg "Synthesizer - front view")
 
 ### Oscillators
-abc
+The synthesizer features both Poly and Unison voice allocation modes. Sound generation relies on wavetables categorized into 6 distinct families: Saw, Square (featuring Pulse Width Modulation), Triangle, Sine, Instrument, and Voice. Users can select the waveform type using the `Wave` control and seamlessly interpolate between variations using the `Shape` parameter. In Poly mode, each note gets its own independent audio chain, while Unison mode stacks three parallel oscillators per note for a thicker sound. Additionally, a sub-oscillator can be introduced, transposing the primary frequency one or two octaves down.
 
 ### Filters
-abc
+The signal chain utilizes two main filters. The primary is a 24 dB/oct resonant Low-Pass Filter based on the Huovilainen New Moog mathematical model, which is capable of self-oscillation. This is followed in series by a 12 dB/oct High-Pass Filter based on the State Variable Filter model. The Low-Pass Filter also includes a dedicated Keyboard Tracking feature, allowing the cutoff frequency to scale dynamically with the pitch of the note played.
 
 ### Envelopes
-abc
+Each voice is equipped with two dedicated ADSR (Attack, Decay, Sustain, Release) envelopes, allowing stages up to 3 seconds in length. One envelope shapes the final amplitude of the signal, while the other modulates the Low-Pass Filter's cutoff frequency. The filter envelope also features an `Intensity` control, enabling users to finely scale or invert the depth of the modulation.
 
 ### LFO
-abc
+The Low-Frequency Oscillator can modulate the LPF Cutoff, Oscillator Shape, and Voice Pitch (Detune). It features four operational modes: `Free` (a single global LFO for all voices), `Retrig` (independent LFO per voice), and `Rise` or `Fall` (one-shot linear modulations triggered per note). Available waveforms include Sine, Saw Rise, Saw Fall, Square, and a randomized Noise sample. Users can adjust the modulation `Rate` (0.1–25 Hz), `Depth`, and a fade-in `Delay` of up to 3 seconds.
 
 ### Portamento
-abc
+Available exclusively in Unison mode, Portamento introduces a smooth glide between overlapping notes. Its speed is synchronized to the global BPM and can be operated in two modes: `Time`, where the glide duration is a fixed note division regardless of the pitch distance, and `Rate`, where the glide duration scales with the interval, defined by the time it takes to travel one octave.
 
 ### Sequencer
-abc
+A built-in step sequencer synchronizes to the global BPM and features two main performance modes. `Arp` mode functions as a traditional arpeggiator playing held notes in sequence, whereas `Latch` mode captures pressed keys into a buffer and plays them continuously without requiring the keys to be held. The sequence playback can be customized with order settings (Up, Down, As Played), octave duplications (+1 or +2 octaves), and an adjustable `Gate` parameter defining the note length (1–100%) per step. There's also an option to adjust the each individual step length via secret settings.
 
 ### Drone
-abc
-
-### Preset
-abc
+This alternative ambient mode leverages 10 additional parallel oscillator chains utilizing simplified SVF filters, split into two alternating groups (A and B), alongside independent noise generators. Using the `Save` mode, users can capture the exact parameter settings of currently active voices and store them to one of 8 dedicated buttons. Switching to `Hold` mode allows users to endlessly play back these captured static drones concurrently with the standard synthesis engine.
 
 ## List of hardware components
 
@@ -146,7 +143,7 @@ abc
 * Keyboard switches, MX linear Red
   - set up as a matrix to preserve pins
 
-  ![Keyboard matrix configuration](Images/Keyboard_matrix_configuration.jpg "Keyboard matrix configuration")
+  ![Keyboard matrix configuration](Images/Keyboard_matrix_configuration.pdf "Keyboard matrix configuration")
 
 * Toggle switches
 - 3× KN3 2-way toggle switch
@@ -170,8 +167,14 @@ abc
   - 6× 2-Pin 2.54mm
 
 ## Circuit & PCB schematics
-![Main panel PCB schematics](Images/PCB_schematics-Main_panel.png "Main panel PCB schematics")
-![Keyboard panel PCB schematics](Images/PCB_schematics-Keyboard_panel.png "Keyboard panel PCB schematics")
+![Main panel PCB - Copper Top](Images/PCB/Panel_1-Cu_front.png "Main panel PCB - Copper Top")
+![Main panel PCB - Copper Bottom](Images/PCB/Panel_1-Cu_back.png "Main panel PCB - Copper Bottom")
+![Main panel PCB - Parts Top](Images/PCB/Panel_1-osazeni_front.png "Main panel PCB - Parts Top")
+![Main panel PCB - Parts Bottom](Images/PCB/Panel_1-osazeni_back.png "Main panel PCB - Parts Bottom")
+![Keyboard panel PCB - Copper Top](Images/PCB/Panel_2-Cu_front.png "Keyboard panel PCB - Copper Top")
+![Keyboard panel PCB - Copper Bottom](Images/PCB/Panel_2-Cu_back.png "Keyboard panel PCB - Copper Bottom")
+![Keyboard panel PCB - Parts Top](Images/PCB/Panel_2-osazeni_front.png "Keyboard panel PCB - Parts Top")
+![Keyboard panel PCB - Parts Bottom](Images/PCB/Panel_2-osazeni_back.png "Keyboard panel PCB - Parts Bottom")
 
 Circuit & PCB schematics have been made in KiCad 9.0 and the project is available [here.](./Design/KiCad)
 
@@ -222,15 +225,27 @@ Circuit & PCB schematics have been made in KiCad 9.0 and the project is availabl
 | 40 | **Sig (A16)** | **Mux #2** |
 | 41 | **Sig (A17)** | **Mux #3** |
 
+### Images
+
+![Look from the front](Images/Prototyp_frontside.jpg "Look from the front")
+![Look from the back](Images/Prototyp_backside.jpg "Look from the back")
+![Connectors](Images/Konektory.jpg "Connectors")
+
 ### 3D Model
 
-![3D Model - front view](Images/3D_model-front_view.png "3D Model - front view")
-![3D Model - side view](Images/3D_model-side_view.png "3D Model - side view")
 ![3D Panel](Images/3D_panel.png "3D Panel")
 
-The 3D model has been made for laser engraving of the control panel and during the designing phase to check the real dimensions and component distances. 
+The 3D model has been made for laser engraving of the control panel. 
+
+### Possible improvements
+
+* The Line Out connector doesn't work now, and I don't know why, but I suppose it's not of mechanical nature.
+* The GND is pretty noisy as of now, especially when powering via USB.
+* Preset function isn't developed yet, but will be once I return to this project later.
 
 ## References
 
 * Teensy 4.1 information: [link PJRC.com](https://www.pjrc.com/store/teensy41.html)
 * Audio Adaptor Board for Teensy information: [link PJRC.com](https://www.pjrc.com/store/teensy3_audio.html)
+* Incredible source of information and amazing YouTube content: [link notesandvolts.com](https://www.notesandvolts.com)
+* I hereby acknowledge use of free-license AI tool for coding: [link gemini.google.com](https://gemini.google.com)

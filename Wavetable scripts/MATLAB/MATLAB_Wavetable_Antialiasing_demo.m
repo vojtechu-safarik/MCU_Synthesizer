@@ -129,13 +129,13 @@ subplot(2,2,1);
 plot(x_raw, 'r', 'LineWidth', 1.2);
 axis tight; ylim([-1.2 1.2]); grid on;
 title('Originální časový průběh');
-xlabel('Vzorky [-]'); ylabel('Amplituda');
+xlabel('Vzorky [-]'); ylabel('Hodnota');
 % --- TOP RIGHT: Processed signal ---
 subplot(2,2,2);
 plot(y_proc, 'b', 'LineWidth', 1.2);
 axis tight; ylim([-1.2 1.2]); grid on;
 title('Antialiasovaný časový průběh'); % (Sinc Corrected)
-xlabel('Vzorky [-]'); ylabel('Amplituda');
+xlabel('Vzorky [-]'); ylabel('Hodnota');
 % --- BOTTOM LEFT: Extended Spectrum RAW ---
 subplot(2,2,3);
 stem(f_axis_ext/1000, full_spec_raw, 'r', 'MarkerSize', 2, 'LineWidth', 0.5);
@@ -144,7 +144,7 @@ xlim([0 20]); % CHANGE: Limiting X-axis to 20 kHz
 ylim([0 Y_MAX_REF * 1.05]); % Using absolute maximum
 xline(SAMPLE_RATE_CONTEXT/2000, 'k--', 'Nyquist (22.05 kHz)'); % This line will not be visible, but kept for context
 title('Spektrum (originál)');
-xlabel('Frekvence [kHz]'); ylabel('Amplituda [C_{k}]');
+xlabel('Frekvence [kHz]'); ylabel('Hodnota [C_{k}]');
 % --- BOTTOM RIGHT: Extended Spectrum ANTIALIASED ---
 subplot(2,2,4);
 stem(f_axis_ext/1000, full_spec_proc, 'b', 'MarkerSize', 2, 'LineWidth', 0.5);
@@ -153,7 +153,7 @@ xlim([0 20]); % CHANGE: Limiting X-axis to 20 kHz
 ylim([0 Y_MAX_REF * 1.05]); % Using absolute maximum
 xline(SAMPLE_RATE_CONTEXT/2000, 'k--', 'Nyquist (22.05 kHz)'); % This line will not be visible, but kept for context
 title('Spektrum (antialiasované)');
-xlabel('Frekvence [kHz]'); ylabel('Amplituda [C_{k}]');
+xlabel('Frekvence [kHz]'); ylabel('Hodnota [C_{k}]');
 % Font improvements
 set(findall(gcf,'-property','FontSize'),'FontSize', 10);
 % Saving
